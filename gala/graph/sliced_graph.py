@@ -10,6 +10,8 @@ class SlicedPath:
         self.path: List[ICFGNode] = path
         self.req_nodes: List[ICFGNode] = []
         self.sv_write_nodes: List[ICFGNode] = []
+        self.call_nodes: List[ICFGNode] = []  # 函数调用节点
+        self.condition_node_edge_type_map: Dict[ICFGNode, EdgeType] = {}
 
 
 class SlicedGraph:

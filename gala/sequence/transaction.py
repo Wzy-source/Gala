@@ -13,8 +13,7 @@ class Transaction:
         self.context: Optional = None
 
     def __str__(self):
-        # TODO
-        return ""
+        return str(self.function)
 
 
 class TxSequence:
@@ -45,3 +44,6 @@ class TxSequence:
         new_tx_sequence.reversed_txs = copied_reversed_txs
 
         return new_tx_sequence
+
+    def __str__(self):
+        return " -> ".join(str(tx) for tx in self.transactions)

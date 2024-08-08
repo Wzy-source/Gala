@@ -12,7 +12,7 @@ class FlowDirection(Enum):
 class EdgeProcessor:
     def __init__(self):
         pass
-
+    @staticmethod
     def get_edges_by_types(graph: MultiDiGraph, node: ICFGNode, edge_types: List[EdgeType], direction: FlowDirection) \
             -> List[ICFGEdge]:
         edges: List[ICFGEdge] = []

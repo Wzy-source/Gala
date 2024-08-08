@@ -1,6 +1,7 @@
 from gala.graph import ICFGBuilder, ICFGSlicer, TaintAnalyzer
 from gala.sequence import TxSequenceGenerator
 from slither.core.declarations import Contract
+from gala.symbolic import SymbolicEngine
 
 
 class GalaRunner:
@@ -9,6 +10,7 @@ class GalaRunner:
         self.taint_analyzer: TaintAnalyzer = TaintAnalyzer()
         self.icfg_slicer: ICFGSlicer = ICFGSlicer()
         self.tx_sequence_generator: TxSequenceGenerator = TxSequenceGenerator()
+        self.symbolic_engine: SymbolicEngine = SymbolicEngine()
 
     def run(self, main_contract: Contract):
         print("Gala Start Analysis")
@@ -23,4 +25,7 @@ class GalaRunner:
         self.taint_analyzer.analyze(sliced_graph)
 
         print("Step4: Generate Tx Sequences")
-        self.tx_sequence_generator.generate(sliced_graph)
+        GeneratedTxSequences = self.tx_sequence_generator.generate(sliced_graph)
+
+        print("Step5: Symbolic Execution")
+        self.symbolic_engine.execute(GeneratedTxSequences)

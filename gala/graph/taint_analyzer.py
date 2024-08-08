@@ -102,9 +102,7 @@ class TaintAnalyzer:
         for node_index in range(write_node_index, -1, -1):
             working_node = slice_path.path[node_index]
             working_func: Function = sliced_graph.icfg.graph.nodes[working_node]["func_scope"]
-            # 对当前节点进行处理
-            if not isinstance(working_node, SSAIRNode):
-                continue
+
             # 如果是首节点的情况,也就是eoa_callable_func entry point 保存最终结果
             if node_index == 0:
                 perm: Permission = sliced_graph.icfg.graph.nodes[write_node]["permission"]

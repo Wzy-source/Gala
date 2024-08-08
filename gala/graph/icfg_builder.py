@@ -142,6 +142,7 @@ class ICFGBuilder:
                         # 添加函数调用边
                         # 由于Slither将Modifier Call纳入到了Function nodes中，我们需要对Modifier和Function Call进行区分
                         call_type = EdgeType.MODIFIER_CALL if caller_node.is_modifier_call else EdgeType.FUNCTION_CALL
+                        # 向
                         # 添加函数调用节点
                         icfg.graph.add_edge(caller_node, callee_entry,
                                             **self.gen_edge_attr(edge_type=call_type))
