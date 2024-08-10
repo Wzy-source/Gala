@@ -5,6 +5,7 @@ contract OwnableContract {
     address public owner;
     uint256 public value;
     mapping(address => uint) public balances;
+    address[] public  candidates;
 
     // 构造函数，部署合约时将部署者设为owner
     constructor() {
@@ -13,6 +14,10 @@ contract OwnableContract {
 
     function update(uint newBalance) public {
         balances[msg.sender] = newBalance;
+    }
+
+    function add_candidate(address _candidate) public {
+        candidates.push(_candidate);
     }
 
     // onlyOwner修饰符，限制函数只能由owner调用

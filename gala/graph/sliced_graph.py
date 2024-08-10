@@ -7,7 +7,7 @@ from slither.core.variables import StateVariable
 class SlicedPath:
     def __init__(self, slice_func: Function, path: List[ICFGNode]):
         self.slice_func: Function = slice_func
-        self.path: List[ICFGNode] = path
+        self.ops: List[ICFGNode] = path
         self.req_nodes: List[ICFGNode] = []
         self.sv_write_nodes: List[ICFGNode] = []
         self.call_nodes: List[ICFGNode] = []  # 函数调用节点
