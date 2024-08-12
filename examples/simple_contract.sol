@@ -3,22 +3,26 @@ pragma solidity ^0.8.0;
 
 contract OwnableContract {
     address public owner;
+    address public constant_owner;
     uint256 public value;
     mapping(address => uint) public balances;
     address[] public  candidates;
-
+    bytes[16] public fix_bytes;
+    string public  name;
+    string public fix_name = "name";
     // 构造函数，部署合约时将部署者设为owner
     constructor() {
         owner = msg.sender;
     }
 
-    function update(uint newBalance) public {
+    function update(uint newBalance,address _candidate) public onlyOwner {
         balances[msg.sender] = newBalance;
-    }
-
-    function add_candidate(address _candidate) public {
         candidates.push(_candidate);
     }
+
+//    function add_candidate(address _candidate) public onlyOwner {
+//        candidates.push(_candidate);
+//    }
 
     // onlyOwner修饰符，限制函数只能由owner调用
     modifier onlyOwner() {
@@ -30,11 +34,11 @@ contract OwnableContract {
     function changeOwner(address newOwner) public {
         require(newOwner != address(0), "New owner is the zero address");
         owner = newOwner;
+//        constant_owner = 0x000000F20032b9E171844b00EA507E11960BD94b;
     }
 
-    // 示例函数，只有owner可以调用
-    function ownerFunction(uint256 newValue) public onlyOwner {
-        // 只有owner可以执行的代码
-        value = newValue;
-    }
+
+//    function changeName() public onlyOwner {
+//        name = "new_name_wzy";
+//    }
 }

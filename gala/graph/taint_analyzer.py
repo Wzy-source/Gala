@@ -32,7 +32,7 @@ class TaintAnalyzer:
     def collect_req_taint_variables_in_slice(sliced_graph: SlicedGraph, slice_path: SlicedPath,
                                              req_node: ICFGNode) -> None:
         # 从req节点处开始遍历
-        req_node_index = slice_path.ops.index(req_node)
+        req_node_index = slice_path.nodes.index(req_node)
 
         # 污点传播过程收集的中间变量
         taint_vars: Set[Variable] = {req_node.read[0]}
@@ -43,7 +43,7 @@ class TaintAnalyzer:
 
         # 开始前向传播，直到遍历到entry_point
         for node_index in range(req_node_index, -1, -1):
-            working_node = slice_path.ops[node_index]
+            working_node = slice_path.nodes[node_index]
             working_func: Function = sliced_graph.icfg.graph.nodes[working_node]["func_scope"]
 
             # 如果是首节点的情况,也就是eoa_callable_func entry point 保存最终结果
@@ -91,7 +91,7 @@ class TaintAnalyzer:
         # 对于每一个向sv写入的操作，寻找其写入操作的右值可能收到哪些变量影响
 
         # 从write_node的位置开始向前遍历
-        write_node_index = slice_path.ops.index(write_node)
+        write_node_index = slice_path.nodes.index(write_node)
         # 污点传播过程的中间变量
         taint_vars: Set[Variable] = {write_node.read[0]}
         # 收集当前write_node的污点分析结果
@@ -100,7 +100,7 @@ class TaintAnalyzer:
         solidity_vars_flow_to_sink: Set[SolidityVariableComposed] = set()
 
         for node_index in range(write_node_index, -1, -1):
-            working_node = slice_path.ops[node_index]
+            working_node = slice_path.nodes[node_index]
             working_func: Function = sliced_graph.icfg.graph.nodes[working_node]["func_scope"]
 
             # 如果是首节点的情况,也就是eoa_callable_func entry point 保存最终结果

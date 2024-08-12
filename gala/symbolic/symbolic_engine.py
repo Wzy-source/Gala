@@ -27,7 +27,9 @@ class SymbolicEngine:
         default_storage: MemoryModel = MemoryModel(MULocation.STORAGE)
         for tx in tx_sequence.transactions:
             self.solver.reset()
-            entry_state: SymbolicState = SymbolicState(solver=self.solver, tx=tx, default_storage=default_storage)
+            entry_state: SymbolicState = SymbolicState(tx=tx, init_storage=default_storage)
             # 符号执行每一个交易，保存交易的中间状态
             self.slither_op_parser.parse_tx_ops(entry_state)  # TODO 返回执行结果
+            print(self.solver.assertions())
+            print(self.solver.check())
         return "secure"

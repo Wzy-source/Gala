@@ -1,17 +1,21 @@
 from slither.core.declarations import Function
 from typing import List, Dict, Set, Tuple
-from .icfg import ICFGNode, ICFG, EdgeType
+from .icfg import ICFGNode, ICFG, EdgeType, SSAIRNode
 from slither.core.variables import StateVariable
 
 
 class SlicedPath:
     def __init__(self, slice_func: Function, path: List[ICFGNode]):
         self.slice_func: Function = slice_func
-        self.ops: List[ICFGNode] = path
+        self.nodes: List[ICFGNode] = path
+        self.ops: List[SSAIRNode] = list(filter(lambda n: isinstance(n, SSAIRNode), path))
         self.req_nodes: List[ICFGNode] = []
         self.sv_write_nodes: List[ICFGNode] = []
         self.call_nodes: List[ICFGNode] = []  # 函数调用节点
         self.condition_node_edge_type_map: Dict[ICFGNode, EdgeType] = {}
+
+    def __str__(self):
+        return "-> ".join(map(str, self.nodes))
 
 
 class SlicedGraph:
