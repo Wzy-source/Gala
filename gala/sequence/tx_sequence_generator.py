@@ -3,9 +3,7 @@ from slither.core.variables import StateVariable
 from typing import Dict, List, Tuple, FrozenSet, Set, TypeAlias, Union
 from .transaction import Transaction, TxSequence
 
-TxSeqGenerationResult: TypeAlias = Dict[FrozenSet[ICFGNode], Tuple[Set[TxSequence], List[ICFGNode]]]
-
-
+TxSeqGenerationResult: TypeAlias = Dict[FrozenSet[ICFGNode], Dict[SlicedPath, Tuple[Set[TxSequence], List[ICFGNode]]]]
 
 
 class TxSequenceGenerator:
@@ -28,12 +26,14 @@ class TxSequenceGenerator:
         for perm_node, all_trigger_perm_node_slice_paths in sliced_icfg.perm_node_slice_map.items():
             # 每一个Perm，以及每一个Trigger该Perm的SlicePath
             for base_path, perm_req_nodes in all_trigger_perm_node_slice_paths.items():
-                # 如果req node是相同的，就无需重新分析 ✅
-                if frozenset(perm_req_nodes) in GeneratedTxSequences.keys():
-                    GeneratedTxSequences[frozenset(perm_req_nodes)][1].append(perm_node)
+                # 必须req node与base_path是同时相同的，才无需重新分析 ✅
+                frozen_req_nodes: FrozenSet[ICFGNode] = frozenset(perm_req_nodes)
+                base_path_map = GeneratedTxSequences.setdefault(frozen_req_nodes, {})
+                if base_path in base_path_map:
+                    base_path_map[base_path][1].append(perm_node)
                 else:
                     TxSeqSet = self.generate_one_perm_node_tx_sequence(sliced_icfg, base_path, perm_req_nodes)
-                    GeneratedTxSequences.setdefault(frozenset(perm_req_nodes), (TxSeqSet, [perm_node]))
+                    base_path_map[base_path] = (TxSeqSet, [perm_node])
         return GeneratedTxSequences
 
     def generate_one_perm_node_tx_sequence(self, sliced_icfg: SlicedGraph, base_path: SlicedPath, perm_req_nodes: List[ICFGNode]) -> Set[TxSequence]:
@@ -46,7 +46,7 @@ class TxSequenceGenerator:
 
         # 情况1: 当前perm node 不受到任何req nodes的约束
         if len(perm_req_nodes) == 0:
-            return {TxSequence(Transaction(base_path))}
+            return {TxSequence(txs=[Transaction(base_path)])}
 
         # 有一些变量是仅在构造函数/变量声明阶段初始化一次，后续函数不修改这些state variable的值（constant/immutable）
         # 我们认为这些变量是已经被处理过的
@@ -62,7 +62,7 @@ class TxSequenceGenerator:
 
         # 情况2: 当前perm node的req约束和state variable的无关
         if len(perm_req_nodes_dependent_state_vars) == 0:
-            return {TxSequence(Transaction(base_path))}
+            return {TxSequence(txs=[Transaction(base_path)])}
 
         # 对依赖的perm_req_nodes_dependent_state_vars进行过滤：
         # 有一些state var在变量声明/构造函数初始化阶段仅初始化了一次（constant/immutable），外部用户无法更改
@@ -85,7 +85,7 @@ class TxSequenceGenerator:
                 (write_first_sv_node_and_slice[1],  # working_slice
                  write_first_sv_node_and_slice[0],  # write_state_var_node
                  first_state_var,  # state_var_written
-                 TxSequence(Transaction(base_path)),  # working_tx_sequence
+                 TxSequence(txs=[Transaction(base_path)]),  # working_tx_sequence
                  list(reversed(perm_req_nodes_dependent_state_vars)),  # state_vars_process_in_order
                  state_vars_processed.copy()))  # state_vars_processed
 
@@ -96,13 +96,13 @@ class TxSequenceGenerator:
 
             # 剪枝操作：无需添加到总交易列表中
             # 1.先判断当前Slice是否被重复
-            if any(map(lambda added_tx: added_tx.exec_path == working_slice, working_tx_sequence.transactions)):
+            if any(map(lambda added_tx: added_tx.exec_path == working_slice, working_tx_sequence.txs)):
                 continue
 
             # 2.判断当前Slice是否比已经添加的Slice具有更强或者相同的约束条件
             working_slice_depend_svs = self.get_reqs_depend_state_vars(icfg, working_slice, working_slice.req_nodes)
             has_stronger_reqs: bool = False
-            for added_tx in working_tx_sequence.transactions:
+            for added_tx in working_tx_sequence.txs:
                 tx_exec_path: SlicedPath = added_tx.exec_path
                 added_slice_depend_svs = self.get_reqs_depend_state_vars(icfg, tx_exec_path, tx_exec_path.req_nodes)
                 # 如果所有的已经添加的slice依赖的sv都包含于working_slice所依赖的sv，说明working_slice_depend_svs具有更强的条件
@@ -112,7 +112,7 @@ class TxSequenceGenerator:
                 continue
 
             # 3.尝试向交易序列添加Slice，检查是否添加成功
-            add_tx_success = working_tx_sequence.add_tx_happens_before(Transaction(working_slice))
+            add_tx_success = working_tx_sequence.add_happens_before_tx(Transaction(working_slice))
             if not add_tx_success:
                 continue
 

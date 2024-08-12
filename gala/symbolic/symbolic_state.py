@@ -65,6 +65,7 @@ class SymbolicState:
             self.memory[var_key] = value
 
     def set_init_ctx(self, init_tx_ctx: Dict[str, str]) -> None:
+        init_tx_ctx = {} if init_tx_ctx is None else init_tx_ctx
         # 如果设定的上下文包含字段的默认信息，则设置为具体值，否则依然设置为符号值
         for key in init_tx_ctx.keys():
             assert isinstance(key, str), "Wrong type for init ctx key: {}".format(key)

@@ -17,12 +17,12 @@ contract OwnableContract {
 
     function update(uint newBalance,address _candidate) public onlyOwner {
         balances[msg.sender] = newBalance;
-        candidates.push(_candidate);
+//        candidates.push(_candidate);
     }
 
-//    function add_candidate(address _candidate) public onlyOwner {
-//        candidates.push(_candidate);
-//    }
+    function add_candidate(address _candidate) public onlyOwner {
+        candidates.push(_candidate);
+    }
 
     // onlyOwner修饰符，限制函数只能由owner调用
     modifier onlyOwner() {

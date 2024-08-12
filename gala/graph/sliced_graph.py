@@ -15,7 +15,7 @@ class SlicedPath:
         self.condition_node_edge_type_map: Dict[ICFGNode, EdgeType] = {}
 
     def __str__(self):
-        return "-> ".join(map(str, self.nodes))
+        return f"{str(self.slice_func)}: {' -> '.join(map(str, self.nodes))}"
 
 
 class SlicedGraph:

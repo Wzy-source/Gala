@@ -14,18 +14,20 @@ class SymbolicEngine:
         self.slither_op_parser: SlitherOpParser = SlitherOpParser(self.solver)
 
     def execute(self, all_tx_sequences: TxSeqGenerationResult) -> None:
-        for sequences_and_perms in all_tx_sequences.values():
-            tx_seq_set: Set[TxSequence] = sequences_and_perms[0]
-            perm_list: List[ICFGNode] = sequences_and_perms[1]
-            for one_seq in tx_seq_set:
-                self.exec_one_tx_sequence(one_seq)
+        # 返回执行结果，提供给Logger使用
+        for base_path_tx_seqs_map in all_tx_sequences.values():
+            for base_path in base_path_tx_seqs_map.keys():
+                tx_seq_set: Set[TxSequence] = base_path_tx_seqs_map[base_path][0]
+                perm_nodes: List[ICFGNode] = base_path_tx_seqs_map[base_path][1]
+                for one_seq in tx_seq_set:
+                    self.exec_one_tx_sequence(one_seq)
 
     def exec_one_tx_sequence(self, tx_sequence: TxSequence) -> str:
 
         # TODO default_context
         # 保存一个交易的中间状态
         default_storage: MemoryModel = MemoryModel(MULocation.STORAGE)
-        for tx in tx_sequence.transactions:
+        for tx in tx_sequence.txs:
             self.solver.reset()
             entry_state: SymbolicState = SymbolicState(tx=tx, init_storage=default_storage)
             # 符号执行每一个交易，保存交易的中间状态
