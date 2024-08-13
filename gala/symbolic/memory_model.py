@@ -15,16 +15,6 @@ class MULocation(Enum):
     MEMORY = auto()
 
 
-# 上下文相关变量到符号变量之间的映射
-ContextVarMap: Dict[str, ExprRef] = {
-    "msg.sender": String("msg.sender"),
-    "msg.value": String("msg.value"),
-    "block.number": Int("block.number"),
-    "block.timestamp": Int("block.timestamp"),
-    "tx.origin": String("tx.origin"),
-}
-
-
 class MemoryModel:
     def __init__(self, mu_location: MULocation):
         self.MU: Dict[Variable, any] = dict()

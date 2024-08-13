@@ -17,7 +17,9 @@ class ICFGSlicer:
         # 用于模拟一个交易的执行流，因此仅对可以被eoa调用的函数进行切片
         sliced_graph: SlicedGraph = SlicedGraph(icfg)
         for func, func_entry in icfg.func_entry_point_map.items():
-            if is_eoa_callable_func(func):
+            if func.is_constructor:
+                self.slice_one_func_paths(sliced_graph, func_entry)
+            elif is_eoa_callable_func(func):
                 self.slice_one_func_paths(sliced_graph, func_entry)
         return sliced_graph
 
@@ -49,7 +51,7 @@ class ICFGSlicer:
             call_edges = EdgeProcessor.get_edges_by_types(graph, cur_node, call_edge_types, FlowDirection.FORWARD)
             if len(call_edges) > 0:  # 说明当前是函数调用节点
                 assert len(call_edges) == 1  # 仅能有一个被调用的函数
-                call_nodes.add(cur_node) # 添加路径上收集到的call node
+                call_nodes.add(cur_node)  # 添加路径上收集到的call node
                 dst_node = call_edges[0][1]
                 return_site_node = cur_node
                 # 将cur_node加入到callstack中，作为“return site”，

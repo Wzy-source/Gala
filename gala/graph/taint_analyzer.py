@@ -59,7 +59,7 @@ class TaintAnalyzer:
             # 按照现有逻辑，遍历到非首节点的entry point时刻，所有的被污染的实参已经在taint_var中了
             elif working_node == sliced_graph.icfg.func_entry_point_map[working_func]:
                 continue
-            # 记录对Variable进行写的操作（污点传播）
+            # 记录对Variable进行写的操作（污点分析与污点传播）
             elif hasattr(working_node, "lvalue"):
                 var_written = working_node.lvalue
                 # 判断这个变量是否包含在污点集合内
@@ -117,11 +117,25 @@ class TaintAnalyzer:
             # 按照现有逻辑，遍历到非首节点的entry point时刻，所有的被污染的实参已经在taint_var中了
             elif working_node == sliced_graph.icfg.func_entry_point_map[working_func]:
                 continue
-            # 记录对Variable进行写的操作（污点传播）
+            # 记录对Variable进行写的操作（污点分析与污点传播）
             elif hasattr(working_node, "lvalue"):
                 var_written = working_node.lvalue
-                # 判断这个变量是否包含在污点集合内
-                if var_written in taint_vars:
+                # 由于当前节点是被写的节点，很可能会直接对状态变量进行写操作，而不涉及污点传播过程
+                # 首先对右值进行分析
+                if working_node == write_node:
+                    assert len(taint_vars) == 1
+                    taint_var = taint_vars.pop()
+                    if isinstance(taint_var, SolidityVariableComposed):
+                        solidity_vars_flow_to_sink.add(taint_var)
+                    elif isinstance(taint_var, LocalIRVariable):
+                        if working_func == slice_path.slice_func:
+                            if taint_var.non_ssa_version in working_func.parameters:
+                                params_flow_to_sink.add(taint_var.non_ssa_version)
+                    elif isinstance(taint_var, StateIRVariable):
+                        state_vars_flow_to_sink.add(taint_var.non_ssa_version)
+
+                # 污点传播过程：判断这个变量是否包含在污点集合内
+                elif var_written in taint_vars:
                     taint_vars.remove(var_written)  # 删除已经被处理的变量
                     for new_taint_var in working_node.read:
                         # 污点传播过程

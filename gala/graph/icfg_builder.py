@@ -30,7 +30,7 @@ class ICFGBuilder:
         # 不能同时添加，应为在添加边的时候，有一些节点还未添加
         for fn in main_contract.functions_and_modifiers:  # 将modifier和函数同等看待
             # 这些函数不能被调用用户/函数调用
-            if fn.is_constructor or fn.is_receive or fn.is_fallback:
+            if fn.is_receive or fn.is_fallback:
                 continue
             if not fn.entry_point:
                 continue
@@ -61,7 +61,7 @@ class ICFGBuilder:
         visited_list: Set[ICFGNode] = set()
         for fn in main_contract.functions_and_modifiers:
             # 这些函数不能被调用用户/函数调用
-            if fn.is_constructor or fn.is_receive or fn.is_fallback:
+            if fn.is_receive or fn.is_fallback:
                 continue
             if not fn.entry_point:
                 continue
@@ -146,8 +146,6 @@ class ICFGBuilder:
                         # 添加函数调用节点
                         icfg.graph.add_edge(caller_node, callee_entry,
                                             **self.gen_edge_attr(edge_type=call_type))
-
-
 
     @staticmethod
     def mock_entry_point(icfg: ICFG, origin_entry: SlitherNode) -> SlitherNode:

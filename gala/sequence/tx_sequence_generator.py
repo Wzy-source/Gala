@@ -1,5 +1,6 @@
 from gala.graph import ICFG, ICFGNode, Permission, SlicedPath, Requirement, SlicedGraph
 from slither.core.variables import StateVariable
+from slither.core.declarations import Function
 from typing import Dict, List, Tuple, FrozenSet, Set, TypeAlias, Union
 from .transaction import Transaction, TxSequence
 
@@ -24,6 +25,9 @@ class TxSequenceGenerator:
         # List[ICFGNode]：permission node list
         GeneratedTxSequences: TxSeqGenerationResult = dict()
         for perm_node, all_trigger_perm_node_slice_paths in sliced_icfg.perm_node_slice_map.items():
+            perm_node_func_scope: Function = sliced_icfg.icfg.graph.nodes[perm_node]["func_scope"]
+            if perm_node_func_scope.is_constructor:
+                continue
             # 每一个Perm，以及每一个Trigger该Perm的SlicePath
             for base_path, perm_req_nodes in all_trigger_perm_node_slice_paths.items():
                 # 必须req node与base_path是同时相同的，才无需重新分析 ✅
@@ -182,6 +186,10 @@ class TxSequenceGenerator:
         if state_var_dependent in sliced_icfg.state_var_write_slice_map:
             write_sv_slices: Dict[ICFGNode, List[SlicedPath]] = sliced_icfg.state_var_write_slice_map[state_var_dependent]
             for write_node, write_slices in write_sv_slices.items():
+                # TODO 可能要重构这个函数，将constructor函数不在state_var_write_slice_map中记录
+                write_func_scope: Function = sliced_icfg.icfg.graph.nodes[write_node]["func_scope"]
+                if write_func_scope.is_constructor:
+                    continue
                 for write_slice in write_slices:
                     candidate_slices.append((write_node, write_slice))
         return candidate_slices

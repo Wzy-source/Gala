@@ -28,4 +28,4 @@ class GalaRunner:
         GeneratedTxSequences = self.tx_sequence_generator.generate(sliced_graph)
 
         print("Step5: Symbolic Execution")
-        self.symbolic_engine.execute(GeneratedTxSequences)
+        self.symbolic_engine.execute(sliced_graph, GeneratedTxSequences)

@@ -52,9 +52,14 @@ class SlitherOpParser:
             Unary: self.parse_unary,
             Index: self.parse_index,
             Member: self.parse_member,
-            FunctionCall: self.parse_function_call,
             Length: self.parse_length,
-            Nop: self.parse_nop
+            Nop: self.parse_nop,
+            LibraryCall: self.parse_function_call,
+            HighLevelCall: self.parse_function_call,
+            EventCall: self.parse_function_call,
+            LowLevelCall: self.parse_function_call,
+            InternalCall: self.parse_function_call,
+            InternalDynamicCall: self.parse_function_call,
         }
 
     def parse_tx_ops(self, state: SymbolicState):
