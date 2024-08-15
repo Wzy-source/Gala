@@ -25,11 +25,10 @@ class TxSequenceGenerator:
         # List[ICFGNode]：permission node list
         GeneratedTxSequences: TxSeqGenerationResult = dict()
         for perm_node, all_trigger_perm_node_slice_paths in sliced_icfg.perm_node_slice_map.items():
-            perm_node_func_scope: Function = sliced_icfg.icfg.graph.nodes[perm_node]["func_scope"]
-            if perm_node_func_scope.is_constructor:
-                continue
             # 每一个Perm，以及每一个Trigger该Perm的SlicePath
             for base_path, perm_req_nodes in all_trigger_perm_node_slice_paths.items():
+                if base_path.slice_func.is_constructor:
+                    continue
                 # 必须req node与base_path是同时相同的，才无需重新分析 ✅
                 frozen_req_nodes: FrozenSet[ICFGNode] = frozenset(perm_req_nodes)
                 base_path_map = GeneratedTxSequences.setdefault(frozen_req_nodes, {})
@@ -101,6 +100,7 @@ class TxSequenceGenerator:
             # 剪枝操作：无需添加到总交易列表中
             # 1.先判断当前Slice是否被重复
             if any(map(lambda added_tx: added_tx.exec_path == working_slice, working_tx_sequence.txs)):
+                all_tx_sequence.add(working_tx_sequence.copy())
                 continue
 
             # 2.判断当前Slice是否比已经添加的Slice具有更强或者相同的约束条件
@@ -113,6 +113,7 @@ class TxSequenceGenerator:
                 if all(map(lambda added_slice_depend_sv: added_slice_depend_sv in working_slice_depend_svs, added_slice_depend_svs)):
                     has_stronger_reqs = True
             if has_stronger_reqs:
+                all_tx_sequence.add(working_tx_sequence.copy())
                 continue
 
             # 3.尝试向交易序列添加Slice，检查是否添加成功
@@ -217,6 +218,7 @@ class TxSequenceGenerator:
     def get_immutable_state_var_with_init_value(slice_graph: SlicedGraph) -> Set[StateVariable]:
         immutable_state_vars_with_init_value: Set[StateVariable] = set()
         for init_sv in slice_graph.icfg.sv_with_init_value:
+            # 这些state var是immutable的，必须要求在函数调用（非constructor）中不能被写
             if init_sv not in slice_graph.state_var_write_slice_map.keys():
                 immutable_state_vars_with_init_value.add(init_sv)
         return immutable_state_vars_with_init_value

@@ -1,8 +1,9 @@
 from typing import Dict, List
 from slither.core.variables import Variable, StateVariable
+from slither.slithir.variables import ReferenceVariable, Constant
 from slither.core.declarations import SolidityVariableComposed
 from slither.slithir.operations import Operation
-from z3 import ExprRef, Solver, Int, String, BitVec, BitVecVal, Bool, Array, BitVecSort, ArraySort
+from z3 import ExprRef, Solver, Int, String, BitVec, BitVecVal, Bool, Array, BitVecSort, ArraySort, BitVecRef
 from .memory_model import MULocation, MemoryModel
 from gala.sequence import Transaction
 from slither.core.solidity_types import ElementaryType, ArrayType, MappingType, Type
@@ -32,11 +33,13 @@ from slither.exceptions import SlitherException
 
 class SymbolicState:
     # 符号化智能合约状态，分为Storage和Memory两种情况
-    def __init__(self, tx: Transaction, init_storage: MemoryModel = None, init_tx_ctx: Dict[str, str] = None):
+    def __init__(self, solver: Solver, tx: Transaction, init_storage: MemoryModel, init_tx_ctx: Dict[str, str] = None):
+        # 约束求解器
+        self.solver = solver
         # 易失性的存储
         self.memory: MemoryModel = MemoryModel(MULocation.MEMORY)
         # 设置非易失存储
-        self.storage: MemoryModel = init_storage if init_storage is None else MemoryModel(MULocation.STORAGE)
+        self.storage: MemoryModel = init_storage
         # 函数调用栈
         self.call_stack: List[Variable] = list()
         # 当前交易
@@ -51,15 +54,24 @@ class SymbolicState:
 
         if isinstance(var_key, SolidityVariableComposed):  # 执行环境上下文
             return self.ctx[var_key.name]
-        elif isinstance(var_key, StateVariable):  # 状态变量
-            return self.storage[var_key]
+
+        elif self.is_or_point_to_state_variable(var_key):  # 状态变量
+            if var_key in self.storage:
+                return self.storage[var_key]
+            else:
+                # TODO 如果State Variable有初始值，则约束为其初始值
+                sym_res = self.storage.create_var(var_key)
+                return sym_res
         else:
-            return self.memory[var_key]  # 局部变量
+            if var_key in self.memory:
+                return self.memory[var_key]
+            else:
+                return self.memory.create_var(var_key)  # 局部变量，不设定初始值
 
     def set_symbolic_var(self, slither_var: Variable, value):
         var_key = self.convert_to_non_ssa_variable(slither_var)
 
-        if isinstance(var_key, StateVariable):
+        if self.is_or_point_to_state_variable(var_key):
             self.storage[var_key] = value
         else:
             self.memory[var_key] = value
@@ -126,3 +138,13 @@ class SymbolicState:
             return var.non_ssa_version
         else:
             return var
+
+    @staticmethod
+    def is_or_point_to_state_variable(var: Variable) -> bool:
+        if isinstance(var, StateVariable):
+            return True
+        elif isinstance(var, ReferenceVariable):
+            if isinstance(var.points_to_origin, StateVariable):
+                return True
+        else:
+            return False

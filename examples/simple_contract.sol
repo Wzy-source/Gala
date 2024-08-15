@@ -11,8 +11,20 @@ contract OwnableContract {
     string public  name;
     string public fix_name = "name";
     // 构造函数，部署合约时将部署者设为owner
+    struct Validity {
+        uint256 last;
+        uint256 ts;
+    }
+
+    mapping (address => Validity) public validAfter;
+
     constructor() {
         owner = msg.sender;
+    }
+
+    function transfer(address _to, uint256 _amount) public returns (bool success) {
+        validAfter[_to].ts = _amount;
+        return true;
     }
 
     function update(uint newBalance,address _candidate) public onlyOwner {

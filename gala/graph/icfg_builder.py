@@ -23,8 +23,9 @@ class ICFGBuilder:
         icfg: ICFG = ICFG(main_contract)
         # 收集已初始化的全部sv
         # 1.变量声明时已经初始化的sv  2.构造函数中初始化的sv
-        icfg.sv_with_init_value = set(filter(lambda sv: sv.initialized, main_contract.state_variables)).union(
-            set(main_contract.constructor.all_state_variables_written()))
+        icfg.sv_with_init_value = set(filter(lambda sv: sv.initialized, main_contract.state_variables))
+        if main_contract.constructor is not None:
+            icfg.sv_with_init_value.union(set(main_contract.constructor.all_state_variables_written()))
 
         # 首先需要添加所有函数的节点，再添加边
         # 不能同时添加，应为在添加边的时候，有一些节点还未添加

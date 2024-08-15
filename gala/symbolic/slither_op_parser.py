@@ -96,7 +96,7 @@ class SlitherOpParser:
 
     def parse_function_call(self, op: FunctionCall, state: SymbolicState):
         # ✅
-        if op.lvalue is not None and op in state.tx.exec_path.call_nodes:
+        if hasattr(op, "lvalue") and op.lvalue is not None and op in state.tx.exec_path.call_nodes:
             # 使用栈来记录return node
             state.call_stack.append(op.lvalue)
 
@@ -260,13 +260,11 @@ class SlitherOpParser:
         arr_or_map_type = op.variable_left.type
         if isinstance(arr_or_map_type, ArrayType):  # 数组
             elem_type = arr_or_map_type.type
-            if isinstance(elem_type, ElementaryType):
-                # 符号化数组元素
-                sym_elem = Select(sym_arr_or_map, sym_index)
+            # 符号化数组元素
+            sym_elem = Select(sym_arr_or_map, sym_index)
         elif isinstance(arr_or_map_type, MappingType):  # 映射
             key_type = arr_or_map_type.type_from
-            if isinstance(key_type, ElementaryType):
-                sym_elem = Select(sym_arr_or_map, sym_index)
+            sym_elem = Select(sym_arr_or_map, sym_index)
 
         if sym_elem is not None:
             state.set_symbolic_var(op.lvalue, sym_elem)
