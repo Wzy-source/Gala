@@ -24,12 +24,13 @@ class MemoryModel:
     def create_var(self, var: Variable):
         if isinstance(var, Constant):
             # 1.处理常量/字面量（字符串字面量/整数字面量/布尔字面量等）
+            # 如果是常量，每次均新创建一个，而不是保存在MU中
+            # 这是由于Constant类型实现的hash函数是仅依赖于value的，会导致相同Value的不同节点映射到一个符号值
             res_var = self.create_symbolic_constant(var)
         else:
             # 2.根据Slither变量的类型，来创建具体的符号变量
             res_var = self.create_symbolic_var(var.name, var.type)
-
-        self.MU[var] = res_var
+            self.MU[var] = res_var
 
         return res_var
 
@@ -46,13 +47,13 @@ class MemoryModel:
         elif isinstance(var_type, MappingType):
             mapping_sort = self.create_mapping_sort(var_type)
             return Array(var_name, mapping_sort.domain(), mapping_sort.range())
-
-        elif isinstance(var_type, UserDefinedType):
-            struct_sort = self.create_user_defined_sort(var_type)
-            return struct_sort(var_name)
+        # elif isinstance(var_type, UserDefinedType):
+        #     struct_sort = self.create_user_defined_sort(var_type)
+        #     return struct_sort(var_name)
         else:
             # TODO 兜底处理
-            raise Exception("Unexpected type for variable creation", str(var_type))
+            # raise Exception("Unexpected type for variable creation", str(var_type))
+            return String(var_name)
 
     def create_symbolic_sort(self, var_type: Type):
         if isinstance(var_type, ElementaryType):
@@ -69,7 +70,7 @@ class MemoryModel:
     @staticmethod
     def create_elementary_sort(var_type: ElementaryType):
         if str(var_type) == "address":
-            return BitVecSort(160)
+            return BitVecSort(256)
         elif str(var_type) == "bool":
             return BoolSort()
         elif str(var_type).startswith("uint") or str(var_type).startswith("int"):
@@ -105,8 +106,8 @@ class MemoryModel:
         for field in var_type.type.elems_ordered:
             field_name = field.name
             field_type = field.type
-            sym_field_var = self.create_symbolic_var(field_name, field_type)
-            field_list.append((field_name, sym_field_var.sort()))
+            sym_field_sort = self.create_symbolic_sort(field_type)
+            field_list.append((field_name, sym_field_sort))
         sym_struct_var.declare('cons', *field_list)
         return sym_struct_var.create()
 
@@ -116,7 +117,7 @@ class MemoryModel:
         var_name = var.name
         assert isinstance(var_type, ElementaryType)
         if str(var_type) == "address":
-            return BitVecVal(var.value, 160)
+            return BitVecVal(var.value, 256)
         elif str(var_type) == "bool":
             return BoolVal(var.value)
         elif str(var_type).startswith("uint"):
@@ -133,7 +134,7 @@ class MemoryModel:
     def create_elementary_var(self, var_name: str, var_type: ElementaryType) -> ExprRef:
         elementary_sort = self.create_elementary_sort(var_type)
         if str(var_type) == "address":
-            return BitVec(var_name, elementary_sort)
+            return BitVec(f"addr_{var_name}", elementary_sort)
         elif str(var_type) == "bool":
             return Bool(var_name)
         elif str(var_type).startswith("uint") or str(var_type).startswith("int"):

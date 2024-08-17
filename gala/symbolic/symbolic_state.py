@@ -3,7 +3,7 @@ from slither.core.variables import Variable, StateVariable
 from slither.slithir.variables import ReferenceVariable, Constant
 from slither.core.declarations import SolidityVariableComposed
 from slither.slithir.operations import Operation
-from z3 import ExprRef, Solver, Int, String, BitVec, BitVecVal, Bool, Array, BitVecSort, ArraySort, BitVecRef
+from z3 import ExprRef, Solver, Int, String, BitVec, BitVecVal, Bool, Array, BitVecSort, ArraySort, BitVecRef, BoolRef
 from .memory_model import MULocation, MemoryModel
 from gala.sequence import Transaction
 from slither.core.solidity_types import ElementaryType, ArrayType, MappingType, Type
@@ -59,14 +59,21 @@ class SymbolicState:
             if var_key in self.storage:
                 return self.storage[var_key]
             else:
-                # TODO 如果State Variable有初始值，则约束为其初始值
                 sym_res = self.storage.create_var(var_key)
+                # 为默认值添加约束
+                self.add_constraint_for_created_default_symbolic_var(sym_res)
                 return sym_res
         else:
             if var_key in self.memory:
                 return self.memory[var_key]
             else:
                 return self.memory.create_var(var_key)  # 局部变量，不设定初始值
+
+    def add_constraint_for_created_default_symbolic_var(self, sym_var: ExprRef):
+        if isinstance(sym_var, BitVecRef):
+            self.solver.add(sym_var == 0)
+        elif isinstance(sym_var, BoolRef):
+            self.solver.add(sym_var == False)
 
     def set_symbolic_var(self, slither_var: Variable, value):
         var_key = self.convert_to_non_ssa_variable(slither_var)
@@ -84,9 +91,9 @@ class SymbolicState:
 
         # ================ msg ================
         if "msg.sender" in init_tx_ctx:
-            self.ctx["msg.sender"] = BitVecVal(int(init_tx_ctx["msg.sender"], 16), 160)
+            self.ctx["msg.sender"] = BitVecVal(int(init_tx_ctx["msg.sender"], 16), 256)
         else:
-            self.ctx["msg.sender"] = BitVec("msg.sender", 160)
+            self.ctx["msg.sender"] = BitVec("msg.sender", 256)
 
         if "msg.value" in init_tx_ctx:
             self.ctx["msg.value"] = BitVecVal(int(init_tx_ctx["msg.value"]), 256)
@@ -128,9 +135,9 @@ class SymbolicState:
         # ================ tx ================
 
         if "tx.origin" in init_tx_ctx:
-            self.ctx["tx.origin"] = BitVecVal(int(init_tx_ctx["tx.origin"], 16), 160)
+            self.ctx["tx.origin"] = BitVecVal(int(init_tx_ctx["tx.origin"], 16), 256)
         else:
-            self.ctx["tx.origin"] = BitVec("tx.origin", 160)
+            self.ctx["tx.origin"] = BitVec("tx.origin", 256)
 
     @staticmethod
     def convert_to_non_ssa_variable(var: Variable) -> Variable:

@@ -116,6 +116,7 @@ class SlitherOpParser:
         # 目标转换类型
         convert_type = op.type
         convert_variable = op.variable
+        sym_convert_variable = state.get_or_create_default_symbolic_var(convert_variable)
         sym_res = None
         # 判断待转换的值是否为常量
         if isinstance(convert_variable, Constant):
@@ -123,7 +124,7 @@ class SlitherOpParser:
                 if str(convert_type).startswith("uint") or str(convert_type).startswith("int"):
                     sym_res = BitVecVal(convert_variable.value, convert_type.size)
                 elif str(convert_type) == "address":
-                    sym_res = BitVecVal(convert_variable, 160)
+                    sym_res = BitVecVal(convert_variable, 256)
                 elif str(convert_type) == "bool":
                     sym_res = BoolVal(bool(convert_variable))
                 elif str(convert_type).startswith("bytes"):
@@ -133,9 +134,9 @@ class SlitherOpParser:
         else:  # 被转换的是变量
             if isinstance(convert_type, ElementaryType):
                 if str(convert_type).startswith("uint") or str(convert_type).startswith("int"):
-                    sym_res = Extract(convert_type.size - 1, 0, convert_variable)
+                    sym_res = Extract(255, 0, sym_convert_variable)
                 elif str(convert_type) == "address":
-                    sym_res = Extract(convert_type.size - 1, 0, convert_variable)
+                    sym_res = Extract(255, 0, sym_convert_variable)
                 elif str(convert_type) == "bool":
                     sym_res = (convert_variable != 0)
                 elif str(convert_type) == "string":
@@ -149,6 +150,7 @@ class SlitherOpParser:
 
     def parse_binary(self, op: Binary, state: SymbolicState) -> None:
         # ✅
+        sym_lvalue = None
         operator: BinaryType = op.type
         sym_rvalue0 = state.get_or_create_default_symbolic_var(op.variable_left)
         sym_rvalue1 = state.get_or_create_default_symbolic_var(op.variable_right)
@@ -176,8 +178,8 @@ class SlitherOpParser:
                 sym_lvalue = (sym_rvalue0 / sym_rvalue1)
             case BinaryType.MODULO:
                 sym_lvalue = (sym_rvalue0 % sym_rvalue1)
-            case BinaryType.POWER:
-                sym_lvalue = (sym_rvalue0 ** sym_rvalue1)
+            case BinaryType.POWER:  # BitVecRef不支持pow
+                pass
             case BinaryType.OR:
                 sym_lvalue = (sym_rvalue0 | sym_rvalue1)
             case BinaryType.AND:
@@ -195,10 +197,13 @@ class SlitherOpParser:
             case _:
                 raise Exception(f"Unknown Binary Operation: {operator}")
 
-        state.set_symbolic_var(op.lvalue, sym_lvalue)
+        if sym_lvalue is not None:
+            state.set_symbolic_var(op.lvalue, sym_lvalue)
 
     def parse_condition(self, op: Condition, state: SymbolicState):
         # ✅
+        if op not in state.tx.exec_path.condition_node_edge_type_map.keys():
+            return
         edge_type: EdgeType = state.tx.exec_path.condition_node_edge_type_map[op]
         sym_value = state.get_or_create_default_symbolic_var(op.read[0])
         if edge_type == EdgeType.IF_TRUE:
@@ -214,7 +219,7 @@ class SlitherOpParser:
         lvalue = op.lvalue
         for rvalue in op.read:
             rvalue = self.convert_to_non_ssa_var(rvalue)
-            if rvalue != lvalue and rvalue not in rvalue_list:
+            if rvalue != lvalue and rvalue not in rvalue_list and rvalue.type == lvalue.type:
                 rvalue_list.append(rvalue)
 
         if rvalue_list:
@@ -251,23 +256,24 @@ class SlitherOpParser:
     def parse_index(self, op: Index, state: SymbolicState):
         # 获取数组/映射中Index位置，然后对该位置的数据进行赋值
         # 1.获取被索引的符号变量（数组/映射）
-        sym_arr_or_map = state.get_or_create_default_symbolic_var(op.variable_left)
-        # 2.获取索引的符号变量
-        sym_index = state.get_or_create_default_symbolic_var(op.variable_right)
-        # 3.element
-        sym_elem = None
-        # 4. 判断是数组还是映射，进行相应的处理
-        arr_or_map_type = op.variable_left.type
-        if isinstance(arr_or_map_type, ArrayType):  # 数组
-            elem_type = arr_or_map_type.type
-            # 符号化数组元素
-            sym_elem = Select(sym_arr_or_map, sym_index)
-        elif isinstance(arr_or_map_type, MappingType):  # 映射
-            key_type = arr_or_map_type.type_from
-            sym_elem = Select(sym_arr_or_map, sym_index)
-
-        if sym_elem is not None:
-            state.set_symbolic_var(op.lvalue, sym_elem)
+        # sym_arr_or_map = state.get_or_create_default_symbolic_var(op.variable_left)
+        # # 2.获取索引的符号变量
+        # sym_index = state.get_or_create_default_symbolic_var(op.variable_right)
+        # # 3.element
+        # sym_elem = None
+        # # 4. 判断是数组还是映射，进行相应的处理
+        # arr_or_map_type = op.variable_left.type
+        # if isinstance(arr_or_map_type, ArrayType):  # 数组
+        #     elem_type = arr_or_map_type.type
+        #     # 符号化数组元素
+        #     sym_elem = Select(sym_arr_or_map, sym_index)
+        # elif isinstance(arr_or_map_type, MappingType):  # 映射
+        #     key_type = arr_or_map_type.type_from
+        #     sym_elem = Select(sym_arr_or_map, sym_index)
+        #
+        # if sym_elem is not None:
+        #     state.set_symbolic_var(op.lvalue, sym_elem)
+        return
 
     def parse_member(self, op: Member, state: SymbolicState):
         # 暂不支持对结构体的处理
