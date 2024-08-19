@@ -8,7 +8,7 @@ from typing import Set, List, Dict
 from gala.graph import ICFGNode, SlicedGraph
 from .symbolic_state import SymbolicState
 from slither.core.variables import StateVariable
-from slither.core.declarations import Function
+from slither.core.declarations import Function, Contract
 from .memory_model import MemoryModel, MULocation
 from .default_ctx import DEFAULT_TX_CTX, DEFAULT_CONSTRUCTOR_CTX
 from gala.graph.permission import Permission, PermissionTaintResult
@@ -29,6 +29,13 @@ class SymbolicEngine:
         self.slither_op_parser: SlitherOpParser = SlitherOpParser(self.solver)
 
     def execute(self, sliced_graph: SlicedGraph, all_tx_sequences: TxSeqGenerationResult) -> None:
+        # 部署合约构造函数执行，存储初始化
+        # 1.持久化存储，持久存在于交易之间
+        init_storage: MemoryModel = MemoryModel(MULocation.STORAGE)
+        # 2.设置合约创建时候的默认值对应的符号值
+        self.init_contract_creation_sym_storage(sliced_graph, init_storage)
+        # 3.逐一执行构造函数序列（按照父类-子类的次序）
+        self.exec_constructor_sequence(sliced_graph, init_storage)
         # 返回执行结果，提供给Logger使用
         check_count = 0
         for base_path_tx_seqs_map in all_tx_sequences.values():
@@ -38,33 +45,41 @@ class SymbolicEngine:
                 for one_seq in tx_seq_set:
                     # 每次执行完毕一次交易序列，重置约束求解器，清空约束
                     self.solver.reset()
-                    # 持久化存储，持久存在于交易之间
-                    init_storage: MemoryModel = MemoryModel(MULocation.STORAGE)
-                    # 设置合约创建时候的默认值
-                    self.init_contract_creation_sym_storage(sliced_graph, init_storage)
+                    # 拷贝构造函数执行后的storage
+                    tx_storage: MemoryModel = init_storage.copy()
                     # 执行一组交易序列,找到一组可行解
-                    is_secure = self.exec_one_tx_sequence_with_constructor(sliced_graph, init_storage, one_seq)
+                    is_secure = self.exec_one_tx_sequence(tx_storage, one_seq)
                     # 输出执行结果
                     contract_name = sliced_graph.icfg.main_contract.name
-                    self.log_symbolic_execution_res(is_secure, one_seq, perm_nodes, init_storage, contract_name, check_count)
+                    self.log_symbolic_execution_res(is_secure, one_seq, perm_nodes, tx_storage, contract_name, check_count)
                     check_count += 1
 
-    def exec_one_tx_sequence_with_constructor(self, sliced_graph: SlicedGraph, init_storage: MemoryModel, tx_sequence: TxSequence):
-        # 在每一个交易序列执行之前，先执行一遍constructor函数
+    def exec_constructor_sequence(self, sliced_graph: SlicedGraph, init_storage: MemoryModel):
+        # 在每一个交易序列执行之前，先按照合约继承的顺序，执行一遍constructor函数
         main_contract = sliced_graph.icfg.main_contract
-        constructor: Function = main_contract.constructor
-        if constructor is not None and constructor in main_contract.functions:
-            constr_slice = sliced_graph.func_slices_map[constructor][0]
-            constr_tx = Transaction(constr_slice)
-            constr_init_state: SymbolicState = SymbolicState(solver=self.solver, tx=constr_tx, init_storage=init_storage,
-                                                             init_tx_ctx=DEFAULT_CONSTRUCTOR_CTX)
+        # 所有继承的合约（包含主合约本身）
+        contract_inherit_order: List[Contract] = [c for c in main_contract.inheritance_reverse] + [main_contract]
+        constructor_exec_list: List[Function] = []
+        # 按照合约继承顺序，依次查找所有构造函数
+        for inherit_contract in contract_inherit_order:
+            # 从所有继承的构造函数（无序，包含主合约本身）中查找当前inherit_contract的构造函数
+            for constructor in main_contract.constructors:
+                if constructor.contract_declarer == inherit_contract:
+                    constructor_exec_list.append(constructor)
+        # 逐一执行每一个构造函数
+        for constr in constructor_exec_list:
+            constr_slices = sliced_graph.func_slices_map[constr]
+            constr_tx = Transaction(constr_slices[0])
+            constr_init_state: SymbolicState = SymbolicState(solver=self.solver, tx=constr_tx, tx_storage=init_storage,
+                                                             tx_ctx=DEFAULT_CONSTRUCTOR_CTX)
             self.slither_op_parser.parse_tx_ops(constr_init_state)
 
+    def exec_one_tx_sequence(self, tx_storage: MemoryModel, tx_sequence: TxSequence):
         # 设置默认的交易执行上下文
         for tx in tx_sequence.txs:
             # 设置下一次执行的的初始状态 符号执行每一个交易，保存交易的中间状态
-            tx_init_state: SymbolicState = SymbolicState(solver=self.solver, tx=tx, init_storage=init_storage,
-                                                         init_tx_ctx=DEFAULT_TX_CTX)
+            tx_init_state: SymbolicState = SymbolicState(solver=self.solver, tx=tx, tx_storage=tx_storage,
+                                                         tx_ctx=DEFAULT_TX_CTX)
             self.slither_op_parser.parse_tx_ops(tx_init_state)
             # 检查结果是否是“不可满足的”，说明合约是安全的
             if self.solver.check() == unsat:

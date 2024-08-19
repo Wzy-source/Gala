@@ -21,6 +21,8 @@ class MemoryModel:
         self.MU: Dict[Variable, any] = dict()
         self.location: MULocation = mu_location
 
+    # ======================= 创建符号化变量 =======================
+
     def create_var(self, var: Variable):
         if isinstance(var, Constant):
             # 1.处理常量/字面量（字符串字面量/整数字面量/布尔字面量等）
@@ -153,6 +155,15 @@ class MemoryModel:
             return Array(var_name, elementary_sort.domain(), elementary_sort.range())
         else:
             raise Exception("Unhandled Elementary Type:", str(var_type))
+
+    # ======================= 深拷贝 =======================
+    def copy(self) -> "MemoryModel":
+        new_memory_model = MemoryModel(self.location)
+        for key in self.MU:
+            new_memory_model.MU[key] = self.MU[key]
+        return new_memory_model
+
+    # # ======================= 工具函数 =======================
 
     @staticmethod
     def is_sizeable_elementary_type(elem_type: ElementaryType) -> bool:

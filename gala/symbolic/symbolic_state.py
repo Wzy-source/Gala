@@ -33,20 +33,20 @@ from slither.exceptions import SlitherException
 
 class SymbolicState:
     # 符号化智能合约状态，分为Storage和Memory两种情况
-    def __init__(self, solver: Solver, tx: Transaction, init_storage: MemoryModel, init_tx_ctx: Dict[str, str] = None):
+    def __init__(self, solver: Solver, tx: Transaction, tx_storage: MemoryModel, tx_ctx: Dict[str, str] = None):
         # 约束求解器
         self.solver = solver
         # 易失性的存储
         self.memory: MemoryModel = MemoryModel(MULocation.MEMORY)
         # 设置非易失存储
-        self.storage: MemoryModel = init_storage
+        self.storage: MemoryModel = tx_storage
         # 函数调用栈
         self.call_stack: List[Variable] = list()
         # 当前交易
         self.tx: Transaction = tx
         # 设置交易执行的上下文（msg.sender）
         self.ctx: Dict[str, ExprRef] = dict()
-        self.set_init_ctx(init_tx_ctx)
+        self.set_init_ctx(tx_ctx)
 
     def get_or_create_default_symbolic_var(self, slither_var: Variable):
         # 先转为non_ssa版本
@@ -60,8 +60,8 @@ class SymbolicState:
                 return self.storage[var_key]
             else:
                 sym_res = self.storage.create_var(var_key)
-                # 为默认值添加约束
-                self.add_constraint_for_created_default_symbolic_var(sym_res)
+                # 为新创建的状态变量默认值符号值添加约束
+                self.add_constraint_for_created_state_var(sym_res)
                 return sym_res
         else:
             if var_key in self.memory:
@@ -69,7 +69,7 @@ class SymbolicState:
             else:
                 return self.memory.create_var(var_key)  # 局部变量，不设定初始值
 
-    def add_constraint_for_created_default_symbolic_var(self, sym_var: ExprRef):
+    def add_constraint_for_created_state_var(self, sym_var: ExprRef):
         if isinstance(sym_var, BitVecRef):
             self.solver.add(sym_var == 0)
         elif isinstance(sym_var, BoolRef):
