@@ -10,6 +10,7 @@ from .symbolic_state import SymbolicState
 from slither.core.variables import StateVariable
 from slither.core.declarations import Function, Contract
 from .memory_model import MemoryModel, MULocation
+from .variable_monitor import VariableMonitor
 from .default_ctx import DEFAULT_TX_CTX, DEFAULT_CONSTRUCTOR_CTX
 from gala.graph.permission import Permission, PermissionTaintResult
 
@@ -26,6 +27,7 @@ RESET = "\033[0m"
 class SymbolicEngine:
     def __init__(self):
         self.solver: Solver = Solver()
+        self.variable_monitor: VariableMonitor = VariableMonitor()
         self.slither_op_parser: SlitherOpParser = SlitherOpParser(self.solver)
 
     def execute(self, sliced_graph: SlicedGraph, all_tx_sequences: TxSeqGenerationResult) -> None:
@@ -70,7 +72,10 @@ class SymbolicEngine:
         for constr in constructor_exec_list:
             constr_slices = sliced_graph.func_slices_map[constr]
             constr_tx = Transaction(constr_slices[0])
-            constr_init_state: SymbolicState = SymbolicState(solver=self.solver, tx=constr_tx, tx_storage=init_storage,
+            constr_init_state: SymbolicState = SymbolicState(solver=self.solver,
+                                                             monitor=self.variable_monitor,
+                                                             tx=constr_tx,
+                                                             tx_storage=init_storage,
                                                              tx_ctx=DEFAULT_CONSTRUCTOR_CTX)
             self.slither_op_parser.parse_tx_ops(constr_init_state)
 
@@ -78,7 +83,10 @@ class SymbolicEngine:
         # 设置默认的交易执行上下文
         for tx in tx_sequence.txs:
             # 设置下一次执行的的初始状态 符号执行每一个交易，保存交易的中间状态
-            tx_init_state: SymbolicState = SymbolicState(solver=self.solver, tx=tx, tx_storage=tx_storage,
+            tx_init_state: SymbolicState = SymbolicState(solver=self.solver,
+                                                         monitor=self.variable_monitor,
+                                                         tx=tx,
+                                                         tx_storage=tx_storage,
                                                          tx_ctx=DEFAULT_TX_CTX)
             self.slither_op_parser.parse_tx_ops(tx_init_state)
             # 检查结果是否是“不可满足的”，说明合约是安全的

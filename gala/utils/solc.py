@@ -6,7 +6,7 @@ class SolcSwitcher:
         pass
 
     @staticmethod
-    def switch_solc(version):
+    def switch(version):
         # some old versions of solc, e.g., 0.3.2 are not available.
         if version not in get_available_versions().keys():
             print(f"Solc version: `{version}` unavailable.")

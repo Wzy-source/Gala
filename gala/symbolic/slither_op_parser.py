@@ -79,7 +79,7 @@ class SlitherOpParser:
         # 获取右值的符号表达式 ✅
         sym_rvalue = state.get_or_create_default_symbolic_var(op.rvalue)
         # 将这个符号表达式关联到左值变量
-        state.set_symbolic_var(op.lvalue, sym_rvalue)
+        state.set_symbolic_var(op, op.lvalue, sym_rvalue)
 
     def parse_length(self, op: Assignment, state: SymbolicState):
         # Trade-off：对于Length操作，并不精确的表示数组的长度，而是粗略地生成一个长度大于等于0的整数值即可
@@ -108,7 +108,7 @@ class SlitherOpParser:
         if len(state.call_stack) > 0:
             dst_value = state.call_stack.pop()
             if type(ret_value) == type(dst_value):
-                state.set_symbolic_var(dst_value, sym_ret_value)
+                state.set_symbolic_var(op, dst_value, sym_ret_value)
 
     def parse_type_conversion(self, op: TypeConversion, state: SymbolicState):
         # 根据转换的类型，直接创建一个新的变量
@@ -144,7 +144,7 @@ class SlitherOpParser:
 
         # 更新符号状态
         if sym_res is not None:
-            state.set_symbolic_var(op.lvalue, sym_res)
+            state.set_symbolic_var(op, op.lvalue, sym_res)
         else:
             print("Unhandled target type for conversion:", str(convert_type))
 
@@ -198,7 +198,7 @@ class SlitherOpParser:
                 raise Exception(f"Unknown Binary Operation: {operator}")
 
         if sym_lvalue is not None:
-            state.set_symbolic_var(op.lvalue, sym_lvalue)
+            state.set_symbolic_var(op, op.lvalue, sym_lvalue)
 
     def parse_condition(self, op: Condition, state: SymbolicState):
         # ✅
@@ -251,7 +251,7 @@ class SlitherOpParser:
         else:
             raise Exception(f"Unknown Unary Operation: {str(op.type)}, op: {str(op)}")
 
-        state.set_symbolic_var(op.lvalue, sym_rvalue)
+        state.set_symbolic_var(op, op.lvalue, sym_rvalue)
 
     def parse_index(self, op: Index, state: SymbolicState):
         # 获取数组/映射中Index位置，然后对该位置的数据进行赋值

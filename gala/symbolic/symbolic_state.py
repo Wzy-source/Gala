@@ -6,6 +6,7 @@ from slither.slithir.operations import Operation
 from z3 import ExprRef, Solver, Int, String, BitVec, BitVecVal, Bool, Array, BitVecSort, ArraySort, BitVecRef, BoolRef
 from .memory_model import MULocation, MemoryModel
 from gala.sequence import Transaction
+from .variable_monitor import VariableMonitor
 from slither.core.solidity_types import ElementaryType, ArrayType, MappingType, Type
 from slither.exceptions import SlitherException
 
@@ -32,10 +33,12 @@ from slither.exceptions import SlitherException
 
 
 class SymbolicState:
-    # 符号化智能合约状态，分为Storage和Memory两种情况
-    def __init__(self, solver: Solver, tx: Transaction, tx_storage: MemoryModel, tx_ctx: Dict[str, str] = None):
+    # 符号化智能合约的执行期间的状态，分为Storage和Memory两种情况
+    def __init__(self, solver: Solver, monitor: VariableMonitor, tx: Transaction, tx_storage: MemoryModel, tx_ctx: Dict[str, str] = None):
         # 约束求解器
         self.solver = solver
+        # 状态变量检测器
+        self.monitor = monitor
         # 易失性的存储
         self.memory: MemoryModel = MemoryModel(MULocation.MEMORY)
         # 设置非易失存储
@@ -75,13 +78,14 @@ class SymbolicState:
         elif isinstance(sym_var, BoolRef):
             self.solver.add(sym_var == False)
 
-    def set_symbolic_var(self, slither_var: Variable, value):
+    def set_symbolic_var(self, op: Operation, slither_var: Variable, sym_value: ExprRef):
         var_key = self.convert_to_non_ssa_variable(slither_var)
 
         if self.is_or_point_to_state_variable(var_key):
-            self.storage[var_key] = value
+            self.monitor.notify_in_change(op, var_key, sym_value, self.tx, self.ctx)
+            self.storage[var_key] = sym_value
         else:
-            self.memory[var_key] = value
+            self.memory[var_key] = sym_value
 
     def set_init_ctx(self, init_tx_ctx: Dict[str, str]) -> None:
         init_tx_ctx = {} if init_tx_ctx is None else init_tx_ctx

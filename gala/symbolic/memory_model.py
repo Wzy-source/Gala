@@ -53,7 +53,7 @@ class MemoryModel:
         #     struct_sort = self.create_user_defined_sort(var_type)
         #     return struct_sort(var_name)
         else:
-            # TODO 兜底处理
+            #  兜底处理
             # raise Exception("Unexpected type for variable creation", str(var_type))
             return String(var_name)
 
