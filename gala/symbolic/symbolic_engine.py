@@ -12,7 +12,6 @@ from slither.core.declarations import Function, Contract
 from .memory_model import MemoryModel, MULocation
 from .variable_monitor import VariableMonitor
 from .default_ctx import DEFAULT_TX_CTX, DEFAULT_CONSTRUCTOR_CTX
-from gala.graph.permission import Permission, PermissionTaintResult
 
 # ANSI 转义码
 RED = "\033[91m"

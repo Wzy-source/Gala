@@ -5,7 +5,7 @@ from slither.core.variables import Variable, StateVariable, LocalVariable
 from .icfg import ICFG, ICFGNode, ICFGEdge, EdgeType, SlitherNode, SSAIRNode
 from slither.slithir.variables import StateIRVariable, LocalIRVariable, Constant
 from .requirement import Requirement, RequirementTaintResult
-from .permission import Permission, PermissionTaintResult
+from .state_write import StateWrite, StateWriteTaintResult
 
 
 class TaintAnalyzer:
@@ -14,8 +14,7 @@ class TaintAnalyzer:
 
     def analyze(self, sliced_graph: SlicedGraph) -> None:
         func_slices_map: Dict[Function, List[SlicedPath]] = sliced_graph.func_slices_map
-        state_var_write_slice_map: Dict[
-            StateVariable, Dict[ICFGNode, List[SlicedPath]]] = sliced_graph.state_var_write_slice_map
+        state_var_write_slice_map: Dict[StateVariable, Dict[ICFGNode, Dict[SlicedPath, List[ICFGNode]]]] = sliced_graph.state_var_write_slice_map
         # 分析每一条路径上requirement节点依赖的状态变量
         for func, slices in func_slices_map.items():
             for slice in slices:
@@ -25,7 +24,7 @@ class TaintAnalyzer:
         # 分析每一条路径上state var write节点的右值来源（谁写了当前state var）
         for write_node_slices_map in state_var_write_slice_map.values():
             for write_node, write_slices in write_node_slices_map.items():
-                for write_slice in write_slices:
+                for write_slice in write_slices.keys():
                     self.collect_sv_write_node_rvalue(sliced_graph, write_slice, write_node)
 
     @staticmethod
@@ -105,11 +104,19 @@ class TaintAnalyzer:
 
             # 如果是首节点的情况,也就是eoa_callable_func entry point 保存最终结果
             if node_index == 0:
-                perm: Permission = sliced_graph.icfg.graph.nodes[write_node]["permission"]
-                perm.state_var_write_taint_result[slice_path] = PermissionTaintResult(
+                # perm: Permission = sliced_graph.icfg.graph.nodes[write_node]["permission"]
+                # perm.state_var_write_taint_result[slice_path] = PermissionTaintResult(
+                #     taint_states=state_vars_flow_to_sink.copy(),
+                #     taint_params=params_flow_to_sink.copy(),
+                #     solidity_vars=solidity_vars_flow_to_sink.copy())
+
+                state_write_info: StateWrite = sliced_graph.icfg.graph.nodes[write_node]["state_write"]
+                state_write_info.state_var_write_taint_result[slice_path] = StateWriteTaintResult(
                     taint_states=state_vars_flow_to_sink.copy(),
                     taint_params=params_flow_to_sink.copy(),
-                    solidity_vars=solidity_vars_flow_to_sink.copy())
+                    solidity_vars=solidity_vars_flow_to_sink.copy()
+                )
+
             # 到达非首节点的entry point的情况 清空taint vars，只保留被污染的函数参数
             # 由于Slither在被调用的函数逻辑中，会使用Phi指令，将函数的形参和实参关联起来（上下文不敏感）
             # 也就是说，在到达被调用函数entry point之前，会首先进行一次赋值：

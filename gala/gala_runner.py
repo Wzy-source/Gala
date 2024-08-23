@@ -3,7 +3,7 @@ from gala.sequence import TxSequenceGenerator
 from slither.core.declarations import Contract
 from slither.core.variables import Variable
 from slither.slithir.operations import Operation
-from typing import List, Dict, Callable
+from typing import List, Dict, Callable, Set
 from gala.symbolic import SymbolicEngine
 
 
@@ -17,11 +17,11 @@ class GalaRunner:
         self.tx_sequence_generator: TxSequenceGenerator = TxSequenceGenerator()
         self.symbolic_engine: SymbolicEngine = SymbolicEngine()
 
-    def run(self, program_points: List[Operation]) -> "GalaRunner":
+    def run(self, program_points: Set[Operation]) -> "GalaRunner":
         print("Gala Start Analysis")
 
         print("Step1: Build ICFG")
-        icfg = self.icfg_builder.build(main_contract=self.main_contract)
+        icfg = self.icfg_builder.build(main_contract=self.main_contract, program_points=program_points)
 
         print("Step2: Slice Contract Functions")
         sliced_graph = self.icfg_slicer.slice(icfg=icfg)

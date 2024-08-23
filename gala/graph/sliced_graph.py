@@ -23,7 +23,8 @@ class SlicedGraph:
         self.icfg: ICFG = icfg
         # 所有的执行路径切片,按照函数进行划分
         self.func_slices_map: Dict[Function, List[SlicedPath]] = {}
-        # state_var_write_slice_map用于记录可以trigger state var被写的所有执行路径
-        self.state_var_write_slice_map: Dict[StateVariable, Dict[ICFGNode, List[SlicedPath]]] = {}
+        # Very Important
+        # state_var_write_slice_map用于记录可以trigger state var被写的所有执行路径，以及到达write node所有的requirement节点
+        self.state_var_write_slice_map: Dict[StateVariable, Dict[ICFGNode, Dict[SlicedPath, List[ICFGNode]]]] = {}
         # perm_node_slice_map用于记录可以到达一个permission node的所有执行路径,以及到达perm_node的所有requirement节点
-        self.perm_node_slice_map: Dict[ICFGNode, Dict[SlicedPath, List[ICFGNode]]] = {}
+        self.program_point_slice_map: Dict[ICFGNode, Dict[SlicedPath, List[ICFGNode]]] = {}

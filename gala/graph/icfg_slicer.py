@@ -1,8 +1,7 @@
-from slither.core.declarations import Function
+from slither.core.variables import StateVariable
 from typing import List, Dict, Set, Tuple
 from .utils import is_eoa_callable_func
 from .edge_processor import FlowDirection, EdgeProcessor
-from .permission import Permission, PermissionType
 from .icfg import ICFGNode, ICFG, EdgeType
 from slither.slithir.operations import SolidityCall, Condition
 from .sliced_graph import SlicedGraph, SlicedPath
@@ -78,6 +77,10 @@ class ICFGSlicer:
                         sv_write_nodes: List[ICFGNode] = list()
                         for sn_index in range(0, len(slice_nodes)):
                             sn: ICFGNode = slice_nodes[sn_index]
+                            # 当前Slice上的该节点是需要reach的位置
+                            if graph.nodes[sn]["is_program_point"]:
+                                sliced_graph.program_point_slice_map.setdefault(sn, dict()).setdefault(one_slice_path, req_nodes.copy())
+
                             if graph.nodes[sn]["is_requirement_node"]:
                                 req_nodes.append(sn)
                                 # 如果是IF条件判断，判断当前路径是IF-TRUE还是IF-FALSE，进行记录
@@ -86,15 +89,22 @@ class ICFGSlicer:
                                     edge_type: EdgeType = sliced_graph.icfg.graph.edges[sn, sn_next_node, 0]["edge_type"]
                                     one_slice_path.condition_node_edge_type_map[sn] = edge_type
 
-                            elif graph.nodes[sn]["is_permission_node"]:
-                                # 保存Permission Node以及当前路径下依赖的reqs
-                                sliced_graph.perm_node_slice_map.setdefault(sn, dict()).setdefault(one_slice_path, req_nodes.copy())
-                                perm_info: Permission = graph.nodes[sn]["permission"]
-                                if perm_info.type == PermissionType.MODIFY_STATE:
-                                    sv_write_nodes.append(sn)
-                                    state_written = perm_info.state_var_write
-                                    (sliced_graph.state_var_write_slice_map.setdefault(state_written, dict()).setdefault(sn, list()).append(
-                                        one_slice_path))
+                            if graph.nodes[sn]["is_state_write_node"]:
+                                sv_write_nodes.append(sn)
+                                # 保存State Write Node以及其路径下依赖的Req Nodes
+                                state_written: StateVariable = graph.nodes[sn]["state_write"].state_var_write
+                                (sliced_graph.state_var_write_slice_map.setdefault(state_written, dict()).setdefault(sn, dict()).
+                                 setdefault(one_slice_path, req_nodes.copy()))
+
+                            # elif graph.nodes[sn]["is_permission_node"]:
+                            #     # 保存Permission Node以及当前路径下依赖的reqs
+                            #     sliced_graph.perm_node_slice_map.setdefault(sn, dict()).setdefault(one_slice_path, req_nodes.copy())
+                            #     perm_info: Permission = graph.nodes[sn]["permission"]
+                            #     if perm_info.type == PermissionType.MODIFY_STATE:
+                            #         sv_write_nodes.append(sn)
+                            #         state_written = perm_info.state_var_write
+                            #         (sliced_graph.state_var_write_slice_map.setdefault(state_written, dict()).setdefault(sn, list()).append(
+                            #             one_slice_path))
 
                         # 将路径上的所有约束节点进行保存
                         one_slice_path.req_nodes = req_nodes.copy()

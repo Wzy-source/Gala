@@ -2,9 +2,9 @@ from slither.core.cfg.node import NodeType
 from slither.core.declarations import Contract, Function, FunctionContract
 from typing import List, Set, Tuple, Dict, Optional, Union
 from slither.core.variables import StateVariable
-from .permission import handle_state_variable_write_node, Permission, PermissionType
 from .requirement import Requirement
 from .icfg import ICFGNode, ICFG, EdgeType, SlitherNode, SSAIRNode
+from .state_write import StateWrite
 
 from slither.slithir.operations import HighLevelCall, InternalCall, Assignment, LibraryCall
 
@@ -13,7 +13,7 @@ class ICFGBuilder:
     def __init__(self) -> None:
         pass
 
-    def build(self, main_contract: Contract) -> ICFG:
+    def build(self, main_contract: Contract, program_points: Set[SSAIRNode]) -> ICFG:
         """
         遍历合约，收集节点和边，构造ICFG
         判断当前节点是否是Permission Node
@@ -46,13 +46,13 @@ class ICFGBuilder:
                 if cur_node in visited_list:  # 如果已经访问过，则直接跳过
                     continue
                 visited_list.add(cur_node)
-                self.process_one_node(icfg, cur_node, fn)
+                self.process_one_node(icfg, cur_node, fn, program_points)
                 sons = cur_node.sons
                 # 如果不存在孩子节点，说明已经到达最后的位置（不一定是return，也可能是revert等）
                 # 将其与exit_point相连接，以便后续的遍历
                 if len(sons) == 0:
                     exit_point = self.mock_exit_point(icfg, cur_node)
-                    self.process_one_node(icfg, exit_point, fn)
+                    self.process_one_node(icfg, exit_point, fn, program_points)
                 # 将子节点添加到work_list中进行下一轮迭代
                 else:
                     for son in cur_node.sons:
@@ -78,13 +78,13 @@ class ICFGBuilder:
                     work_list.append(son)
         return icfg
 
-    def process_one_node(self, icfg: ICFG, node: SlitherNode, func: Function) -> None:
+    def process_one_node(self, icfg: ICFG, node: SlitherNode, func: Function, program_points: Set[SSAIRNode]) -> None:
         if self.has_ssa(node):
             for irn in node.irs_ssa:
-                attr = self.gen_node_attr(func_scope=func, node=irn)
+                attr = self.gen_node_attr(func_scope=func, node=irn, program_points=program_points)
                 # 判断当前Permission的类型是否为MODIFY_STATE，如果是则将当前节点和对应修改的state保存到icfg的一个索引数组中
-                if attr["is_permission_node"] and attr["permission"].type == PermissionType.MODIFY_STATE:
-                    modified_state = attr["permission"].state_var_write
+                if attr["is_state_write_node"]:
+                    modified_state = attr["state_write"].state_var_write
                     icfg.sv_write_fn_map.setdefault(modified_state, dict()).setdefault(node.function, set()).add(irn)
 
                 # 将节点添加到图中，**attr用于展开字典参数
@@ -96,7 +96,7 @@ class ICFGBuilder:
                 icfg.graph.add_edge(src_ir, dst_ir, **self.gen_edge_attr(edge_type=EdgeType.GENERAL))
         else:
             # 将节点添加到图中
-            icfg.graph.add_node(node, **self.gen_node_attr(func_scope=func, node=node))  # 展开字典参数
+            icfg.graph.add_node(node, **self.gen_node_attr(func_scope=func, node=node, program_points=program_points))
 
     def process_node_edges(self, icfg: ICFG, node: SlitherNode) -> None:
         self.process_control_flow_edges(icfg, node)
@@ -177,18 +177,25 @@ class ICFGBuilder:
         return new_exit
 
     @staticmethod
-    def gen_node_attr(func_scope: Function, node: ICFGNode) -> Dict:
-        permission = None
+    def gen_node_attr(func_scope: Function, node: ICFGNode, program_points: Set[SSAIRNode]) -> Dict:
+        # permission = None
         requirement = None
+        state_write_info = None
+        is_program_point = False
         if isinstance(node, SSAIRNode):
-            permission = Permission.extract_permission_info(node)
+            # permission = Permission.extract_permission_info(node)
+            state_write_info = StateWrite.extract_state_write_info(node)
             requirement = Requirement.extract_requirement_info(node)
+            is_program_point = node in program_points
         return {
             "func_scope": func_scope,
             "is_requirement_node": requirement is not None,
-            "is_permission_node": permission is not None,
+            # "is_permission_node": permission is not None,
+            "is_state_write_node": state_write_info is not None,
+            "is_program_point": is_program_point,
             "requirement": requirement,
-            "permission": permission
+            # "permission": permission,
+            "state_write": state_write_info
         }
 
     @staticmethod

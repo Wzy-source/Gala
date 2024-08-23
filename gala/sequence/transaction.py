@@ -1,4 +1,4 @@
-from gala.graph import ICFG, ICFGNode, Permission, SlicedPath
+from gala.graph import ICFG, ICFGNode, SlicedPath
 from typing import List, Optional
 from slither.core.declarations import Function
 

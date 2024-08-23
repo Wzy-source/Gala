@@ -53,9 +53,11 @@ class MemoryModel:
         #     struct_sort = self.create_user_defined_sort(var_type)
         #     return struct_sort(var_name)
         else:
-            #  兜底处理
-            # raise Exception("Unexpected type for variable creation", str(var_type))
-            return String(var_name)
+            if isinstance(var_type, List) and len(var_type) == 1:  # 不知道为什么slither解析的type有时候是List
+                return self.create_symbolic_var(var_name, var_type[0])
+            # 兜底处理
+            else:
+                return String(var_name)
 
     def create_symbolic_sort(self, var_type: Type):
         if isinstance(var_type, ElementaryType):

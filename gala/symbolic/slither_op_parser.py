@@ -163,7 +163,10 @@ class SlitherOpParser:
             case BinaryType.GREATER:
                 sym_lvalue = (sym_rvalue0 > sym_rvalue1)
             case BinaryType.GREATER_EQUAL:
-                sym_lvalue = (sym_rvalue0 >= sym_rvalue1)
+                try:
+                    sym_lvalue = (sym_rvalue0 >= sym_rvalue1)
+                except Exception as e:
+                    print(e)
             case BinaryType.LESS:
                 sym_lvalue = (sym_rvalue0 < sym_rvalue1)
             case BinaryType.LESS_EQUAL:
