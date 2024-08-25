@@ -1,3 +1,4 @@
+import z3
 from z3 import Solver, sat, unsat, Z3Exception, unknown, Bool, Int, String, ExprRef, Or, Not, BitVecRef, And, BitVec, BitVecVal, BoolVal, String, \
     StringVal, Extract, Array, BitVecSort, Select
 from slither.slithir.operations import *
@@ -136,7 +137,10 @@ class SlitherOpParser:
                 if str(convert_type).startswith("uint") or str(convert_type).startswith("int"):
                     sym_res = Extract(255, 0, sym_convert_variable)
                 elif str(convert_type) == "address":
-                    sym_res = Extract(255, 0, sym_convert_variable)
+                    if z3.is_bv(sym_convert_variable):
+                        sym_res = Extract(255, 0, sym_convert_variable)
+                    else:  # 还可以将合约转为地址类型（address(contract)），我们直接创建一个没有约束的地址类型的变量即可
+                        sym_res = BitVec(convert_variable.name, 256)
                 elif str(convert_type) == "bool":
                     sym_res = (convert_variable != 0)
                 elif str(convert_type) == "string":
@@ -163,10 +167,7 @@ class SlitherOpParser:
             case BinaryType.GREATER:
                 sym_lvalue = (sym_rvalue0 > sym_rvalue1)
             case BinaryType.GREATER_EQUAL:
-                try:
-                    sym_lvalue = (sym_rvalue0 >= sym_rvalue1)
-                except Exception as e:
-                    print(e)
+                sym_lvalue = (sym_rvalue0 >= sym_rvalue1)
             case BinaryType.LESS:
                 sym_lvalue = (sym_rvalue0 < sym_rvalue1)
             case BinaryType.LESS_EQUAL:

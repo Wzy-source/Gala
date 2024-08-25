@@ -105,17 +105,17 @@ class TxSequenceGenerator:
                 continue
 
             # 2.判断当前Slice是否比已经添加的Slice具有更强或者相同的约束条件
-            working_slice_depend_svs = self.get_reqs_depend_state_vars(icfg, working_slice, working_slice.req_nodes)
-            has_stronger_reqs: bool = False
-            for added_tx in working_tx_sequence.txs:
-                tx_exec_path: SlicedPath = added_tx.exec_path
-                added_slice_depend_svs = self.get_reqs_depend_state_vars(icfg, tx_exec_path, tx_exec_path.req_nodes)
-                # 如果所有的已经添加的slice依赖的sv都包含于working_slice所依赖的sv，说明working_slice_depend_svs具有更强的条件
-                if all(map(lambda added_slice_depend_sv: added_slice_depend_sv in working_slice_depend_svs, added_slice_depend_svs)):
-                    has_stronger_reqs = True
-            if has_stronger_reqs:
-                all_tx_sequence.add(working_tx_sequence.copy())
-                continue
+            # working_slice_depend_svs = self.get_reqs_depend_state_vars(icfg, working_slice, working_slice.req_nodes)
+            # has_stronger_reqs: bool = False
+            # for added_tx in working_tx_sequence.txs:
+            #     tx_exec_path: SlicedPath = added_tx.exec_path
+            #     added_slice_depend_svs = self.get_reqs_depend_state_vars(icfg, tx_exec_path, tx_exec_path.req_nodes)
+            #     # 如果所有的已经添加的slice依赖的sv都包含于working_slice所依赖的sv，说明working_slice_depend_svs具有更强的条件
+            #     if all(map(lambda added_slice_depend_sv: added_slice_depend_sv in working_slice_depend_svs, added_slice_depend_svs)):
+            #         has_stronger_reqs = True
+            # if has_stronger_reqs:
+            #     all_tx_sequence.add(working_tx_sequence.copy())
+            #     continue
 
             # 3.尝试向交易序列添加Slice，检查是否添加成功
             add_tx_success = working_tx_sequence.add_happens_before_tx(Transaction(working_slice))

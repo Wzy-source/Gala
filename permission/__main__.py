@@ -6,7 +6,7 @@ from permission.crucial_op_explorer import CrucialOpExplorer
 
 if __name__ == '__main__':
     # 解析设置
-    settings = Settings(setting_path="/Users/mac/code/Gala-2.0/tests/B2X/contract.json")
+    settings = Settings(setting_path="/Users/mac/code/Gala-2.0/tests/Coinlancer/contract.json")
     SolcSwitcher.switch(settings.compiler_version)
     addr, name = settings.contract_address, settings.contract_name
     print("path:", settings.setting_path, "name:", settings.contract_name, "address:", settings.contract_address)

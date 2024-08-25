@@ -1,7 +1,7 @@
 from slither.core.expressions import Literal
 from slither.core.solidity_types import ElementaryType
 from slither.slithir.variables import Constant
-from z3 import Solver, sat, unsat, Z3Exception, unknown, ExprRef, BitVecVal, ModelRef, BitVecRef, BitVecNumRef
+from z3 import Solver, sat, unsat, Z3Exception, unknown, ExprRef, BitVecVal, ModelRef, BitVecRef, BitVecNumRef,Or
 from .slither_op_parser import SlitherOpParser
 from gala.sequence import TxSeqGenerationResult, TxSequence, Transaction
 from typing import Set, List, Dict
@@ -11,7 +11,7 @@ from slither.core.variables import StateVariable
 from slither.core.declarations import Function, Contract
 from .memory_model import MemoryModel, MULocation
 from .variable_monitor import VariableMonitor
-from .default_ctx import DEFAULT_TX_CTX, DEFAULT_CONSTRUCTOR_CTX
+from .default_ctx import DEFAULT_ATTACKER_CTX, DEFAULT_DEPLOYER_CTX,DEFAULT_TX_CTX
 
 # ANSI 转义码
 RED = "\033[91m"
@@ -75,18 +75,21 @@ class SymbolicEngine:
                                                              monitor=self.variable_monitor,
                                                              tx=constr_tx,
                                                              tx_storage=init_storage,
-                                                             tx_ctx=DEFAULT_CONSTRUCTOR_CTX)
+                                                             tx_ctx=DEFAULT_DEPLOYER_CTX)
             self.slither_op_parser.parse_tx_ops(constr_init_state)
 
     def exec_one_tx_sequence(self, tx_storage: MemoryModel, tx_sequence: TxSequence):
         # 设置默认的交易执行上下文
-        for tx in tx_sequence.txs:
+        for txindex in range(len(tx_sequence.txs)):
+            tx = tx_sequence.txs[txindex]
+            # 默认最后一个函数一定是由攻击者调用，而其他函数可以通过部署者/攻击者调用
+            CTX = DEFAULT_ATTACKER_CTX if txindex == len(tx_sequence.txs) - 1 else DEFAULT_TX_CTX
             # 设置下一次执行的的初始状态 符号执行每一个交易，保存交易的中间状态
             tx_init_state: SymbolicState = SymbolicState(solver=self.solver,
                                                          monitor=self.variable_monitor,
                                                          tx=tx,
                                                          tx_storage=tx_storage,
-                                                         tx_ctx=DEFAULT_TX_CTX)
+                                                         tx_ctx=CTX)
             self.slither_op_parser.parse_tx_ops(tx_init_state)
             # 检查结果是否是“不可满足的”，说明合约是安全的
             if self.solver.check() == unsat:
@@ -111,8 +114,8 @@ class SymbolicEngine:
                                    contract_name: str, check_count: int) -> None:
         print(f"{YELLOW}================================ GALA CHECK RESULT {check_count} FOR {contract_name} ================================{RESET}")
         # 输出攻击者和部署者的地址
-        deployer_addr = DEFAULT_CONSTRUCTOR_CTX["msg.sender"]
-        attacker_addr = DEFAULT_TX_CTX["msg.sender"]
+        deployer_addr = DEFAULT_DEPLOYER_CTX["msg.sender"]
+        attacker_addr = DEFAULT_ATTACKER_CTX["msg.sender"]
         print(f"Default Deployer: {deployer_addr} ({int(deployer_addr, 16)})")
         print(f"Default Attacker: {attacker_addr} ({int(attacker_addr, 16)})")
         # 输出所有的权限集
@@ -128,8 +131,6 @@ class SymbolicEngine:
             print(f"{GREEN}No Solution Found, the Sequence is Secure.{RESET}")
         else:
             print(f"{RED}Current Txs May Be Insecure!{RESET}")
-            print(f"{CYAN}====> Solver Assertions <===={RESET}")
-            print(self.solver.assertions())
             print(f"{CYAN}====> One Solution <===={RESET}")
             model = self.solver.model()
             for var in model:
@@ -139,7 +140,9 @@ class SymbolicEngine:
                     print(f"{var.name().removeprefix('addr_')} = {var_value_hex}")
                 else:
                     print(f"{var.name()} = {var_value}")
-
+        # Assert
+        print(f"{CYAN}====> Solver Assertions <===={RESET}")
+        print(self.solver.assertions())
         # 存储的信息
         print(f"{CYAN}====> Final Storage Value <===={RESET}")
         for state_var in storage.MU.keys():

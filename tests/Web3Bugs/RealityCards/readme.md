@@ -1,0 +1,4 @@
+RCTreasury没有报错的原因：
+我们的Threat Model模型默认是：在owner部署合约后，只有攻击者调用函数
+collectRentUser中的isForeClose函数受到GlobalPause约束
+而changeGlobalPause函数由onlyOwner描述符保护，因此在owner不改变GlobalPause的情况下，攻击者无法通过require(GlobalPause)的约束条件

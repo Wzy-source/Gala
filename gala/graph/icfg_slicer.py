@@ -38,13 +38,14 @@ class ICFGSlicer:
             cur_node, slice_nodes, visited_nodes, call_nodes, call_stack = work_list.pop()
             if cur_node in visited_nodes:
                 continue
+            # print(cur_node)
             visited_nodes.append(cur_node)
             slice_nodes.append(cur_node)
 
             # 处理当前节点
             # 1.如果到达revert函数调用，则说明不是一条有效的执行路径，直接跳过循环
             if isinstance(cur_node, SolidityCall):
-                if cur_node.function.name == "revert()":
+                if "revert" in cur_node.function.name:
                     continue
 
             # 3.如果有Call Edge，先遍历被调用的函数，然后返回到调用点

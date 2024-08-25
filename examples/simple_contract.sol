@@ -47,7 +47,7 @@ contract OwnableContract {
     }
 
     // changeOwner函数，允许owner将所有权转移给新地址
-    function changeOwner(address newOwner) public {
+    function changeOwner(address newOwner) public onlyOwner {
         require(newOwner != address(0), "New owner is the zero address");
         owner = newOwner;
 //        constant_owner = 0x000000F20032b9E171844b00EA507E11960BD94b;

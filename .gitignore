@@ -18,7 +18,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+tests/Web3Bugs/RealityCards/contract/lib/
 lib64/
 parts/
 sdist/

@@ -1,9 +1,9 @@
-from typing import Dict, List
+from typing import Dict, List, Union
 from slither.core.variables import Variable, StateVariable
 from slither.slithir.variables import ReferenceVariable, Constant
 from slither.core.declarations import SolidityVariableComposed
 from slither.slithir.operations import Operation
-from z3 import ExprRef, Solver, Int, String, BitVec, BitVecVal, Bool, Array, BitVecSort, ArraySort, BitVecRef, BoolRef
+from z3 import ExprRef, Solver, Int, String, BitVec, BitVecVal, Bool, Array, BitVecSort, ArraySort, BitVecRef, BoolRef,Or
 from .memory_model import MULocation, MemoryModel
 from gala.sequence import Transaction
 from .variable_monitor import VariableMonitor
@@ -34,7 +34,8 @@ from slither.exceptions import SlitherException
 
 class SymbolicState:
     # 符号化智能合约的执行期间的状态，分为Storage和Memory两种情况
-    def __init__(self, solver: Solver, monitor: VariableMonitor, tx: Transaction, tx_storage: MemoryModel, tx_ctx: Dict[str, str] = None):
+    def __init__(self, solver: Solver, monitor: VariableMonitor, tx: Transaction, tx_storage: MemoryModel,
+                 tx_ctx: Dict[str, Union[str, List]] = None):
         # 约束求解器
         self.solver = solver
         # 状态变量检测器
@@ -87,7 +88,7 @@ class SymbolicState:
         else:
             self.memory[var_key] = sym_value
 
-    def set_init_ctx(self, init_tx_ctx: Dict[str, str]) -> None:
+    def set_init_ctx(self, init_tx_ctx: Dict[str, Union[str, List]]) -> None:
         init_tx_ctx = {} if init_tx_ctx is None else init_tx_ctx
         # 如果设定的上下文包含字段的默认信息，则设置为具体值，否则依然设置为符号值
         for key in init_tx_ctx.keys():
@@ -95,7 +96,17 @@ class SymbolicState:
 
         # ================ msg ================
         if "msg.sender" in init_tx_ctx:
-            self.ctx["msg.sender"] = BitVecVal(int(init_tx_ctx["msg.sender"], 16), 256)
+            sender = init_tx_ctx["msg.sender"]
+            if isinstance(sender, str):
+                self.ctx["msg.sender"] = BitVecVal(int(sender, 16), 256)
+            elif isinstance(sender, List):
+                # 创建一个包含约束的符号化变量
+                sym_sender = BitVec("msg.sender", 256)
+                constraint_list = []
+                for addr in sender:
+                    constraint_list.append(sym_sender == BitVecVal(int(addr, 16), 256))
+                self.solver.add(Or(constraint_list))
+                self.ctx["msg.sender"] = sym_sender
         else:
             self.ctx["msg.sender"] = BitVec("msg.sender", 256)
 
@@ -136,10 +147,24 @@ class SymbolicState:
         else:
             self.ctx["block.difficulty"] = BitVec("block.difficulty", 256)
 
+        if "block.chainid" in init_tx_ctx:
+            self.ctx["block.chainid"] = BitVecVal(int(init_tx_ctx["block.chainid"]), 256)
+        else:
+            self.ctx["block.chainid"] = BitVec("block.chainid", 256)
+
         # ================ tx ================
 
         if "tx.origin" in init_tx_ctx:
-            self.ctx["tx.origin"] = BitVecVal(int(init_tx_ctx["tx.origin"], 16), 256)
+            origin = init_tx_ctx["tx.origin"]
+            if isinstance(origin, str):
+                self.ctx["tx.origin"] = BitVecVal(int(origin, 16), 256)
+            elif isinstance(origin, List):
+                sym_origin = BitVec("tx.origin", 256)
+                constraint_list = []
+                for addr in origin:
+                    constraint_list.append(sym_origin == BitVecVal(int(addr, 16), 256))
+                self.solver.add(Or(constraint_list))
+                self.ctx["tx.origin"] = sym_origin
         else:
             self.ctx["tx.origin"] = BitVec("tx.origin", 256)
 
