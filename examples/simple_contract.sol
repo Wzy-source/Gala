@@ -22,11 +22,11 @@ contract OwnableContract {
         owner = msg.sender;
     }
 
-    function suicide() public {
+    function suicide() public onlyOwner {
         selfdestruct(payable(msg.sender));
     }
 
-    function transfer(address _to, uint256 _amount) public returns (bool success) {
+    function transfer(address _to, uint256 _amount) public onlyOwner returns (bool success)  {
         validAfter[_to].ts = _amount;
         return true;
     }

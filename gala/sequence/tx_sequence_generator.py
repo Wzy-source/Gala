@@ -5,6 +5,10 @@ from typing import Dict, List, Tuple, FrozenSet, Set, TypeAlias, Union
 from .transaction import Transaction, TxSequence
 from .. import StateWrite
 
+# FrozenSet[ICFGNode]：requirement node
+# SlicedPath：到达FrozenSet[ICFGNode]的执行路径
+# Set[TxSequence]：交易序列
+# List[ICFGNode]：需要被执行到的point
 TxSeqGenerationResult: TypeAlias = Dict[FrozenSet[ICFGNode], Dict[SlicedPath, Tuple[Set[TxSequence], List[ICFGNode]]]]
 
 

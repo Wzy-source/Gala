@@ -31,9 +31,11 @@ class CrucialOpExplorer:
         return crucial_ops
 
     @staticmethod
-    def is_ownership_transfer_op(op: Operation) -> bool:
+    def   is_ownership_transfer_op(op: Operation) -> bool:
         if isinstance(op, Assignment):
             lvalue = op.lvalue
+            if hasattr(lvalue, "non_ssa_version"):
+                lvalue = lvalue.non_ssa_version
             if isinstance(lvalue, StateVariable):
                 if lvalue.name in ["owner", "ceo", "admin", "_owner", "_admin"] and str(lvalue.type) == "address":
                     return True

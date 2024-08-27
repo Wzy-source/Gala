@@ -1,17 +1,17 @@
 from slither.core.expressions import Literal
 from slither.core.solidity_types import ElementaryType
 from slither.slithir.variables import Constant
-from z3 import Solver, sat, unsat, Z3Exception, unknown, ExprRef, BitVecVal, ModelRef, BitVecRef, BitVecNumRef,Or
+from z3 import Solver, sat, unsat, Z3Exception, unknown, ExprRef, BitVecVal, ModelRef, BitVecRef, BitVecNumRef, Or
 from .slither_op_parser import SlitherOpParser
 from gala.sequence import TxSeqGenerationResult, TxSequence, Transaction
-from typing import Set, List, Dict
+from typing import Set, List, Dict, TypeAlias, FrozenSet, Tuple, Optional
 from gala.graph import ICFGNode, SlicedGraph
 from .symbolic_state import SymbolicState
 from slither.core.variables import StateVariable
 from slither.core.declarations import Function, Contract
 from .memory_model import MemoryModel, MULocation
 from .variable_monitor import VariableMonitor
-from .default_ctx import DEFAULT_ATTACKER_CTX, DEFAULT_DEPLOYER_CTX,DEFAULT_TX_CTX
+from .default_ctx import DEFAULT_ATTACKER_CTX, DEFAULT_DEPLOYER_CTX, DEFAULT_TX_CTX
 
 # ANSI 转义码
 RED = "\033[91m"
@@ -22,6 +22,12 @@ MAGENTA = "\033[95m"
 CYAN = "\033[96m"
 RESET = "\033[0m"
 
+# 符号执行输出结果
+# [FrozenSet[ICFGNode]:program point
+# Dict[TxSequence, bool]:TxSequence is secure
+# 如果是
+SymbolicExecResult: TypeAlias = Dict[FrozenSet[ICFGNode], Dict[TxSequence, Tuple[bool, List[Tuple[Transaction, SymbolicState, ModelRef]]]]]
+
 
 class SymbolicEngine:
     def __init__(self):
@@ -29,7 +35,7 @@ class SymbolicEngine:
         self.variable_monitor: VariableMonitor = VariableMonitor()
         self.slither_op_parser: SlitherOpParser = SlitherOpParser(self.solver)
 
-    def execute(self, sliced_graph: SlicedGraph, all_tx_sequences: TxSeqGenerationResult) -> None:
+    def execute(self, sliced_graph: SlicedGraph, all_tx_sequences: TxSeqGenerationResult) -> SymbolicExecResult:
         # 部署合约构造函数执行，存储初始化
         # 1.持久化存储，持久存在于交易之间
         init_storage: MemoryModel = MemoryModel(MULocation.STORAGE)
@@ -38,6 +44,7 @@ class SymbolicEngine:
         # 3.逐一执行构造函数序列（按照父类-子类的次序）
         self.exec_constructor_sequence(sliced_graph, init_storage)
         # 返回执行结果，提供给Logger使用
+        SymbolicExecRes: SymbolicExecResult = dict()
         check_count = 0
         for base_path_tx_seqs_map in all_tx_sequences.values():
             for base_path in base_path_tx_seqs_map.keys():
@@ -49,11 +56,14 @@ class SymbolicEngine:
                     # 拷贝构造函数执行后的storage
                     tx_storage: MemoryModel = init_storage.copy()
                     # 执行一组交易序列,找到一组可行解
-                    is_secure = self.exec_one_tx_sequence(tx_storage, one_seq)
+                    is_feasible, exec_res = self.exec_one_tx_sequence(tx_storage, one_seq)
+                    # 保存执行结果供上层调用者处理
+                    SymbolicExecRes.setdefault(frozenset(perm_nodes), dict()).setdefault(one_seq, (is_feasible, exec_res))
                     # 输出执行结果
                     contract_name = sliced_graph.icfg.main_contract.name
-                    self.log_symbolic_execution_res(is_secure, one_seq, perm_nodes, tx_storage, contract_name, check_count)
+                    self.log_symbolic_execution_res(is_feasible, one_seq, perm_nodes, tx_storage, contract_name, check_count)
                     check_count += 1
+        return SymbolicExecRes
 
     def exec_constructor_sequence(self, sliced_graph: SlicedGraph, init_storage: MemoryModel):
         # 在每一个交易序列执行之前，先按照合约继承的顺序，执行一遍constructor函数
@@ -78,8 +88,10 @@ class SymbolicEngine:
                                                              tx_ctx=DEFAULT_DEPLOYER_CTX)
             self.slither_op_parser.parse_tx_ops(constr_init_state)
 
-    def exec_one_tx_sequence(self, tx_storage: MemoryModel, tx_sequence: TxSequence):
+    def exec_one_tx_sequence(self, tx_storage: MemoryModel, tx_sequence: TxSequence) -> Tuple[
+        bool, List[Tuple[Transaction, SymbolicState, Optional[ModelRef]]]]:
         # 设置默认的交易执行上下文
+        tx_state_model_list: List[Tuple[Transaction, SymbolicState, Optional[ModelRef]]] = []
         for txindex in range(len(tx_sequence.txs)):
             tx = tx_sequence.txs[txindex]
             # 默认最后一个函数一定是由攻击者调用，而其他函数可以通过部署者/攻击者调用
@@ -93,8 +105,11 @@ class SymbolicEngine:
             self.slither_op_parser.parse_tx_ops(tx_init_state)
             # 检查结果是否是“不可满足的”，说明合约是安全的
             if self.solver.check() == unsat:
-                return True
-        return False
+                tx_state_model_list.append((tx, tx_init_state, None))
+                return False, tx_state_model_list
+            else:
+                tx_state_model_list.append((tx, tx_init_state, self.solver.model()))
+        return True, tx_state_model_list
 
     @staticmethod
     def init_contract_creation_sym_storage(sliced_graph: SlicedGraph, init_storage: MemoryModel):
@@ -110,27 +125,27 @@ class SymbolicEngine:
                     sym_isv_constant = init_storage.create_symbolic_constant(Constant(val=isv_value, constant_type=isv_type))
                     init_storage[isv] = sym_isv_constant
 
-    def log_symbolic_execution_res(self, is_secure: bool, txs: TxSequence, perm_nodes: List[ICFGNode], storage: MemoryModel,
+    def log_symbolic_execution_res(self, is_feasible: bool, txs: TxSequence, program_points: List[ICFGNode], storage: MemoryModel,
                                    contract_name: str, check_count: int) -> None:
-        print(f"{YELLOW}================================ GALA CHECK RESULT {check_count} FOR {contract_name} ================================{RESET}")
+        print(
+            f"{YELLOW}================================ GALA SYMBOLIC EXECUTION RESULT {check_count} FOR {contract_name} ================================{RESET}")
         # 输出攻击者和部署者的地址
         deployer_addr = DEFAULT_DEPLOYER_CTX["msg.sender"]
         attacker_addr = DEFAULT_ATTACKER_CTX["msg.sender"]
         print(f"Default Deployer: {deployer_addr} ({int(deployer_addr, 16)})")
         print(f"Default Attacker: {attacker_addr} ({int(attacker_addr, 16)})")
         # 输出所有的权限集
-        print(f"{CYAN}====> Permission Nodes <===={RESET}")
-        for pn in perm_nodes:
-            print(str(pn))
+        print(f"{CYAN}====> Program Points <===={RESET}")
+        [print(str(pn)) for pn in program_points]
         # 输出权限集对应的交易序列
         print(f"{CYAN}====> Generated Tx Sequence <===={RESET}")
         print(f"constructor -> {str(txs)}")
         # 输出符号执行结果
         print(f"{CYAN}====> Symbolic Execution Result <===={RESET}")
-        if is_secure:
-            print(f"{GREEN}No Solution Found, the Sequence is Secure.{RESET}")
+        if not is_feasible:
+            print(f"{GREEN}No Solution Found. The Txs Execution Path Is Infeasible{RESET}")
         else:
-            print(f"{RED}Current Txs May Be Insecure!{RESET}")
+            print(f"{RED}Current Txs Execution Path Is Feasible{RESET}")
             print(f"{CYAN}====> One Solution <===={RESET}")
             model = self.solver.model()
             for var in model:
