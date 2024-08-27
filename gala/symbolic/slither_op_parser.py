@@ -1,6 +1,6 @@
 import z3
 from z3 import Solver, sat, unsat, Z3Exception, unknown, Bool, Int, String, ExprRef, Or, Not, BitVecRef, And, BitVec, BitVecVal, BoolVal, String, \
-    StringVal, Extract, Array, BitVecSort, Select
+    StringVal, Extract, Array, BitVecSort, Select, is_bv, is_array
 from slither.slithir.operations import *
 from slither.slithir.variables import *
 from slither.core.variables import Variable
@@ -154,11 +154,18 @@ class SlitherOpParser:
 
     def parse_binary(self, op: Binary, state: SymbolicState) -> None:
         # ✅
+
         sym_lvalue = None
         operator: BinaryType = op.type
         sym_rvalue0 = state.get_or_create_default_symbolic_var(op.variable_left)
         sym_rvalue1 = state.get_or_create_default_symbolic_var(op.variable_right)
         # According to the operator, parseing the three values.
+        if is_bv(sym_rvalue0) and is_bv(sym_rvalue1):
+            if sym_rvalue0.size() != sym_rvalue1.size():
+                return
+        else:
+            return
+
         match operator:
             case BinaryType.EQUAL:
                 sym_lvalue = (sym_rvalue0 == sym_rvalue1)
@@ -235,7 +242,13 @@ class SlitherOpParser:
 
             for rvalue in rvalue_list:
                 sym_rvalue = state.get_or_create_default_symbolic_var(rvalue)
-                constraints_list.append(sym_rvalue == sym_lvalue)
+                if type(sym_lvalue) == type(sym_rvalue):
+                    if is_bv(sym_lvalue) and is_bv(sym_rvalue):
+                        if sym_lvalue.size() == sym_rvalue.size():
+                            constraints_list.append(sym_rvalue == sym_lvalue)
+                    else:
+                        constraints_list.append(sym_rvalue == sym_lvalue)
+
             # OR relations
             self.solver.add(Or(constraints_list))
 

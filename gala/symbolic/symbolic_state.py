@@ -101,7 +101,7 @@ class SymbolicState:
                 self.ctx["msg.sender"] = BitVecVal(int(sender, 16), 256)
             elif isinstance(sender, List):
                 # 创建一个包含约束的符号化变量
-                sym_sender = BitVec("msg.sender", 256)
+                sym_sender = BitVec(f"msg.sender({self.tx.function.name})", 256)
                 constraint_list = []
                 for addr in sender:
                     constraint_list.append(sym_sender == BitVecVal(int(addr, 16), 256))

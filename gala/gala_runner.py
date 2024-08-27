@@ -4,7 +4,7 @@ from slither.core.declarations import Contract
 from slither.core.variables import Variable
 from slither.slithir.operations import Operation
 from typing import List, Dict, Callable, Set
-from gala.symbolic import SymbolicEngine
+from gala.symbolic import SymbolicEngine, SymbolicExecResult
 
 
 class GalaRunner:
@@ -17,7 +17,7 @@ class GalaRunner:
         self.tx_sequence_generator: TxSequenceGenerator = TxSequenceGenerator()
         self.symbolic_engine: SymbolicEngine = SymbolicEngine()
 
-    def run(self, program_points: Set[Operation]) -> "GalaRunner":
+    def run(self, program_points: Set[Operation]) -> SymbolicExecResult:
         print("Gala Start Analysis")
 
         print("Step1: Build ICFG")
@@ -34,9 +34,9 @@ class GalaRunner:
 
         print("Step5: Symbolic Execution")
 
-        self.symbolic_engine.execute(sliced_graph, GeneratedTxSequences)
+        res: SymbolicExecResult = self.symbolic_engine.execute(sliced_graph, GeneratedTxSequences)
 
-        return self
+        return res
 
     def register_monitor_handlers(self, handlers: Dict[str, Callable]) -> "GalaRunner":
         for var_name, handler in handlers.items():

@@ -20,6 +20,8 @@ class TxSequence:
         self.max_tx_num: int = max_tx_num
         self.txs: List[Transaction] = txs if txs is not None else []
 
+
+
     def add_happens_before_tx(self, tx: Transaction) -> bool:
         # 不超过最大交易数量
         if len(self.txs) == self.max_tx_num:

@@ -80,10 +80,10 @@ class MemoryModel:
         elif str(var_type).startswith("uint") or str(var_type).startswith("int"):
             # 使用BitVec来创建有符号/无符号的整数
             return BitVecSort(256)  # 将所有的uint和int都统一看作256位的位向量，用以支持op操作
-        elif str(var_type).startswith("bytes"):
+        elif str(var_type).startswith("bytes") and str(var_type) != "bytes":
             # 在Bytes的实现中已经对长度*8，代表比特位宽
             return BitVecSort(var_type.size)
-        elif str(var_type) == "string":
+        elif str(var_type) == "string" or str(var_type) == "bytes":
             # 索引为256位的位向量，值为8位的字节
             # 存储的访问是通过 256 位的地址索引进行的，以太坊虚拟机将存储空间视为一个巨大的 2^256 字节的内存
             # 对应的索引也是使用 256 位的位向量来表示。
@@ -128,7 +128,7 @@ class MemoryModel:
             return BitVecVal(var.value, 256)
         elif str(var_type).startswith("int"):
             return BitVecVal(var.value, 256)
-        elif str(var_type) == "string":
+        elif str(var_type) == "string" or str(var_type) == "bytes":
             # 对于字符串，可能需要转化为位向量数组或其它表示形式
             # 这里简单处理为返回固定的位向量值
             return Array(var_name, BitVecSort(256), BitVecSort(8))
@@ -146,10 +146,10 @@ class MemoryModel:
             # 对于Storage，在创建他时使用初始值0（符号Storage初始化的定义）
             # 而对于Memory中的变量（局部变量/函数参数），赋予符号值（函数参数可以是任意的，而不是0）
             return BitVec(var_name, elementary_sort)
-        elif str(var_type).startswith("bytes"):
+        elif str(var_type).startswith("bytes") and str(var_type) != "bytes":
             # 在Bytes的实现中已经对长度*8，代表比特位宽
             return BitVec(var_name, elementary_sort)
-        elif str(var_type) == "string":
+        elif str(var_type) == "string" or str(var_type) == "bytes":
             # 索引为256位的位向量，值为8位的字节
             # 存储的访问是通过 256 位的地址索引进行的，以太坊虚拟机将存储空间视为一个巨大的 2^256 字节的内存
             # 对应的索引也是使用 256 位的位向量来表示。
