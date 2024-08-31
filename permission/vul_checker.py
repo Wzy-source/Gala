@@ -30,8 +30,8 @@ class VulChecker:
                 if not is_feasible:
                     continue
                 # 过滤掉user-intended patterns
-                # if self.filter_user_intended_patterns(program_points, model, state_list):
-                #     continue
+                if self.filter_user_intended_patterns(program_points, model, state_list):
+                    continue
                 # 判断之前是否已经输出过该交易序列（不考虑具体的执行流（Slice），而是以函数为粒度进行输出）
                 func_ctx_seq: List[Tuple[Function, dict]] = self.generate_func_ctx_seq(state_list)
                 if func_ctx_seq in seq_func_ctx_record:

@@ -1,5 +1,5 @@
 from gala.graph import ICFGBuilder, ICFGSlicer, TaintAnalyzer
-from gala.sequence import TxSequenceGenerator
+from gala.sequence import TxSequenceGenerator, TxSeqGenerationResult
 from slither.core.declarations import Contract
 from slither.core.variables import Variable
 from slither.slithir.operations import Operation
@@ -37,6 +37,7 @@ class GalaRunner:
         res: SymbolicExecResult = self.symbolic_engine.execute(sliced_graph, GeneratedTxSequences)
 
         return res
+
 
     def register_monitor_handlers(self, handlers: Dict[str, Callable]) -> "GalaRunner":
         for var_name, handler in handlers.items():
