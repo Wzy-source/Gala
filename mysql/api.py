@@ -27,7 +27,7 @@ class DatabaseApi:
     def save_coverage(self, from_addr, to_addr, coverage, tx_num):
         return self.client.save_coverage(from_addr, to_addr, tx_num, coverage)
 
-    def get_transactions_by_contract_address(self, contract_addr):
+    def get_transactions_by_contract_address_group_by_from(self, contract_addr):
         self.client.check_connection()
         # 统一将字符转为小写形式
         contract_addr = contract_addr.lower()

@@ -61,7 +61,7 @@ class DatabaseClient:
         # Commit any pending transactions, though this should just be a read operation
         self.__client.commit()
 
-        return result  # Returning the list of grouped and sorted transact
+        return self.__extract_all_from_tuple(result)  # Returning the list of grouped and sorted transact
 
     def is_open(self):
         if self.__client is not None:
@@ -82,6 +82,12 @@ class DatabaseClient:
     def check_connection(self):
         if not self.is_open():
             self.open_connect()
+
+    def __extract_all_from_tuple(self, t: tuple) -> list:
+        ret: list = []
+        for item in t:
+            ret.append(item)
+        return ret
 
     def __del__(self):
         self.close_connect()
