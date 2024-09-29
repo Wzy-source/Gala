@@ -1,7 +1,7 @@
 from slither.core.declarations import Contract
 from slither.core.variables import StateVariable
 from slither.slithir.variables import StateIRVariable, ReferenceVariableSSA, ReferenceVariable
-from slither.slithir.operations import Operation, Transfer, Send, Assignment, SolidityCall
+from slither.slithir.operations import Operation, Transfer, Send, Assignment, SolidityCall, Binary
 from typing import List, Set
 
 
@@ -31,7 +31,7 @@ class CrucialOpExplorer:
         return crucial_ops
 
     @staticmethod
-    def   is_ownership_transfer_op(op: Operation) -> bool:
+    def is_ownership_transfer_op(op: Operation) -> bool:
         if isinstance(op, Assignment):
             lvalue = op.lvalue
             if hasattr(lvalue, "non_ssa_version"):
@@ -68,6 +68,15 @@ class CrucialOpExplorer:
                 point_to = variable_written.points_to_origin
                 if isinstance(point_to, StateIRVariable):
                     return True
+        elif hasattr(op, "lvalue") and isinstance(op, Binary):
+            variable_written = op.lvalue
+            if isinstance(variable_written, StateIRVariable):  # 直接写存储
+                return True
+            elif isinstance(variable_written, ReferenceVariableSSA):  # 通过引用写存储
+                point_to = variable_written.points_to_origin
+                if isinstance(point_to, StateIRVariable):
+                    return True
+        return False
 
     @staticmethod
     def is_suicide_op(op: Operation) -> bool:

@@ -1,9 +1,14 @@
+from enum import Enum, auto
+
+from slither import Slither
+
 from gala import DEFAULT_DEPLOYER_CTX, DEFAULT_ATTACKER_CTX
+from gala.gala_runner import GalaRunner
 from gala.symbolic import SymbolicExecResult, SymbolicState, Deployer_Addr, Attacker_Addr
 from gala.sequence import TxSequence, Transaction
 from gala.graph import ICFGNode
 from z3 import ModelRef, BitVecRef, BitVecNumRef, ExprRef
-from typing import List, Tuple, FrozenSet, Union
+from typing import List, Tuple, FrozenSet, Union, Dict
 from slither.core.declarations import Function
 from .crucial_op_explorer import CrucialOpExplorer
 
@@ -15,13 +20,34 @@ BLUE = "\033[94m"
 MAGENTA = "\033[95m"
 CYAN = "\033[96m"
 RESET = "\033[0m"
+BRIGHT_RED = "\033[91;1m"
+
+API_KEY = "HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT"
 
 
-class VulChecker:
+class VulFlag(Enum):
+    VULNERABLE = auto()
+    INTENDED = auto()
+
+
+class PermissionVulChecker:
     def __init__(self):
         pass
 
-    def check(self, contract_name: str, sym_exec_res: SymbolicExecResult) -> None:
+    def check(self, name: str, address: str) -> None:
+        contracts = Slither(target=address, etherscan_api_key=API_KEY, disable_solc_warnings=True).get_contract_from_name(name)
+        assert len(contracts) == 1, f"No Contract Or Multiple Contracts Named {name}"
+        contract = contracts[0]
+        crucial_ops = CrucialOpExplorer().explore(contract)
+        # 运行Gala符号执行框架
+        sym_exec_res = GalaRunner(contract).run(program_points=crucial_ops)
+        # 对符号执行结果进行判断
+        self.check_and_log_vul_by_sym_res(name, address, sym_exec_res)
+
+    def check_and_log_vul_by_sym_res(self, name: str, address: str, sym_exec_res: SymbolicExecResult):
+        # 对符号执行结果进行判断
+        vul_res_to_log_list: List[Tuple[FrozenSet[ICFGNode], List[Tuple[str, str, str]]]] = []
+        intended_res_to_log_list: List[Tuple[FrozenSet[ICFGNode], List[Tuple[str, str, str]]]] = []
         for program_points, tx_seq_exec_res in sym_exec_res.items():
             seq_func_ctx_record: List[List[Tuple[Function, dict]]] = []
             for tx_seq, exec_res in tx_seq_exec_res.items():
@@ -39,7 +65,14 @@ class VulChecker:
                 else:
                     seq_func_ctx_record.append(func_ctx_seq)
                 # 输出潜在的漏洞信息
-                self.log_one_vul_result(program_points, model, state_list, contract_name)
+                may_be_intended, func_call_seq = self.generate_func_call_seq(model, state_list)
+                if may_be_intended:
+                    intended_res_to_log_list.append((program_points, func_call_seq))
+                else:
+                    vul_res_to_log_list.append((program_points, func_call_seq))
+
+        self.log_detect_result(VulFlag.VULNERABLE, vul_res_to_log_list, name, address)
+        self.log_detect_result(VulFlag.INTENDED, intended_res_to_log_list, name, address)
 
     def filter_user_intended_patterns(self, program_points: FrozenSet[ICFGNode], model: ModelRef, state_list: List[SymbolicState]) -> bool:
         # 第一种： 如果存在transferOwnership操作/对owner的赋值操作的交易是由owner本人执行的
@@ -60,27 +93,70 @@ class VulChecker:
             func_ctx_seq.append((func, ctx))
         return func_ctx_seq
 
-    def log_one_vul_result(self, program_points: FrozenSet[ICFGNode], model: ModelRef, state_list: List[SymbolicState], contract_name: str):
-        print()
-        print(
-            f"{RED}[ PRIVILEGE ESCALATION VULNERABILITY FOUND FOR {contract_name} CONTRACT ]{RESET}")
-        # 输出攻击者和部署者的地址
-        print(f"Default Deployer: {Deployer_Addr} ({int(Deployer_Addr, 16)})")
-        print(f"Default Attacker: {Attacker_Addr} ({int(Attacker_Addr, 16)})")
-        print(f"{CYAN}====> Program Points <===={RESET}")
-        [print(str(pn)) for pn in program_points]
-        # 输出权限集对应的交易序列和调用者信息
-        print(f"{CYAN}====> Generated Tx Sequence <===={RESET}")
-        tx_seq_str = "[Deployer] constructor"
+    def generate_func_call_seq(self, model: ModelRef, state_list: List[SymbolicState]) -> Tuple[bool, List[Tuple[str, str, str]]]:
+        # 生成函数调用序列，判断每一个函数的caller是谁
+        func_call_seq = []
+        may_be_user_intend = False
         for state in state_list:
-            # 判断约束求解器中model中的解是
-            tx_func_name = state.tx.function
+            func_name = state.tx.function.name
             contract_name = state.tx.function.contract_declarer
             sender_val = self.get_sender_value(state.ctx["msg.sender"], model)
             sender_name = "Deployer" if sender_val == int(Deployer_Addr, 16) else "Attacker"
-            tx_seq_str += f" -> [{sender_name}] {contract_name}.{tx_func_name}"
+            if sender_name == "Deployer":
+                may_be_user_intend = True
+            func_call_seq.append((sender_name, contract_name, func_name))
+        return may_be_user_intend, func_call_seq
 
-        print(tx_seq_str)
+    @staticmethod
+    def log_detect_result(vul_flag: VulFlag, res_to_log_list: List[Tuple[FrozenSet[ICFGNode], List[Tuple[str, str, str]]]], contract_name: str,
+                          contract_address: str):
+        # 对输出的函数序列进行分组,对漏洞进行溯源：找到最短交易序列的集合
+        grouped_sequence_map: Dict[str, List[Tuple[FrozenSet[ICFGNode], str]]] = dict()
+        for one_vul_res in res_to_log_list:
+            program_points, func_call_seq = one_vul_res
+            # 拼接交易序列字符串
+            tx_seq_str = "Deployer: [Default Constructors]"
+            for func_call_info in func_call_seq:
+                sender_name, contract_name, tx_func_name = func_call_info
+                if contract_name:
+                    tx_seq_str += f" -> {sender_name}: [{contract_name}.{tx_func_name}]"
+                else:
+                    tx_seq_str += f" -> {sender_name}: [{tx_func_name}]"
+
+            root_found = False
+            root_replaced = False
+            for root_seq in grouped_sequence_map.keys():
+                # 如果当前序列是某个已有根因序列的扩展，说明可以归为该根因
+                if tx_seq_str.startswith(root_seq):
+                    grouped_sequence_map[root_seq].append((program_points, tx_seq_str))
+                    root_found = True
+                    break
+                # 如果当前的根因是当前序列的拓展，可以将根因的值加入到当前序列，然后将根因删除
+                elif root_seq.startswith(tx_seq_str):
+                    root_replaced = True
+                    root_seq_list = grouped_sequence_map[root_seq]
+                    grouped_sequence_map.setdefault(tx_seq_str, []).extend(root_seq_list)
+                    del grouped_sequence_map[root_seq]
+
+            if (not root_found) or root_replaced:
+                grouped_sequence_map.setdefault(tx_seq_str, []).append((program_points, tx_seq_str))
+
+        for root_seq, grouped_sequences in grouped_sequence_map.items():
+            if vul_flag == VulFlag.VULNERABLE:
+                print(f"{RED}[ PRIVILEGE ESCALATION VULNERABILITY FOUND FOR {contract_name}:{contract_address} ]{RESET}")
+            else:
+                print(f"{GREEN}[ MAY BE INTENDED BEHAVIOR, BUT NEED ATTENTION {contract_name}:{contract_address} ]{RESET}")
+
+            print(f"{CYAN}====> Root Tx Sequence <===={RESET}")
+            print(f"{YELLOW}{root_seq}{RESET}")
+            print(f"{CYAN}====> Vul Sequences Start With Root <===={RESET}")
+            for gs_info_index in range(len(grouped_sequences)):
+                gs_info = grouped_sequences[gs_info_index]
+                program_points, tx_seq_str = gs_info
+                print(f"{CYAN}====> Generated Vul Sequences {gs_info_index + 1}<===={RESET}")
+                [print(str(pn)) for pn in program_points]
+                print(tx_seq_str)
+            print()
 
     @staticmethod
     def get_sender_value(sym_sender: ExprRef, model: ModelRef) -> int:

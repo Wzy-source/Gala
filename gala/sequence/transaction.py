@@ -2,7 +2,7 @@ from gala.graph import ICFG, ICFGNode, SlicedPath
 from typing import List, Optional
 from slither.core.declarations import Function
 
-DEFAULT_MAX_TX_NUM: int = 5
+DEFAULT_MAX_TX_NUM: int = 3
 
 
 class Transaction:
@@ -19,8 +19,6 @@ class TxSequence:
     def __init__(self, txs: List[Transaction] = None, max_tx_num: int = DEFAULT_MAX_TX_NUM):
         self.max_tx_num: int = max_tx_num
         self.txs: List[Transaction] = txs if txs is not None else []
-
-
 
     def add_happens_before_tx(self, tx: Transaction) -> bool:
         # 不超过最大交易数量

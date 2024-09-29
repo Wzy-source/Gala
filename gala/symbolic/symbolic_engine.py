@@ -1,3 +1,5 @@
+import time
+
 from slither.core.expressions import Literal
 from slither.core.solidity_types import ElementaryType
 from slither.slithir.variables import Constant
@@ -38,6 +40,7 @@ class SymbolicEngine:
     def execute(self, sliced_graph: SlicedGraph, all_tx_sequences: TxSeqGenerationResult) -> SymbolicExecResult:
         # 部署合约构造函数执行，存储初始化
         # 1.持久化存储，持久存在于交易之间
+        start_time = time.time()
         init_storage: MemoryModel = MemoryModel(MULocation.STORAGE)
         # 2.设置合约创建时候的默认值对应的符号值
         self.init_contract_creation_sym_storage(sliced_graph, init_storage)
@@ -45,7 +48,7 @@ class SymbolicEngine:
         self.exec_constructor_sequence(sliced_graph, init_storage)
         # 返回执行结果，提供给Logger使用
         SymbolicExecRes: SymbolicExecResult = dict()
-        check_count = 0
+        check_count = 1
         for base_path_tx_seqs_map in all_tx_sequences.values():
             for base_path in base_path_tx_seqs_map.keys():
                 tx_seq_set: Set[TxSequence] = base_path_tx_seqs_map[base_path][0]
@@ -58,11 +61,14 @@ class SymbolicEngine:
                     # 执行一组交易序列,找到一组可行解
                     is_feasible, model, state_list = self.exec_one_tx_sequence(tx_storage, one_seq)
                     # 保存执行结果供上层调用者处理
-                    SymbolicExecRes.setdefault(frozenset(perm_nodes), dict()).setdefault(one_seq, (is_feasible,model, state_list))
+                    SymbolicExecRes.setdefault(frozenset(perm_nodes), dict()).setdefault(one_seq, (is_feasible, model, state_list))
                     # 输出执行结果
                     contract_name = sliced_graph.icfg.main_contract.name
                     self.log_symbolic_execution_res(is_feasible, one_seq, perm_nodes, tx_storage, contract_name, check_count)
                     check_count += 1
+        end_time = time.time()
+        time_cost = end_time - start_time
+        print(f"Execution time: {time_cost}")
         return SymbolicExecRes
 
     def exec_constructor_sequence(self, sliced_graph: SlicedGraph, init_storage: MemoryModel):

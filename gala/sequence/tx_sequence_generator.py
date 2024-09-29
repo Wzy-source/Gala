@@ -1,3 +1,5 @@
+from slither.core.solidity_types import ElementaryType
+
 from gala.graph import ICFG, ICFGNode, SlicedPath, Requirement, SlicedGraph
 from slither.core.variables import StateVariable
 from slither.core.declarations import Function
@@ -68,16 +70,20 @@ class TxSequenceGenerator:
                     continue
                 pp_req_nodes_dependent_state_vars.append(dependent_state_var)
 
+        # 2.初始化Tx Seq
+        AllTxSeqGenerated: Set[TxSequence] = set()
+
         # 情况2: 当前pp node的req约束和state variable的无关
         if len(pp_req_nodes_dependent_state_vars) == 0:
             return {TxSequence(txs=[Transaction(base_path)])}
+        else:
+            is_all_composite_type = all(map(lambda dsvnp: not isinstance(dsvnp.type, ElementaryType), pp_req_nodes_dependent_state_vars))
+            if is_all_composite_type:
+                AllTxSeqGenerated.add(TxSequence(txs=[Transaction(base_path)]))
 
         # 对依赖的pp_req_nodes_dependent_state_vars进行过滤：
         # 有一些state var在变量声明/构造函数初始化阶段仅初始化了一次（constant/immutable），外部用户无法更改
         # 对这些state variable进行过滤
-
-        # 2.初始化Tx Seq
-        all_tx_sequence: Set[TxSequence] = set()
 
         # 由于我们收集req时，最先check的req位于数组最前面，对dependent state var反向排序，逐个出栈，作为处理sv的次序
         first_state_var = pp_req_nodes_dependent_state_vars[0]
@@ -98,28 +104,28 @@ class TxSequenceGenerator:
                  state_vars_processed.copy()))  # state_vars_processed
 
         # 4.外部大循环，生成Tx Seq
-        while len(work_list) > 0:
+        while 0 < len(work_list):
             (working_slice, write_state_var_node, state_var_written, working_tx_sequence,
              state_vars_process_in_order, state_vars_processed) = work_list.pop()
 
             # 剪枝操作：无需添加到总交易列表中
-            # 1.先判断当前Slice是否被重复
+            # 1.先判断当前Slice是否被重复（working_slice所在的函数不允许和已经添加的函数重复）
             if any(map(lambda added_tx: added_tx.exec_path == working_slice, working_tx_sequence.txs)):
-                all_tx_sequence.add(working_tx_sequence.copy())
+                AllTxSeqGenerated.add(working_tx_sequence.copy())
                 continue
 
             # 2.判断当前Slice是否比已经添加的Slice具有更强或者相同的约束条件
-            # working_slice_depend_svs = self.get_reqs_depend_state_vars(icfg, working_slice, working_slice.req_nodes)
-            # has_stronger_reqs: bool = False
-            # for added_tx in working_tx_sequence.txs:
-            #     tx_exec_path: SlicedPath = added_tx.exec_path
-            #     added_slice_depend_svs = self.get_reqs_depend_state_vars(icfg, tx_exec_path, tx_exec_path.req_nodes)
-            #     # 如果所有的已经添加的slice依赖的sv都包含于working_slice所依赖的sv，说明working_slice_depend_svs具有更强的条件
-            #     if all(map(lambda added_slice_depend_sv: added_slice_depend_sv in working_slice_depend_svs, added_slice_depend_svs)):
-            #         has_stronger_reqs = True
-            # if has_stronger_reqs:
-            #     all_tx_sequence.add(working_tx_sequence.copy())
-            #     continue
+            working_slice_depend_svs = self.get_reqs_depend_state_vars(icfg, working_slice, working_slice.req_nodes)
+            has_stronger_reqs: bool = False
+            for added_tx in working_tx_sequence.txs:
+                tx_exec_path: SlicedPath = added_tx.exec_path
+                added_slice_depend_svs = self.get_reqs_depend_state_vars(icfg, tx_exec_path, tx_exec_path.req_nodes)
+                # 如果所有的已经添加的slice依赖的sv都包含于working_slice所依赖的sv，说明working_slice_depend_svs具有更强的条件
+                if all(map(lambda added_slice_depend_sv: added_slice_depend_sv in working_slice_depend_svs, added_slice_depend_svs)):
+                    has_stronger_reqs = True
+            if has_stronger_reqs:
+                AllTxSeqGenerated.add(working_tx_sequence.copy())
+                continue
 
             # 3.尝试向交易序列添加Slice，检查是否添加成功
             add_tx_success = working_tx_sequence.add_happens_before_tx(Transaction(working_slice))
@@ -169,7 +175,7 @@ class TxSequenceGenerator:
             # 一旦发现state_vars_process_ordered为空了，说明当前交易序列可以处理完成所有依赖的状态变量
             # 将该交易序列保存
             if len(state_vars_process_in_order) == 0:
-                all_tx_sequence.add(working_tx_sequence.copy())
+                AllTxSeqGenerated.add(working_tx_sequence.copy())
             # 检查state_vars_process_ordered栈顶元素，确定下一个可能的交易序列集合
             else:
                 # 在constructor函数中有些状态变量已经被写，且只被写了一次，state_var_write_slice_map
@@ -186,7 +192,7 @@ class TxSequenceGenerator:
                                       state_vars_process_in_order.copy(),
                                       state_vars_processed.copy()))
 
-        return all_tx_sequence
+        return AllTxSeqGenerated
 
     @staticmethod
     def get_candidate_slices(sliced_icfg: SlicedGraph, state_var_dependent: StateVariable) -> List[Tuple[ICFGNode, SlicedPath]]:
