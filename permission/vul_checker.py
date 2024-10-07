@@ -123,9 +123,11 @@ class PermissionVulChecker:
                 else:
                     tx_seq_str += f" -> {sender_name}: [{tx_func_name}]"
 
+            # Create a list of current keys to iterate over
+            root_seq_keys = list(grouped_sequence_map.keys())
             root_found = False
             root_replaced = False
-            for root_seq in grouped_sequence_map.keys():
+            for root_seq in root_seq_keys:
                 # 如果当前序列是某个已有根因序列的扩展，说明可以归为该根因
                 if tx_seq_str.startswith(root_seq):
                     grouped_sequence_map[root_seq].append((program_points, tx_seq_str))
@@ -149,13 +151,13 @@ class PermissionVulChecker:
 
             print(f"{CYAN}====> Root Tx Sequence <===={RESET}")
             print(f"{YELLOW}{root_seq}{RESET}")
-            print(f"{CYAN}====> Vul Sequences Start With Root <===={RESET}")
+            print(f"{CYAN}====> Vul Sequences Start With Root Tx Sequence <===={RESET}")
             for gs_info_index in range(len(grouped_sequences)):
                 gs_info = grouped_sequences[gs_info_index]
                 program_points, tx_seq_str = gs_info
-                print(f"{CYAN}====> Generated Vul Sequences {gs_info_index + 1}<===={RESET}")
+                print(f"{CYAN}====> Generated Vul Sequences {gs_info_index + 1} and Program Points <===={RESET}")
                 [print(str(pn)) for pn in program_points]
-                print(tx_seq_str)
+                print(f"<Vul Sequences> {tx_seq_str}")
             print()
 
     @staticmethod

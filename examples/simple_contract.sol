@@ -18,27 +18,27 @@ contract OwnableContract {
 
     mapping (address => Validity) public validAfter;
 
-    constructor() {
-        owner = msg.sender;
-    }
+//    constructor() {
+//        owner = msg.sender;
+//    }
 
-    function suicide() public onlyOwner {
-        selfdestruct(payable(msg.sender));
-    }
+//    function suicide() public onlyOwner {
+//        selfdestruct(payable(msg.sender));
+//    }
 
-    function transfer(address _to, uint256 _amount) public onlyOwner returns (bool success)  {
-        validAfter[_to].ts = _amount;
-        return true;
-    }
+//    function transfer(address _to, uint256 _amount) public onlyOwner returns (bool success)  {
+//        validAfter[_to].ts = _amount;
+//        return true;
+//    }
 
-    function update(uint newBalance,address _candidate) public onlyOwner {
-        balances[msg.sender] = newBalance;
+//    function update(uint newBalance,address _candidate) public onlyOwner {
+//        balances[msg.sender] = newBalance;
+////        candidates.push(_candidate);
+//    }
+
+//    function add_candidate(address _candidate) public onlyOwner {
 //        candidates.push(_candidate);
-    }
-
-    function add_candidate(address _candidate) public onlyOwner {
-        candidates.push(_candidate);
-    }
+//    }
 
     // onlyOwner修饰符，限制函数只能由owner调用
     modifier onlyOwner() {
@@ -47,14 +47,14 @@ contract OwnableContract {
     }
 
     // changeOwner函数，允许owner将所有权转移给新地址
-    function changeOwner(address newOwner) public onlyOwner {
-        require(newOwner != address(0), "New owner is the zero address");
+    function transferOwnership(address newOwner) public onlyOwner {
+//        require(newOwner != address(0), "New owner is the zero address");
         owner = newOwner;
 //        constant_owner = 0x000000F20032b9E171844b00EA507E11960BD94b;
     }
 
 
-//    function changeName() public onlyOwner {
-//        name = "new_name_wzy";
-//    }
+    function changeName(string memory _name) public onlyOwner {
+        name = _name;
+    }
 }

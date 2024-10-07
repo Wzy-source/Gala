@@ -233,4 +233,7 @@ class TxSequenceGenerator:
             # 这些state var是immutable的，必须要求在函数调用（非constructor）中不能被写
             if init_sv not in slice_graph.state_var_write_slice_map.keys():
                 immutable_state_vars_with_init_value.add(init_sv)
+            # # 如果是bool类型，也暂时认为是具有初始值的
+            # if isinstance(init_sv.type, ElementaryType) and init_sv.type.name == "bool":
+            #     immutable_state_vars_with_init_value.add(init_sv)
         return immutable_state_vars_with_init_value

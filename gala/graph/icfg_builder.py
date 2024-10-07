@@ -1,6 +1,8 @@
 from slither.core.cfg.node import NodeType
 from slither.core.declarations import Contract, Function, FunctionContract
 from typing import List, Set, Tuple, Dict, Optional, Union
+
+from slither.core.solidity_types import ElementaryType
 from slither.core.variables import StateVariable
 from .requirement import Requirement
 from .icfg import ICFGNode, ICFG, EdgeType, SlitherNode, SSAIRNode
@@ -22,8 +24,12 @@ class ICFGBuilder:
         """
         icfg: ICFG = ICFG(main_contract)
         # 收集已初始化的全部sv
-        # 1.变量声明时已经初始化的sv  2.构造函数中初始化的sv
+        # 1.变量声明时已经初始化的sv
         icfg.sv_with_init_value = set(filter(lambda sv: sv.initialized, main_contract.state_variables))
+        # 2.基本类型变量是有默认值的，先默认为bool值
+        icfg.sv_with_init_value.union(
+            set(filter(lambda sv: isinstance(sv.type, ElementaryType) and sv.type.name == "bool", main_contract.state_variables)))
+        # 3.在构造函数中初始化的sv
         if main_contract.constructor is not None:
             icfg.sv_with_init_value.union(set(main_contract.constructor.all_state_variables_written()))
 

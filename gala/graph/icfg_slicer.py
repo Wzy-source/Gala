@@ -1,8 +1,9 @@
 from slither.core.variables import StateVariable
+from slither.core.cfg.node import NodeType
 from typing import List, Dict, Set, Tuple
 from .utils import is_eoa_callable_func
 from .edge_processor import FlowDirection, EdgeProcessor
-from .icfg import ICFGNode, ICFG, EdgeType
+from .icfg import ICFGNode, ICFG, EdgeType, SlitherNode
 from slither.slithir.operations import SolidityCall, Condition
 from .sliced_graph import SlicedGraph, SlicedPath
 
@@ -127,6 +128,16 @@ class ICFGSlicer:
 
                 else:
                     # 一般性情况，进一步遍历子节点即可
-                    for edge in control_flow_out_edges:
-                        dst_node = edge[1]
-                        work_list.append((dst_node, slice_nodes.copy(), visited_nodes.copy(), call_nodes.copy(), call_stack.copy()))
+                    # 特判：这里还需要考虑Modifier中有if {_} 的情况，这时如果一个分支是_,则说明另一个分支不能走
+                    # First check if there is a PLACEHOLDER node in the control flow edges
+                    # 判断是否有没有place_holder_edge
+                    place_holder_edge = next(
+                        (edge for edge in control_flow_out_edges if isinstance(edge[1], SlitherNode) and edge[1].type == NodeType.PLACEHOLDER), None)
+                    if place_holder_edge:
+                        dst_node = place_holder_edge[1]
+                        work_list.append((dst_node, slice_nodes, visited_nodes, call_nodes, call_stack))
+                    # 没有place holder edge，正常添加
+                    else:
+                        for edge in control_flow_out_edges:
+                            dst_node = edge[1]
+                            work_list.append((dst_node, slice_nodes.copy(), visited_nodes.copy(), call_nodes.copy(), call_stack.copy()))
