@@ -34,15 +34,19 @@ class PermissionVulChecker:
     def __init__(self):
         pass
 
-    def check(self, name: str, address: str) -> None:
-        contracts = Slither(target=address, etherscan_api_key=API_KEY, disable_solc_warnings=True).get_contract_from_name(name)
-        assert len(contracts) == 1, f"No Contract Or Multiple Contracts Named {name}"
-        contract = contracts[0]
-        crucial_ops = CrucialOpExplorer().explore(contract)
+    def check(self, name: str, address: str):
+        slither = Slither(target=address, etherscan_api_key=API_KEY, disable_solc_warnings=True)
+        if len(slither.contracts) > 6:
+            raise Exception("Too many contracts")
+        main_contract = slither.get_contract_from_name(name)
+        assert len(main_contract) == 1, f"No Contract Or Multiple Contracts Named {name}"
+        main_contract = main_contract[0]
+        crucial_ops = CrucialOpExplorer().explore(main_contract)
         # 运行Gala符号执行框架
-        sym_exec_res = GalaRunner(contract).run(program_points=crucial_ops)
+        sym_exec_res = GalaRunner(main_contract).run(program_points=crucial_ops)
         # 对符号执行结果进行判断
-        self.check_and_log_vul_by_sym_res(name, address, sym_exec_res)
+        vul_res, intend_res = self.check_and_log_vul_by_sym_res(name, address, sym_exec_res)
+        return crucial_ops, vul_res, intend_res
 
     def check_and_log_vul_by_sym_res(self, name: str, address: str, sym_exec_res: SymbolicExecResult):
         # 对符号执行结果进行判断
@@ -71,8 +75,9 @@ class PermissionVulChecker:
                 else:
                     vul_res_to_log_list.append((program_points, func_call_seq))
 
-        self.log_detect_result(VulFlag.VULNERABLE, vul_res_to_log_list, name, address)
-        self.log_detect_result(VulFlag.INTENDED, intended_res_to_log_list, name, address)
+        vul_res = self.log_detect_result(VulFlag.VULNERABLE, vul_res_to_log_list, name, address)
+        intend_res = self.log_detect_result(VulFlag.INTENDED, intended_res_to_log_list, name, address)
+        return vul_res, intend_res
 
     def filter_user_intended_patterns(self, program_points: FrozenSet[ICFGNode], model: ModelRef, state_list: List[SymbolicState]) -> bool:
         # 第一种： 如果存在transferOwnership操作/对owner的赋值操作的交易是由owner本人执行的
@@ -113,6 +118,7 @@ class PermissionVulChecker:
         # 对输出的函数序列进行分组,对漏洞进行溯源：找到最短交易序列的集合
         grouped_sequence_map: Dict[str, List[Tuple[FrozenSet[ICFGNode], str]]] = dict()
         for one_vul_res in res_to_log_list:
+            # res_to_log_list： program points + func_call_seq(Sender-Contract-Function)
             program_points, func_call_seq = one_vul_res
             # 拼接交易序列字符串
             tx_seq_str = "Deployer: [Default Constructors]"
@@ -159,6 +165,8 @@ class PermissionVulChecker:
                 [print(str(pn)) for pn in program_points]
                 print(f"<Vul Sequences> {tx_seq_str}")
             print()
+
+        return grouped_sequence_map
 
     @staticmethod
     def get_sender_value(sym_sender: ExprRef, model: ModelRef) -> int:

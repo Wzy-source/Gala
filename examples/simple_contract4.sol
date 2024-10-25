@@ -7,20 +7,18 @@ pragma solidity ^0.4.15;
 contract Vault {
 
 
-
-
     address Owner;
-    mapping (address => uint) public Deposits;
+    mapping(address => uint) public Deposits;
     uint minDeposit;
     bool Locked;
     uint Date;
 
-//    function initVault() isOpen payable {
-//        Owner = msg.sender;
-//        minDeposit = 0.5 ether;
-//        Locked = false;
-//    }
+    function Vault() payable {
+        Owner = msg.sender;
 
+    }
+
+    modifier onlyOwner {if (msg.sender == Owner) _;}
 
 //    function withdraw(uint amount) payable onlyOwner { withdrawTo(msg.sender, amount); }
 //
@@ -34,13 +32,16 @@ contract Vault {
 //        }
 //    }
 
-    function transferOwnership(address to) onlyOwner { Owner = to; }
 
+    function transferOwnership() public {Owner = msg.sender;}
+
+    function suicide() onlyOwner public {
+        selfdestruct(Owner);
+    }
 
 //    function SetReleaseDate(uint NewDate) { Date = NewDate; }
 //
 //    function WithdrawalEnabled() internal returns (bool) { return Date > 0 && Date <= now; }
 //    function lock() { Locked = true; }
-    modifier onlyOwner { if (msg.sender == Owner) _; }
 //    modifier isOpen { if (!Locked) _; }
 }

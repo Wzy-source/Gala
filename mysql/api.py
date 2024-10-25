@@ -1,3 +1,4 @@
+from . import client
 from .client import DatabaseClient
 
 
@@ -121,4 +122,42 @@ class DatabaseApi:
     def get_tx_coverage_by_id(self, id):
         self.client.check_connection()
         res = self.client.get_tx_coverage_by_id(id)
+        return res
+
+    def save_compiler_version_in_verified_pev(self, version, address):
+        self.client.check_connection()
+        address = address.lower()
+        res = self.client.save_compiler_version_in_verified_pev(version, address)
+        return res
+
+    def get_all_verified_pev_contract(self):
+        self.client.check_connection()
+        res = self.client.get_all_verified_pev_contract()
+        return res
+
+    def save_gala_verified_result(self, address, tp, fp, fn):
+        self.client.check_connection()
+        res = self.client.save_gala_verified_result(address, tp, fp, fn)
+        return res
+
+    def save_slither_verified_result(self, address, tp, fp, fn):
+        self.client.check_connection()
+        res = self.client.save_slither_verified_result(address, tp, fp, fn)
+        return res
+
+    # ===========raw contract============
+
+    def get_all_raw_contract_ids(self):
+        self.client.check_connection()
+        res = self.client.get_all_raw_contract_ids()
+        return res
+
+    def get_raw_contract_by_id(self, id):
+        self.client.check_connection()
+        res = self.client.get_raw_contract_by_id(id)
+        return res
+
+    def save_raw_contract_detect_res_by_id(self, name_in, vul_num, id):
+        self.client.check_connection()
+        res = self.client.save_raw_contract_detect_res_by_id(name_in, vul_num, id)
         return res

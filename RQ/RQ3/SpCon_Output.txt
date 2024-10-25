@@ -1,0 +1,37 @@
+wzy@v3090ti:~$ sudo docker run -e 'http_proxy=172.19.144.149:7890' -e 'https_proxy=172.19.144.149:7890' --rm spcon_image_x1 python3 -m spcon --eth_address 0x5ff2e383b160752e4497f1b75aeeecb3
+2437d633
+Installing '0.8.17'...
+Version '0.8.17' installed.
+2024-10-17
+{'limit': 38, 'network': 'ethereum', 'address': '0x5ff2e383b160752e4497f1b75aeeecb32437d633', 'date': '2024-10-17'}
+0x5ff2e383b160752e4497f1b75aeeecb32437d633 TsukaChad
+./0x5ff2e383b160752e4497f1b75aeeecb32437d633
+loaded abi.
+5  functions ['balanceOf', 'transfer', 'renounceOwnership', 'transferFrom', 'approve']
+7  users
+Timecost for loading history: 0.004809379577636719
+No.user: 7; No.func: 5
++-----------------------------------------------------+
+|  Basic roles statistics (id, len(users), functions) |
++-----------+---------+-------------------------------+
+|   RoleId  |  Users  |           Functions           |
++-----------+---------+-------------------------------+
+|     0     |    3    |         ['balanceOf']         |
+|     1     |    3    |        ['transferFrom']       |
+|     2     |    3    |          ['approve']          |
+|     3     |    1    |          ['transfer']         |
+|     4     |    1    |     ['renounceOwnership']     |
++-----------+---------+-------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [2.08(3.12)/1.65(1.41)/1.73(1.73)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 1 integrity policies
+INFO:spcon.symExec:Testing time: 0.00016927719116210938 seconds
+Max/Min/Avg Fitness(Raw)             [3.05(5.51)/2.35(1.41)/2.54(2.54)]
+Total time elapsed: 5.689 seconds.
+best role number: 2
+Role#0:{'transfer', 'balanceOf', 'transferFrom'}
+Role#1:{'approve', 'renounceOwnership'}
+Time cost: 5.697677373886108
+Security Policy:
+Policy#0: transfer balanceOf transferFrom -> forth part _allowances prevent via functions transferFrom transfer
+total timecost: 32.39854192733765 seconds

@@ -2,7 +2,7 @@ from gala.graph import ICFG, ICFGNode, SlicedPath
 from typing import List, Optional
 from slither.core.declarations import Function
 
-DEFAULT_MAX_TX_NUM: int = 3
+DEFAULT_MAX_TX_NUM: int = 1
 
 
 class Transaction:

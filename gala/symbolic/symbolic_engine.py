@@ -58,13 +58,15 @@ class SymbolicEngine:
                     self.solver.reset()
                     # 拷贝构造函数执行后的storage
                     tx_storage: MemoryModel = init_storage.copy()
+                    # 特判，消除误报：执行完构造函数中的address变量，一定不能指向attacker地址
+                    self.assert_addr_not_attacker_in_constructor(tx_storage)
                     # 执行一组交易序列,找到一组可行解
                     is_feasible, model, state_list = self.exec_one_tx_sequence(tx_storage, one_seq)
                     # 保存执行结果供上层调用者处理
                     SymbolicExecRes.setdefault(frozenset(perm_nodes), dict()).setdefault(one_seq, (is_feasible, model, state_list))
                     # 输出执行结果
                     contract_name = sliced_graph.icfg.main_contract.name
-                    self.log_symbolic_execution_res(is_feasible, one_seq, perm_nodes, tx_storage, contract_name, check_count)
+                    self.log_symbolic_execution_res(is_feasible, one_seq, perm_nodes, tx_storage, model, contract_name, check_count)
                     check_count += 1
         end_time = time.time()
         time_cost = end_time - start_time
@@ -112,7 +114,10 @@ class SymbolicEngine:
             state_list.append(tx_init_state)
             if self.solver.check() == unsat:
                 return False, None, state_list
-        return True, self.solver.model(), state_list
+        try:
+            return True, self.solver.model(), state_list
+        except Z3Exception:
+            return False, None, state_list
 
     @staticmethod
     def init_contract_creation_sym_storage(sliced_graph: SlicedGraph, init_storage: MemoryModel):
@@ -129,7 +134,7 @@ class SymbolicEngine:
                     init_storage[isv] = sym_isv_constant
 
     def log_symbolic_execution_res(self, is_feasible: bool, txs: TxSequence, program_points: List[ICFGNode], storage: MemoryModel,
-                                   contract_name: str, check_count: int) -> None:
+                                   model: ModelRef, contract_name: str, check_count: int) -> None:
         print(
             f"{YELLOW}================================ GALA SYMBOLIC EXECUTION RESULT {check_count} FOR {contract_name} ================================{RESET}")
         # 输出攻击者和部署者的地址
@@ -150,7 +155,6 @@ class SymbolicEngine:
         else:
             print(f"{RED}Current Txs Execution Path Is Feasible{RESET}")
             print(f"{CYAN}====> One Solution <===={RESET}")
-            model = self.solver.model()
             for var in model:
                 var_value = model[var]
                 if isinstance(var_value, BitVecNumRef) and var.name().startswith("addr_"):  # 地址类型
@@ -170,6 +174,13 @@ class SymbolicEngine:
                 print(f"{state_var.name} = {var_value_hex}")
             else:
                 print(f"{state_var.name} = {sym_state_val}")
+
+    def assert_addr_not_attacker_in_constructor(self, tx_storage: MemoryModel):
+        for var, sym_var in tx_storage.MU.items():
+            var_type = var.type
+            if isinstance(var_type, ElementaryType) and var_type.name == "address":
+                attacker_sym_addr = BitVecVal(int(DEFAULT_ATTACKER_CTX['msg.sender'], 16), 256)
+                self.solver.add(sym_var != attacker_sym_addr)
 
     # def init_constructor(init_storage: MemoryModel, sliced_graph: SlicedGraph) -> None:
     #     if sliced_graph.icfg.main_contract.constructor is None:

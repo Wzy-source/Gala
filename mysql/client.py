@@ -185,17 +185,14 @@ class DatabaseClient:
         cursor.execute(sql, address)
         self.__client.commit()
 
-
-
     # =======Txs Coverage=========
-    def save_txs_coverage(self,contract_addr,tx_num,coverage,tx_seq_str):
+    def save_txs_coverage(self, contract_addr, tx_num, coverage, tx_seq_str):
         sql = "INSERT INTO TxsCoverage (contract_addr, tx_num, coverage, tx_seq_str) VALUES (%s, %s, %s,%s)"
         values = (contract_addr, tx_num, coverage, tx_seq_str)
         cursor: Cursor = self.__client.cursor()
         cursor.execute(sql, values)
         self.__client.commit()
         return self.__client.insert_id()
-
 
     def get_txseq_coverage_by_contract_address(self, contract_addr):
         sql = "SELECT * FROM TxsCoverage WHERE contract_addr=%s;"
@@ -204,7 +201,6 @@ class DatabaseClient:
         result = cursor.fetchall()
         return self.__extract_all_from_tuple(result)
 
-
     def get_all_tx_coverage_ids(self):
         sql = "SELECT id FROM TxsCoverage;"
         cursor: Cursor = self.__client.cursor()
@@ -212,14 +208,82 @@ class DatabaseClient:
         result = cursor.fetchall()
         return self.__extract_all_from_tuple(result)
 
-
-    def get_tx_coverage_by_id(self,id):
+    def get_tx_coverage_by_id(self, id):
         sql = "SELECT * FROM TxsCoverage WHERE id=%s;"
         cursor: Cursor = self.__client.cursor()
         cursor.execute(sql, id)
         result = cursor.fetchone()
         return result
 
+    def save_compiler_version_in_verified_pev(self, version, address):
+        sql = """
+        UPDATE Verified_PEV
+        SET compiler=%s
+        WHERE address=%s
+        """
+        values = (version, address)
+        cursor: Cursor = self.__client.cursor()
+        cursor.execute(sql, values)
+        self.__client.commit()
+        return self.__client.insert_id()
+
+    def get_all_verified_pev_contract(self):
+        sql = "SELECT * FROM Verified_PEV;"
+        cursor: Cursor = self.__client.cursor()
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        self.__client.commit()
+        return self.__extract_all_from_tuple(result)
+
+    def save_gala_verified_result(self, address, tp, fp, fn):
+        sql = """
+        UPDATE Verified_PEV
+        SET Gala_TP = %s, Gala_FP = %s, Gala_FN = %s
+        WHERE Verified_PEV.address = %s
+        """
+        values = (tp, fp, fn, address)
+        cursor: Cursor = self.__client.cursor()
+        cursor.execute(sql, values)
+        self.__client.commit()
+        return self.__client.insert_id()
+
+    def save_slither_verified_result(self, address, tp, fp, fn):
+        sql = """
+        UPDATE Verified_PEV
+        SET Slither_TP = %s, Slither_FP = %s, Slither_FN = %s
+        WHERE Verified_PEV.address = %s
+        """
+        values = (tp, fp, fn, address)
+        cursor: Cursor = self.__client.cursor()
+        cursor.execute(sql, values)
+        self.__client.commit()
+        return self.__client.insert_id()
+
+    def get_all_raw_contract_ids(self):
+        sql = "SELECT id FROM Raw_Contract;"
+        cursor: Cursor = self.__client.cursor()
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        return self.__extract_all_from_tuple(result)
+
+    def get_raw_contract_by_id(self, id):
+        sql = "SELECT * FROM Raw_Contract WHERE id=%s;"
+        cursor: Cursor = self.__client.cursor()
+        cursor.execute(sql, id)
+        result = cursor.fetchone()
+        return result
+
+    def save_raw_contract_detect_res_by_id(self, name_in: bool, vul_num: int, id: int):
+        sql = '''
+        UPDATE Raw_Contract
+        SET name_in=%s, vul_num=%s
+        WHERE id=%s;
+        '''
+        values = (name_in, vul_num, id)
+        cursor: Cursor = self.__client.cursor()
+        cursor.execute(sql, values)
+        self.__client.commit()
+        return self.__client.insert_id()
 
     def is_open(self):
         if self.__client is not None:

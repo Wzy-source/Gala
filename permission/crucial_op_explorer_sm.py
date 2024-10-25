@@ -6,7 +6,7 @@ from slither.slithir.operations import Operation, Transfer, Send, Assignment, So
 from typing import List, Set
 
 
-class CrucialOpExplorer:
+class CrucialOpExplorerSkipModeling:
     def __init__(self):
         pass
 
@@ -31,16 +31,16 @@ class CrucialOpExplorer:
                         suicide_ops.add(op)
                     if self.is_ownership_transfer_op(op):
                         ownership_transfer_ops.add(op)
-        # 获取到所有ops，根据ABAC规则，对op进行筛选，将符合条件的op加入到critical_ops集合中
-        # 情况一：控制流相关的状态变量被写
-        cfsv_ops = self.get_control_flow_related_sv_write(state_var_write_ops, conditional_ops)
-        # 情况二：状态变量被任意写（右值来自于函数参数）
-        absv_ops = self.get_arbitrary_sv_write(state_var_write_ops, conditional_ops, all_sv_not_read)
-        # 情况三：selfdestruct
-        reach_suicide_ops = suicide_ops
-        # 情况四：ownership_transfer:
-        reach_owner_transfer_ops = ownership_transfer_ops
-        critical_ops = cfsv_ops.union(absv_ops).union(reach_suicide_ops).union(reach_owner_transfer_ops)
+        # # 获取到所有ops，根据ABAC规则，对op进行筛选，将符合条件的op加入到critical_ops集合中
+        # # 情况一：控制流相关的状态变量被写
+        # cfsv_ops = self.get_control_flow_related_sv_write(state_var_write_ops, conditional_ops)
+        # # 情况二：状态变量被任意写（右值来自于函数参数）
+        # absv_ops = self.get_arbitrary_sv_write(state_var_write_ops, conditional_ops, all_sv_not_read)
+        # # 情况三：selfdestruct
+        # reach_suicide_ops = suicide_ops
+        # # 情况四：ownership_transfer:
+        # reach_owner_transfer_ops = ownership_transfer_ops
+        critical_ops = state_var_write_ops.union(suicide_ops)
         return critical_ops
 
     def get_control_flow_related_sv_write(self, state_var_write_ops: Set[Operation], conditional_ops: Set[Operation]) -> Set[Operation]:

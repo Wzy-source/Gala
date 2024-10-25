@@ -81,6 +81,13 @@ class SlitherOpParser:
         sym_rvalue = state.get_or_create_default_symbolic_var(op.rvalue)
         # 将这个符号表达式关联到左值变量
         state.set_symbolic_var(op, op.lvalue, sym_rvalue)
+        # 一种特殊情况：如果该右值来自于构造函数的参数，并且该参数是address类型，我们默认他指向owner的地址
+        # if state.tx.function.is_constructor:
+        #     rvalue_type = op.rvalue.type
+        #     rvalue_name = op.rvalue.name
+        #     if isinstance(rvalue_type, ElementaryType):
+        #         if rvalue_type.name == "address" and rvalue_name in ['owner', 'admin', '_admin', '_owner']:
+        #             state.solver.add(sym_rvalue == state.ctx['msg.sender'])
 
     def parse_length(self, op: Assignment, state: SymbolicState):
         # Trade-off：对于Length操作，并不精确的表示数组的长度，而是粗略地生成一个长度大于等于0的整数值即可

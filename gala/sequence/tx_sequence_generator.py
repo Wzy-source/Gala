@@ -5,7 +5,7 @@ from slither.core.variables import StateVariable
 from slither.core.declarations import Function
 from typing import Dict, List, Tuple, FrozenSet, Set, TypeAlias, Union
 from .transaction import Transaction, TxSequence
-from .. import StateWrite
+from .. import StateWrite, SSAIRNode
 
 # FrozenSet[ICFGNode]：requirement node
 # SlicedPath：到达FrozenSet[ICFGNode]的执行路径
@@ -36,6 +36,9 @@ class TxSequenceGenerator:
             for base_path, pp_req_nodes in all_reach_program_point_slice_paths.items():
                 if base_path.slice_func.is_constructor:
                     continue
+                # 提前过滤掉被认为是一定安全的base path
+                if self.must_secure_base_path(program_point, base_path, pp_req_nodes):
+                    continue
                 # 必须req node与base_path是同时相同的，才无需重新分析 ✅
                 frozen_req_nodes: FrozenSet[ICFGNode] = frozenset(pp_req_nodes)
                 base_path_map = GeneratedTxSequences.setdefault(frozen_req_nodes, {})
@@ -45,6 +48,21 @@ class TxSequenceGenerator:
                     TxSeqSet = self.generate_program_point_tx_sequence(sliced_icfg, base_path, pp_req_nodes)
                     base_path_map[base_path] = (TxSeqSet, [program_point])
         return GeneratedTxSequences
+
+    @staticmethod
+    def must_secure_base_path(program_point: ICFGNode, base_path: SlicedPath, pp_req_nodes: List[ICFGNode]):
+        # 过滤掉一定被认为是安全的path
+        # 1.情况1:一定要付出代价：对msg.value有所要求
+        msg_value_in_req = False
+        for pp_req_node in pp_req_nodes:
+            if isinstance(pp_req_node, SSAIRNode):
+                origin = pp_req_node.node
+                msg_value_in_req = any('msg.value' == sol_var.name for sol_var in origin.solidity_variables_read)
+                if msg_value_in_req:
+                    break
+        if msg_value_in_req:
+            return True
+        return False
 
     def generate_program_point_tx_sequence(self, sliced_icfg: SlicedGraph, base_path: SlicedPath, pp_req_nodes: List[ICFGNode]) -> Set[TxSequence]:
         # base_path:trigger目标pp_node的执行路径，位于最后一个Tx
@@ -126,6 +144,9 @@ class TxSequenceGenerator:
             if has_stronger_reqs:
                 AllTxSeqGenerated.add(working_tx_sequence.copy())
                 continue
+
+            if all(isinstance(svpio.type, ElementaryType) and svpio.type.name == "bool" for svpio in state_vars_process_in_order):
+                AllTxSeqGenerated.add(working_tx_sequence.copy())
 
             # 3.尝试向交易序列添加Slice，检查是否添加成功
             add_tx_success = working_tx_sequence.add_happens_before_tx(Transaction(working_slice))

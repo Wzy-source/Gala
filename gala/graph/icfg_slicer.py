@@ -45,8 +45,12 @@ class ICFGSlicer:
 
             # 处理当前节点
             # 1.如果到达revert函数调用，则说明不是一条有效的执行路径，直接跳过循环
+            # 2.如果到达throw节点，同样跳过循环
             if isinstance(cur_node, SolidityCall):
                 if "revert" in cur_node.function.name:
+                    continue
+            elif isinstance(cur_node, SlitherNode):
+                if cur_node.type == NodeType.THROW:
                     continue
 
             # 3.如果有Call Edge，先遍历被调用的函数，然后返回到调用点
