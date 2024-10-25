@@ -21,7 +21,7 @@ The mint function in this contract allows users to mint new tokens when the cont
 
 ## Exploit
 ### Step1: owner call unpause function
-
-### Step2: attackers call mint function until all supplies run out
 ![PengGxng.png](./images/PepeGxng1.png)
+### Step2: attackers call mint function until all supplies run out
+![PengGxng.png](./images/PepeGxng2.png)
 

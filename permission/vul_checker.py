@@ -36,8 +36,8 @@ class PermissionVulChecker:
 
     def check(self, name: str, address: str):
         slither = Slither(target=address, etherscan_api_key=API_KEY, disable_solc_warnings=True)
-        if len(slither.contracts) > 6:
-            raise Exception("Too many contracts")
+        # if len(slither.contracts) > 6:
+        #     raise Exception("Too many contracts")
         main_contract = slither.get_contract_from_name(name)
         assert len(main_contract) == 1, f"No Contract Or Multiple Contracts Named {name}"
         main_contract = main_contract[0]
