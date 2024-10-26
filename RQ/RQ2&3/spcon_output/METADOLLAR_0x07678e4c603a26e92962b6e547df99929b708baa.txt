@@ -1,0 +1,15 @@
+WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Installing '0.4.23'...
+Version '0.4.23' installed.
+2024-10-26
+{'limit': 2, 'network': 'ethereum', 'address': '0x07678e4c603a26e92962b6e547df99929b708baa', 'date': '2024-10-26'}
+0x07678e4c603a26e92962b6e547df99929b708baa METADOLLAR
+./0x07678e4c603a26e92962b6e547df99929b708baa
+loaded abi.
+1  functions ['STARTMETADOLLAR']
+1  users
+Timecost for loading history: 0.0050868988037109375
+No.user: 1; No.func: 1
+Time cost: 0.0069730281829833984
+Security Policy:
+total timecost: 18.210994005203247 seconds

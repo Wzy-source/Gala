@@ -1,0 +1,25 @@
+raceback (most recent call last):
+  File "/home/spcon/spcon/__main__.py", line 67, in main
+    execute_command(args)
+  File "/home/spcon/spcon/__main__.py", line 34, in execute_command
+    assert  boolflag==True, "Cannot infer security policies maybe because the number of historical transaction is small"
+AssertionError: Cannot infer security policies maybe because the number of historical transaction is small
+Installing '0.4.25'...
+Version '0.4.25' installed.
+2024-10-26
+{'limit': 5, 'network': 'ethereum', 'address': '0x12ac8fa232888cdff7b923ca584a887835a631f2', 'date': '2024-10-26'}
+0x12ac8fa232888cdff7b923ca584a887835a631f2 NEUTRO
+./0x12ac8fa232888cdff7b923ca584a887835a631f2
+loaded abi.
+1  functions ['transfer']
+2  users
+Timecost for loading history: 0.004018306732177734
+No.user: 2; No.func: 1
++-------------------------------------------------+
+| Basic roles statistics (id, len(users), functions) |
++-------------+-----------+-----------------------+
+|    RoleId   |   Users   |       Functions       |
++-------------+-----------+-----------------------+
+|      0      |     2     |      ['transfer']     |
++-------------+-----------+-----------------------+
+total timecost: 25.333289861679077 seconds

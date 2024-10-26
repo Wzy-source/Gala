@@ -1,0 +1,21 @@
+Installing '0.4.16'...
+Version '0.4.16' installed.
+Switched global version to 0.4.16
+Traceback (most recent call last):
+  File "/home/spcon/spcon/__main__.py", line 67, in main
+    execute_command(args)
+  File "/home/spcon/spcon/__main__.py", line 34, in execute_command
+    assert  boolflag==True, "Cannot infer security policies maybe because the number of historical transaction is small"
+AssertionError: Cannot infer security policies maybe because the number of historical transaction is small
+Installing '0.4.16'...
+Version '0.4.16' installed.
+2024-10-26
+{'limit': 1, 'network': 'ethereum', 'address': '0x97c103d006bd363588a98659a4d3b5cab9a29348', 'date': '2024-10-26'}
+0x97c103d006bd363588a98659a4d3b5cab9a29348 BaliToken
+./0x97c103d006bd363588a98659a4d3b5cab9a29348
+loaded abi.
+0  functions []
+0  users
+Timecost for loading history: 0.0032761096954345703
+No.user: 0; No.func: 0
+total timecost: 22.716851711273193 seconds

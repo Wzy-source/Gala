@@ -1,0 +1,41 @@
+Installing '0.4.11'...
+Version '0.4.11' installed.
+Switched global version to 0.4.11
+Installing '0.4.11'...
+Version '0.4.11' installed.
+2024-10-26
+{'limit': 5, 'network': 'ethereum', 'address': '0x97d25fc9024c689320dafbd9bbca8861ab669ccd', 'date': '2024-10-26'}
+0x97d25fc9024c689320dafbd9bbca8861ab669ccd Listen
+./0x97d25fc9024c689320dafbd9bbca8861ab669ccd
+loaded abi.
+4  functions ['draw', 'changeOwner', 'suicide', 'destroy']
+2  users
+Timecost for loading history: 0.003271341323852539
+No.user: 2; No.func: 4
++--------------------------------------------------------+
+|   Basic roles statistics (id, len(users), functions)   |
++---------+--------+-------------------------------------+
+|  RoleId | Users  |              Functions              |
++---------+--------+-------------------------------------+
+|    0    |   1    |             ['suicide']             |
+|    1    |   1    |  ['draw', 'changeOwner', 'destroy'] |
++---------+--------+-------------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [566.53(1000.00)/388.38(3.98)/472.11(472.11)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 1 integrity policies
+INFO:spcon.symExec:Test Sequence: ['changeOwner']
+INFO:spcon.symExec:SymExecEVM().symExec: changeOwner(address)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:Testing time: 1.358607530593872 seconds
+Max/Min/Avg Fitness(Raw)             [1001.63(1000.00)/0.00(3.98)/711.16(711.16)]
+Total time elapsed: 3.201 seconds.
+best role number: 2
+Role#0:{'suicide'}
+Role#1:{'draw', 'changeOwner', 'destroy'}
+Time cost: 3.2068917751312256
+Security Policy:
+Policy#0: draw changeOwner destroy -> owner via functions changeOwner
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x97d25fc9024c689320dafbd9bbca8861ab669ccd&position=0x0&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+Permission Bug: find an attack sequence ['changeOwner']
+total timecost: 25.784051418304443 seconds

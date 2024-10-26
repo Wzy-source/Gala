@@ -1,0 +1,15 @@
+WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Installing '0.4.25'...
+Version '0.4.25' installed.
+2024-10-26
+{'limit': 5, 'network': 'ethereum', 'address': '0x1bdeff9530aa31c1e43f5c6e53d59ce386aa8447', 'date': '2024-10-26'}
+0x1bdeff9530aa31c1e43f5c6e53d59ce386aa8447 zrankadictos
+./0x1bdeff9530aa31c1e43f5c6e53d59ce386aa8447
+loaded abi.
+2  functions ['TokenERC20', 'transfer']
+1  users
+Timecost for loading history: 0.04924464225769043
+No.user: 1; No.func: 2
+Time cost: 0.05144214630126953
+Security Policy:
+total timecost: 19.127501010894775 seconds

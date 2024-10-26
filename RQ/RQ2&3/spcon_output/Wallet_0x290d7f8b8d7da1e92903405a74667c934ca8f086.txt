@@ -1,0 +1,30 @@
+Installing '0.4.18'...
+Version '0.4.18' installed.
+2024-10-26
+{'limit': 20, 'network': 'ethereum', 'address': '0x290d7f8b8d7da1e92903405a74667c934ca8f086', 'date': '2024-10-26'}
+0x290d7f8b8d7da1e92903405a74667c934ca8f086 Wallet
+./0x290d7f8b8d7da1e92903405a74667c934ca8f086
+loaded abi.
+6  functions ['withdraw', 'withdrawTokenTo', 'initWallet', 'lock', 'transferOwnership', 'SetReleaseDate']
+4  users
+Timecost for loading history: 0.0066258907318115234
+No.user: 4; No.func: 6
++--------------------------------------------------------+
+|   Basic roles statistics (id, len(users), functions)   |
++--------+-------+---------------------------------------+
+| RoleId | Users |               Functions               |
++--------+-------+---------------------------------------+
+|   0    |   2   |              ['withdraw']             |
+|   1    |   3   |             ['initWallet']            |
+|   2    |   2   |     ['lock', 'transferOwnership']     |
+|   3    |   1   | ['withdrawTokenTo', 'SetReleaseDate'] |
++--------+-------+---------------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [2.35(5.51)/1.91(1.55)/1.96(1.96)]
+Gen. 100 (100.00%): WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Max/Min/Avg Fitness(Raw)             [5.49(5.51)/1.65(1.60)/4.58(4.58)]
+Total time elapsed: 6.601 seconds.
+best role number: 1
+Role#0:{'withdraw', 'withdrawTokenTo', 'initWallet', 'lock', 'transferOwnership', 'SetReleaseDate'}
+Time cost: 6.612931728363037
+Security Policy:
+total timecost: 36.08443999290466 seconds

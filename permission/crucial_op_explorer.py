@@ -104,6 +104,17 @@ class CrucialOpExplorer:
                 prec_condition_ops = self.get_conditional_ops_of_one_operation(sv_write_op, conditional_ops)
                 if len(prec_condition_ops) == 0:
                     target_ops.add(sv_write_op)
+                else:
+                    constraint_left_value = False
+                    for prec_condition_op in prec_condition_ops:
+                        vars_read_in_condition_op = prec_condition_op.node.local_variables_read
+                        for var_read_in_condition_op in vars_read_in_condition_op:
+                            if var_read_in_condition_op in local_variable_read:
+                                constraint_left_value = True
+                                break
+                    if not constraint_left_value:
+                        target_ops.add(sv_write_op)
+
         return target_ops
 
     @staticmethod

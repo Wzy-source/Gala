@@ -1,0 +1,15 @@
+Installing '0.4.25'...
+Version '0.4.25' installed.
+2024-10-26
+{'limit': 7, 'network': 'ethereum', 'address': '0x1044d3efad9a9bad4e77a1c0c86bc53636da0345', 'date': '2024-10-26'}
+0x1044d3efad9a9bad4e77a1c0c86bc53636da0345 MSRiseTokenSale
+./0x1044d3efad9a9bad4e77a1c0c86bc53636da0345
+loaded abi.
+6  functions ['setDiscountPercent', 'setBouncePercent', 'setTokenPrice', 'setState', 'setBeneficiaryAddress', 'setMinAmount']
+1  users
+Timecost for loading history: 0.0036096572875976562
+No.user: 1; No.func: 6
+Time cost: 0.004902362823486328
+Security Policy:
+total timecost: 23.980899810791016 seconds
+WARNING:spcon.symExec:No permission policy is detected. No permission bug.

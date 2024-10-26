@@ -1,0 +1,142 @@
+Installing '0.4.21'...
+Version '0.4.21' installed.
+2024-10-26
+{'limit': 11, 'network': 'ethereum', 'address': '0x70d146a7dc622772b9d4b4fc02f28516ce237011', 'date': '2024-10-26'}
+0x70d146a7dc622772b9d4b4fc02f28516ce237011 DARTTOKEN
+./0x70d146a7dc622772b9d4b4fc02f28516ce237011
+loaded abi.
+5  functions ['transferFrom', 'transfer', 'setParameters', 'withdraw', 'approve']
+5  users
+Timecost for loading history: 0.004903316497802734
+No.user: 5; No.func: 5
++------------------------------------------------------+
+|  Basic roles statistics (id, len(users), functions)  |
++---------+--------+-----------------------------------+
+|  RoleId | Users  |             Functions             |
++---------+--------+-----------------------------------+
+|    0    |   1    |          ['transferFrom']         |
+|    1    |   2    |            ['transfer']           |
+|    2    |   1    |            ['approve']            |
+|    3    |   1    |   ['withdraw', 'setParameters']   |
++---------+--------+-----------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [124.07(1000.00)/101.07(2.66)/103.39(103.39)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 1 integrity policies
+WARNING:CryticCompile:Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:47:5: Warning: Functions in interfaces should be declared external.
+    function distr(address _to, uint256 _value) public returns (bool);
+    ^----------------------------------------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:48:5: Warning: Functions in interfaces should be declared external.
+    function totalSupply() constant public returns (uint256 supply);
+    ^--------------------------------------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:49:5: Warning: Functions in interfaces should be declared external.
+    function balanceOf(address _owner) constant public returns (uint256 balance);
+    ^---------------------------------------------------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:130:9: Warning: Invoking events without "emit" prefix is deprecated.
+        DistrFinished();
+        ^-------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:138:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Distr(_to, _amount);
+        ^-----------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:139:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Transfer(address(0), _to, _amount);
+        ^--------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:235:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Transfer(msg.sender, _to, _amount);
+        ^--------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:248:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Transfer(_from, _to, _amount);
+        ^---------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:256:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Approval(msg.sender, _spender, _value);
+        ^------------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:271:32: Warning: Using contract member "balance" inherited from the address type is deprecated. Convert the contract to "address" type to access the member.
+        uint256 etherBalance = this.balance;
+                               ^----------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:284:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Burn(burner, _value);
+        ^------------------^
+
+
+INFO:spcon.symExec:Test Sequence: ['setParameters']
+INFO:spcon.symExec:SymExecEVM().symExec: setParameters(uint256,uint256)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: false
+INFO:spcon.symExec:test sequence is not feasible
+WARNING:CryticCompile:Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:47:5: Warning: Functions in interfaces should be declared external.
+    function distr(address _to, uint256 _value) public returns (bool);
+    ^----------------------------------------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:48:5: Warning: Functions in interfaces should be declared external.
+    function totalSupply() constant public returns (uint256 supply);
+    ^--------------------------------------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:49:5: Warning: Functions in interfaces should be declared external.
+    function balanceOf(address _owner) constant public returns (uint256 balance);
+    ^---------------------------------------------------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:130:9: Warning: Invoking events without "emit" prefix is deprecated.
+        DistrFinished();
+        ^-------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:138:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Distr(_to, _amount);
+        ^-----------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:139:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Transfer(address(0), _to, _amount);
+        ^--------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:235:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Transfer(msg.sender, _to, _amount);
+        ^--------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:248:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Transfer(_from, _to, _amount);
+        ^---------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:256:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Approval(msg.sender, _spender, _value);
+        ^------------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:271:32: Warning: Using contract member "balance" inherited from the address type is deprecated. Convert the contract to "address" type to access the member.
+        uint256 etherBalance = this.balance;
+                               ^----------^
+
+Warning: crytic-export/etherscan-contracts2/0x70d146a7dc622772b9d4b4fc02f28516ce237011-DARTTOKEN.sol:284:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Burn(burner, _value);
+        ^------------------^
+
+
+INFO:spcon.symExec:Test Sequence: ['testhash', 'setParameters']
+INFO:spcon.symExec:SymExecEVM().symExec: testhash(uint256,uint256)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+Max/Min/Avg Fitness(Raw)             [219.72(1000.00)/175.02(2.99)/183.10(183.10)]
+Total time elapsed: 4.415 seconds.
+best role number: 4
+Role#0:{'transferFrom'}
+Role#1:{'transfer'}
+Role#2:{'approve'}
+Role#3:{'withdraw', 'setParameters'}
+Time cost: 4.425518035888672
+Security Policy:
+Policy#0: withdraw setParameters -> minReq value via functions setParameters
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x70d146a7dc622772b9d4b4fc02f28516ce237011&position=0x1&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x70d146a7dc622772b9d4b4fc02f28516ce237011&position=0x8&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+2024-10-26 12:50:23,891: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc0\xff\xeeu;B\xbd\xa1\xbc\xfah/)h^/\xd6r\x90\x16\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02' -> 96210682920574057391986652820292699539145097461330655911128433482777954502743
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:SymExecEVM().symExec: setParameters(uint256,uint256)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:Testing time: 27.6419677734375 seconds
+Permission Bug: find an attack sequence ['testhash', 'setParameters']
+total timecost: 52.61240005493164 seconds

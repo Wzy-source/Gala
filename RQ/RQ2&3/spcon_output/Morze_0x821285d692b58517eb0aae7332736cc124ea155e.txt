@@ -1,0 +1,15 @@
+WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Installing '0.4.24'...
+Version '0.4.24' installed.
+2024-10-26
+{'limit': 6, 'network': 'ethereum', 'address': '0x821285d692b58517eb0aae7332736cc124ea155e', 'date': '2024-10-26'}
+0x821285d692b58517eb0aae7332736cc124ea155e Morze
+./0x821285d692b58517eb0aae7332736cc124ea155e
+loaded abi.
+3  functions ['transferOwnership', 'Ownables', 'MorzeF']
+1  users
+Timecost for loading history: 0.003228425979614258
+No.user: 1; No.func: 3
+Time cost: 0.0049076080322265625
+Security Policy:
+total timecost: 22.428810119628906 seconds

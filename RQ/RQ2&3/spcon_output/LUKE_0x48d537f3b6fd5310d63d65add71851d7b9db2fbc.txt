@@ -1,0 +1,28 @@
+Installing '0.4.24'...
+Version '0.4.24' installed.
+2024-10-26
+{'limit': 16, 'network': 'ethereum', 'address': '0x48d537f3b6fd5310d63d65add71851d7b9db2fbc', 'date': '2024-10-26'}
+0x48d537f3b6fd5310d63d65add71851d7b9db2fbc LUKE
+./0x48d537f3b6fd5310d63d65add71851d7b9db2fbc
+loaded abi.
+2  functions ['transfer', 'luke']
+4  users
+Timecost for loading history: 0.004473447799682617
+No.user: 4; No.func: 2
++-------------------------------------------------+
+| Basic roles statistics (id, len(users), functions) |
++-------------+-----------+-----------------------+
+|    RoleId   |   Users   |       Functions       |
++-------------+-----------+-----------------------+
+|      0      |     4     |      ['transfer']     |
+|      1      |     1     |        ['luke']       |
++-------------+-----------+-----------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [5.32(5.31)/3.43(3.45)/4.43(4.43)]
+Gen. 100 (100.00%): WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Max/Min/Avg Fitness(Raw)             [6.21(5.31)/0.00(3.45)/5.78(5.18)]
+Total time elapsed: 3.946 seconds.
+best role number: 1
+Role#0:{'transfer', 'luke'}
+Time cost: 3.9900062084198
+Security Policy:
+total timecost: 26.5376615524292 seconds

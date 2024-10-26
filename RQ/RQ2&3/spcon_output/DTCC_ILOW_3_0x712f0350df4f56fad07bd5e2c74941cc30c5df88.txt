@@ -1,0 +1,15 @@
+WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Installing '0.4.21'...
+Version '0.4.21' installed.
+2024-10-26
+{'limit': 28, 'network': 'ethereum', 'address': '0x712f0350df4f56fad07bd5e2c74941cc30c5df88', 'date': '2024-10-26'}
+0x712f0350df4f56fad07bd5e2c74941cc30c5df88 DTCC_ILOW_3
+./0x712f0350df4f56fad07bd5e2c74941cc30c5df88
+loaded abi.
+16  functions ['retrait_1', 'retrait_2', 'retrait_4', 'admiss_5', 'retrait_3', 'admiss_4', 'setData_4', 'retrait_5', 'setData_1', 'setData_3', 'setData_2', 'setData_6', 'admiss_2', 'DTCC_ILOW_2', 'admiss_1', 'admiss_3']
+1  users
+Timecost for loading history: 0.0052738189697265625
+No.user: 1; No.func: 16
+Time cost: 0.006949663162231445
+Security Policy:
+total timecost: 24.456217288970947 seconds

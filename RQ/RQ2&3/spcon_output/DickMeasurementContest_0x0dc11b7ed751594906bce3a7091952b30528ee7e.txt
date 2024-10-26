@@ -1,0 +1,15 @@
+WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Installing '0.4.20'...
+Version '0.4.20' installed.
+2024-10-26
+{'limit': 2, 'network': 'ethereum', 'address': '0x0dc11b7ed751594906bce3a7091952b30528ee7e', 'date': '2024-10-26'}
+0x0dc11b7ed751594906bce3a7091952b30528ee7e DickMeasurementContest
+./0x0dc11b7ed751594906bce3a7091952b30528ee7e
+loaded abi.
+1  functions ['mineIsBigger']
+1  users
+Timecost for loading history: 0.0041522979736328125
+No.user: 1; No.func: 1
+Time cost: 0.006766319274902344
+Security Policy:
+total timecost: 26.176350831985474 seconds

@@ -1,0 +1,64 @@
+Installing '0.4.17'...
+Version '0.4.17' installed.
+2024-10-26
+{'limit': 31, 'network': 'ethereum', 'address': '0xe4fb506f5e6d8c68e71cb9f7cc2fde4c059d3925', 'date': '2024-10-26'}
+0xe4fb506f5e6d8c68e71cb9f7cc2fde4c059d3925 EthMultiplicator
+./0xe4fb506f5e6d8c68e71cb9f7cc2fde4c059d3925
+loaded abi.
+13  functions ['WthdrawTo', 'initEthMultiplicator', 'StartPaymens', 'WthdrawToCreator', 'confirmOwner', 'changeOwner', 'AuthorizePayments', 'WthdrawAllToCreator', 'WitdrawLenderProfit', 'initWallet', 'WithdrawToSponsor', 'FixProfit', 'ToSponsor']
+6  users
+Timecost for loading history: 0.00654292106628418
+No.user: 6; No.func: 13
++----------------------------------------------------------------------------------------------------------+
+|                            Basic roles statistics (id, len(users), functions)                            |
++--------+-------+-----------------------------------------------------------------------------------------+
+| RoleId | Users |                                        Functions                                        |
++--------+-------+-----------------------------------------------------------------------------------------+
+|   0    |   3   |                                 ['initEthMultiplicator']                                |
+|   1    |   3   |                                     ['StartPaymens']                                    |
+|   2    |   1   |                                 ['WthdrawAllToCreator']                                 |
+|   3    |   2   |                                      ['ToSponsor']                                      |
+|   4    |   2   |                                  ['AuthorizePayments']                                  |
+|   5    |   2   |                            ['WthdrawTo', 'WithdrawToSponsor']                           |
+|   6    |   1   |                                      ['initWallet']                                     |
+|   7    |   1   | ['confirmOwner', 'WthdrawToCreator', 'changeOwner', 'WitdrawLenderProfit', 'FixProfit'] |
++--------+-------+-----------------------------------------------------------------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [1.92(1.86)/1.21(1.28)/1.60(1.60)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 3 integrity policies
+INFO:spcon.symExec:Test Sequence: ['changeOwner']
+INFO:spcon.symExec:SymExecEVM().symExec: changeOwner(address)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:Test Sequence: ['initEthMultiplicator']
+INFO:spcon.symExec:SymExecEVM().symExec: initEthMultiplicator(address)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:Test Sequence: ['StartPaymens']
+INFO:spcon.symExec:SymExecEVM().symExec: StartPaymens()
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:Testing time: 12.59485650062561 seconds
+Max/Min/Avg Fitness(Raw)             [2.02(2.00)/1.43(1.44)/1.68(1.68)]
+Total time elapsed: 7.388 seconds.
+best role number: 8
+Role#0:{'initEthMultiplicator'}
+Role#1:{'StartPaymens'}
+Role#2:{'WthdrawAllToCreator'}
+Role#3:{'ToSponsor'}
+Role#4:{'AuthorizePayments'}
+Role#5:{'WthdrawTo', 'WithdrawToSponsor'}
+Role#6:{'initWallet'}
+Role#7:{'confirmOwner', 'WthdrawToCreator', 'changeOwner', 'WitdrawLenderProfit', 'FixProfit'}
+Time cost: 7.3993682861328125
+Security Policy:
+Policy#0: confirmOwner WthdrawToCreator changeOwner FixProfit WitdrawLenderProfit -> newOwner via functions changeOwner
+Policy#1: initEthMultiplicator -> Manager owner via functions initEthMultiplicator
+Policy#2: StartPaymens -> paymentsAllowed via functions StartPaymens
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0xe4fb506f5e6d8c68e71cb9f7cc2fde4c059d3925&position=0x1&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+Permission Bug: find an attack sequence ['changeOwner']
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0xe4fb506f5e6d8c68e71cb9f7cc2fde4c059d3925&position=0x5&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0xe4fb506f5e6d8c68e71cb9f7cc2fde4c059d3925&position=0x3&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+Permission Bug: find an attack sequence ['initEthMultiplicator']
+Permission Bug: find an attack sequence ['StartPaymens']
+total timecost: 50.19376230239868 seconds

@@ -1,0 +1,31 @@
+Installing '0.4.20'...
+Version '0.4.20' installed.
+2024-10-26
+{'limit': 15, 'network': 'ethereum', 'address': '0x7d13261dde5121b8b87c82bbec6908cf070d47e0', 'date': '2024-10-26'}
+0x7d13261dde5121b8b87c82bbec6908cf070d47e0 F1C_01
+./0x7d13261dde5121b8b87c82bbec6908cf070d47e0
+loaded abi.
+5  functions ['token_withdraw', 'withdrawETH', 'admin_withdrawETH', 'transfer', 'depositETH']
+3  users
+Timecost for loading history: 0.0038292407989501953
+No.user: 3; No.func: 5
++----------------------------------------------------------+
+|    Basic roles statistics (id, len(users), functions)    |
++--------+-------+-----------------------------------------+
+| RoleId | Users |                Functions                |
++--------+-------+-----------------------------------------+
+|   0    |   1   |             ['withdrawETH']             |
+|   1    |   1   | ['token_withdraw', 'admin_withdrawETH'] |
+|   2    |   1   |        ['transfer', 'depositETH']       |
++--------+-------+-----------------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [255.54(1000.00)/201.59(2.99)/212.95(212.95)]
+Gen. 100 (100.00%): WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Max/Min/Avg Fitness(Raw)             [446.98(1000.00)/328.62(2.99)/372.48(372.48)]
+Total time elapsed: 4.461 seconds.
+best role number: 3
+Role#0:{'withdrawETH'}
+Role#1:{'token_withdraw', 'admin_withdrawETH'}
+Role#2:{'transfer', 'depositETH'}
+Time cost: 4.467562437057495
+Security Policy:
+total timecost: 27.56282353401184 seconds

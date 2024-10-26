@@ -1,0 +1,38 @@
+Installing '0.5.16'...
+Version '0.5.16' installed.
+2024-10-26
+{'limit': 12146, 'network': 'ethereum', 'address': '0xe7f445b93eb9cdabfe76541cc43ff8de930a58e6', 'date': '2024-10-26'}
+0xe7f445b93eb9cdabfe76541cc43ff8de930a58e6 ForceProfitSharing
+./0xe7f445b93eb9cdabfe76541cc43ff8de930a58e6
+loaded abi.
+5  functions ['approve', 'transferFrom', 'withdraw', 'deposit', 'transfer']
+3047  users
+Timecost for loading history: 0.24387741088867188
+No.user: 3047; No.func: 5
++---------------------------------------------------+
+| Basic roles statistics (id, len(users), functions) |
++------------+----------+---------------------------+
+|   RoleId   |  Users   |         Functions         |
++------------+----------+---------------------------+
+|     0      |    48    |        ['approve']        |
+|     1      |    2     |      ['transferFrom']     |
+|     2      |   1484   |        ['withdraw']       |
+|     3      |   123    |        ['deposit']        |
+|     4      |   1471   |        ['transfer']       |
++------------+----------+---------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [3.08(4.24)/2.33(1.81)/2.56(2.56)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 1 integrity policies
+INFO:spcon.symExec:Testing time: 0.00023055076599121094 seconds
+Max/Min/Avg Fitness(Raw)             [3.25(4.24)/2.48(2.07)/2.70(2.70)]
+Total time elapsed: 5.983 seconds.
+best role number: 5
+Role#0:{'approve'}
+Role#1:{'transferFrom'}
+Role#2:{'withdraw'}
+Role#3:{'deposit'}
+Role#4:{'transfer'}
+Time cost: 6.791890859603882
+Security Policy:
+Policy#0: approve -> _allowances via functions approve
+total timecost: 39.273239850997925 seconds

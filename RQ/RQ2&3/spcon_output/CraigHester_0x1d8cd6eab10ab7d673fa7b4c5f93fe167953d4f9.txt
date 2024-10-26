@@ -1,0 +1,65 @@
+Installing '0.4.18'...
+Version '0.4.18' installed.
+2024-10-26
+{'limit': 12, 'network': 'ethereum', 'address': '0x1d8cd6eab10ab7d673fa7b4c5f93fe167953d4f9', 'date': '2024-10-26'}
+0x1d8cd6eab10ab7d673fa7b4c5f93fe167953d4f9 CraigHester
+./0x1d8cd6eab10ab7d673fa7b4c5f93fe167953d4f9
+loaded abi.
+7  functions ['', 'deposit', 'withdrawTokenTo', 'setRelease', 'lock', 'withdraw', 'init']
+4  users
+Timecost for loading history: 0.00592803955078125
+No.user: 4; No.func: 7
++---------------------------------------------------------------------------+
+|             Basic roles statistics (id, len(users), functions)            |
++--------+-------+----------------------------------------------------------+
+| RoleId | Users |                        Functions                         |
++--------+-------+----------------------------------------------------------+
+|   0    |   3   |                         ['init']                         |
+|   1    |   1   |                       ['', 'lock']                       |
+|   2    |   1   | ['withdraw', 'deposit', 'setRelease', 'withdrawTokenTo'] |
++--------+-------+----------------------------------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [3.35(3.74)/2.30(1.96)/2.79(2.79)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 1 integrity policies
+WARNING:CryticCompile:Warning: crytic-export/etherscan-contracts2/0x1d8cd6eab10ab7d673fa7b4c5f93fe167953d4f9-CraigHester.sol:13:5: Warning: No visibility specified. Defaulting to "public".
+    function Ownable() { Owner = msg.sender; }
+    ^----------------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x1d8cd6eab10ab7d673fa7b4c5f93fe167953d4f9-CraigHester.sol:56:5: Warning: No visibility specified. Defaulting to "public".
+    function init() payable open {
+    ^
+Spanning multiple lines.
+
+
+INFO:spcon.symExec:Test Sequence: ['setRelease']
+INFO:spcon.symExec:SymExecEVM().symExec: setRelease(uint256)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: success
+WARNING:CryticCompile:Warning: crytic-export/etherscan-contracts2/0x1d8cd6eab10ab7d673fa7b4c5f93fe167953d4f9-CraigHester.sol:13:5: Warning: No visibility specified. Defaulting to "public".
+    function Ownable() { Owner = msg.sender; }
+    ^----------------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x1d8cd6eab10ab7d673fa7b4c5f93fe167953d4f9-CraigHester.sol:56:5: Warning: No visibility specified. Defaulting to "public".
+    function init() payable open {
+    ^
+Spanning multiple lines.
+
+
+INFO:spcon.symExec:Test Sequence: ['init']
+INFO:spcon.symExec:SymExecEVM().symExec: init()
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:Testing time: 8.1743745803833 seconds
+Max/Min/Avg Fitness(Raw)             [4.12(3.74)/0.13(1.96)/3.43(3.43)]
+Total time elapsed: 3.996 seconds.
+best role number: 2
+Role#0:{'deposit', 'withdrawTokenTo', 'setRelease', 'withdraw', 'init'}
+Role#1:{'', 'lock'}
+Time cost: 4.006155729293823
+Security Policy:
+Policy#0: deposit setRelease withdrawTokenTo withdraw init -> Owner Date owner via functions setRelease init
+Permission Bug: find an attack sequence ['setRelease']
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x1d8cd6eab10ab7d673fa7b4c5f93fe167953d4f9&position=0x4&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x1d8cd6eab10ab7d673fa7b4c5f93fe167953d4f9&position=0x1&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+Permission Bug: find an attack sequence ['init']
+total timecost: 33.07256579399109 seconds

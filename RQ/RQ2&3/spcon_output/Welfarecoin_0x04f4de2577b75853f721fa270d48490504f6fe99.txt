@@ -1,0 +1,18 @@
+Installing '0.4.16'...
+Version '0.4.16' installed.
+Switched global version to 0.4.16
+WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Installing '0.4.16'...
+Version '0.4.16' installed.
+2024-10-26
+{'limit': 2, 'network': 'ethereum', 'address': '0x04f4de2577b75853f721fa270d48490504f6fe99', 'date': '2024-10-26'}
+0x04f4de2577b75853f721fa270d48490504f6fe99 Welfarecoin
+./0x04f4de2577b75853f721fa270d48490504f6fe99
+loaded abi.
+1  functions ['TokenERC20']
+1  users
+Timecost for loading history: 0.0033617019653320312
+No.user: 1; No.func: 1
+Time cost: 0.005041599273681641
+Security Policy:
+total timecost: 23.612149000167847 seconds

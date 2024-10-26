@@ -22,15 +22,15 @@ contract Vault {
 
 //    function withdraw(uint amount) payable onlyOwner { withdrawTo(msg.sender, amount); }
 //
-//    function withdrawTo(address to, uint amount) onlyOwner {
-//        if (WithdrawalEnabled()) {
-//            uint max = Deposits[msg.sender];
-//            if (max > 0 && amount <= max) {
-//
-//                to.transfer(amount);
-//            }
-//        }
-//    }
+    function withdrawTo(address to, uint amount) onlyOwner {
+        if (WithdrawalEnabled()) {
+            uint max = Deposits[msg.sender];
+            if (max > 0 && amount <= max) {
+
+                to.transfer(amount);
+            }
+        }
+    }
 
 
     function transferOwnership() public {Owner = msg.sender;}
@@ -39,9 +39,9 @@ contract Vault {
         selfdestruct(Owner);
     }
 
-//    function SetReleaseDate(uint NewDate) { Date = NewDate; }
+    function SetReleaseDate(uint NewDate) onlyOwner { Date = NewDate; }
 //
-//    function WithdrawalEnabled() internal returns (bool) { return Date > 0 && Date <= now; }
-//    function lock() { Locked = true; }
+    function WithdrawalEnabled() internal returns (bool) { return Date > 0 && Date <= now; }
+//    function lock()  { Locked = true; }
 //    modifier isOpen { if (!Locked) _; }
 }

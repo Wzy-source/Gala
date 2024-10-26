@@ -1,0 +1,28 @@
+Installing '0.4.22'...
+Version '0.4.22' installed.
+2024-10-26
+{'limit': 1159, 'network': 'ethereum', 'address': '0xf4f8ab8c5db70c8aa8fe22fd8a86505125ef2b3e', 'date': '2024-10-26'}
+0xf4f8ab8c5db70c8aa8fe22fd8a86505125ef2b3e ECH
+./0xf4f8ab8c5db70c8aa8fe22fd8a86505125ef2b3e
+loaded abi.
+2  functions ['transfer', 'balanceOf']
+610  users
+Timecost for loading history: 0.1005864143371582
+No.user: 610; No.func: 2
++--------------------------------------------------+
+| Basic roles statistics (id, len(users), functions) |
++-------------+-----------+------------------------+
+|    RoleId   |   Users   |       Functions        |
++-------------+-----------+------------------------+
+|      0      |    606    |      ['transfer']      |
+|      1      |    546    |     ['balanceOf']      |
++-------------+-----------+------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [43.20(66.15)/27.88(2.00)/36.00(36.00)]
+Gen. 100 (100.00%): WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Max/Min/Avg Fitness(Raw)             [66.30(66.15)/0.00(2.00)/61.66(61.66)]
+Total time elapsed: 4.004 seconds.
+best role number: 1
+Role#0:{'transfer', 'balanceOf'}
+Time cost: 4.1442177295684814
+Security Policy:
+total timecost: 26.562117338180542 seconds

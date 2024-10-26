@@ -1,0 +1,29 @@
+Installing '0.4.25'...
+Version '0.4.25' installed.
+2024-10-26
+{'limit': 18, 'network': 'ethereum', 'address': '0x9f469b5241f99c18389abd38ec87d62f61e52cb8', 'date': '2024-10-26'}
+0x9f469b5241f99c18389abd38ec87d62f61e52cb8 CSC
+./0x9f469b5241f99c18389abd38ec87d62f61e52cb8
+loaded abi.
+3  functions ['HP', 'withdraw', 'approve']
+3  users
+Timecost for loading history: 0.0046541690826416016
+No.user: 3; No.func: 3
++-------------------------------------------------+
+| Basic roles statistics (id, len(users), functions) |
++-------------+-----------+-----------------------+
+|    RoleId   |   Users   |       Functions       |
++-------------+-----------+-----------------------+
+|      0      |     3     |         ['HP']        |
+|      1      |     2     |      ['withdraw']     |
+|      2      |     1     |      ['approve']      |
++-------------+-----------+-----------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [3.62(7.94)/2.84(1.61)/3.01(3.01)]
+Gen. 100 (100.00%): WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Max/Min/Avg Fitness(Raw)             [8.03(7.94)/1.24(1.61)/6.69(6.69)]
+Total time elapsed: 4.704 seconds.
+best role number: 1
+Role#0:{'HP', 'withdraw', 'approve'}
+Time cost: 4.711376905441284
+Security Policy:
+total timecost: 23.14692497253418 seconds

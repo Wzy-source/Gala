@@ -1,0 +1,86 @@
+Installing '0.4.21'...
+Version '0.4.21' installed.
+2024-10-26
+{'limit': 51, 'network': 'ethereum', 'address': '0x3da034753b42bda1bcfa682f29685e2fd6729016', 'date': '2024-10-26'}
+0x3da034753b42bda1bcfa682f29685e2fd6729016 VoipToken
+./0x3da034753b42bda1bcfa682f29685e2fd6729016
+loaded abi.
+9  functions ['finishDistribution', 'VoipTken', 'adminClaimAirdropMultiple', 'adminClaimAirdrop', 'transfer', 'transferFrom', 'withdraw', 'approve', 'updateTokensPerEth']
+23  users
+Timecost for loading history: 0.009250879287719727
+No.user: 23; No.func: 9
++-----------------------------------------------------------------------------------------------------------------+
+|                                Basic roles statistics (id, len(users), functions)                               |
++--------+-------+------------------------------------------------------------------------------------------------+
+| RoleId | Users |                                           Functions                                            |
++--------+-------+------------------------------------------------------------------------------------------------+
+|   0    |   3   |                                          ['VoipTken']                                          |
+|   1    |   16  |                                          ['transfer']                                          |
+|   2    |   1   |                                        ['transferFrom']                                        |
+|   3    |   3   |                                          ['approve']                                           |
+|   4    |   2   |                                          ['withdraw']                                          |
+|   5    |   1   | ['finishDistribution', 'adminClaimAirdropMultiple', 'adminClaimAirdrop', 'updateTokensPerEth'] |
++--------+-------+------------------------------------------------------------------------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [1.93(2.22)/1.40(1.20)/1.61(1.61)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 1 integrity policies
+INFO:spcon.symExec:Test Sequence: ['adminClaimAirdropMultiple']
+INFO:spcon.symExec:SymExecEVM().symExec: adminClaimAirdropMultiple(address[],uint256)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: false
+INFO:spcon.symExec:test sequence is not feasible
+INFO:spcon.symExec:Test Sequence: ['VoipTken', 'adminClaimAirdropMultiple']
+INFO:spcon.symExec:SymExecEVM().symExec: VoipTken()
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: false
+INFO:spcon.symExec:test sequence is not feasible
+INFO:spcon.symExec:Test Sequence: ['adminClaimAirdrop']
+INFO:spcon.symExec:SymExecEVM().symExec: adminClaimAirdrop(address,uint256)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: false
+INFO:spcon.symExec:test sequence is not feasible
+INFO:spcon.symExec:Test Sequence: ['VoipTken', 'adminClaimAirdrop']
+INFO:spcon.symExec:SymExecEVM().symExec: VoipTken()
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: false
+INFO:spcon.symExec:test sequence is not feasible
+INFO:spcon.symExec:Test Sequence: ['updateTokensPerEth']
+INFO:spcon.symExec:SymExecEVM().symExec: updateTokensPerEth(uint256)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: false
+INFO:spcon.symExec:test sequence is not feasible
+INFO:spcon.symExec:Test Sequence: ['VoipTken', 'updateTokensPerEth']
+INFO:spcon.symExec:SymExecEVM().symExec: VoipTken()
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: false
+INFO:spcon.symExec:test sequence is not feasible
+INFO:spcon.symExec:Test Sequence: ['VoipTken']
+INFO:spcon.symExec:SymExecEVM().symExec: VoipTken()
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: false
+INFO:spcon.symExec:test sequence is not feasible
+INFO:spcon.symExec:Test Sequence: ['adminClaimAirdrop', 'VoipTken']
+INFO:spcon.symExec:SymExecEVM().symExec: adminClaimAirdrop(address,uint256)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: false
+INFO:spcon.symExec:test sequence is not feasible
+INFO:spcon.symExec:Test Sequence: ['adminClaimAirdropMultiple', 'VoipTken']
+INFO:spcon.symExec:SymExecEVM().symExec: adminClaimAirdropMultiple(address[],uint256)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: false
+INFO:spcon.symExec:test sequence is not feasible
+INFO:spcon.symExec:Testing time: 127.60022902488708 seconds
+Max/Min/Avg Fitness(Raw)             [3.63(4.78)/2.40(1.22)/3.03(3.03)]
+Total time elapsed: 5.733 seconds.
+best role number: 4
+Role#0:{'finishDistribution', 'VoipTken', 'adminClaimAirdropMultiple', 'adminClaimAirdrop', 'withdraw', 'updateTokensPerEth'}
+Role#1:{'transfer'}
+Role#2:{'transferFrom'}
+Role#3:{'approve'}
+Time cost: 5.748524904251099
+Security Policy:
+Policy#0: finishDistribution withdraw VoipTken adminClaimAirdropMultiple adminClaimAirdrop updateTokensPerEth -> owner tokensPerEth distributionFinished via functions adminClaimAirdropMultiple adminClaimAirdrop updateTokensPerEth VoipTken
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x3da034753b42bda1bcfa682f29685e2fd6729016&position=0x1&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x3da034753b42bda1bcfa682f29685e2fd6729016&position=0x5&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x3da034753b42bda1bcfa682f29685e2fd6729016&position=0x7&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+total timecost: 153.17465996742249 seconds

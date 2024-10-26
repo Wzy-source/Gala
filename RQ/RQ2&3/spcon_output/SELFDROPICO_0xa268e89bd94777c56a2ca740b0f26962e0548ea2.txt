@@ -1,0 +1,44 @@
+Installing '0.4.24'...
+Version '0.4.24' installed.
+2024-10-26
+{'limit': 14, 'network': 'ethereum', 'address': '0xa268e89bd94777c56a2ca740b0f26962e0548ea2', 'date': '2024-10-26'}
+0xa268e89bd94777c56a2ca740b0f26962e0548ea2 SELFDROPICO
+./0xa268e89bd94777c56a2ca740b0f26962e0548ea2
+loaded abi.
+3  functions ['withdraw', 'SLDR', 'transfer']
+11  users
+Timecost for loading history: 0.005365848541259766
+No.user: 11; No.func: 3
++-------------------------------------------------+
+| Basic roles statistics (id, len(users), functions) |
++-------------+-----------+-----------------------+
+|    RoleId   |   Users   |       Functions       |
++-------------+-----------+-----------------------+
+|      0      |     2     |        ['SLDR']       |
+|      1      |     9     |      ['transfer']     |
+|      2      |     1     |      ['withdraw']     |
++-------------+-----------+-----------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [4.26(7.94)/3.28(1.84)/3.55(3.55)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 1 integrity policies
+INFO:spcon.symExec:Test Sequence: ['SLDR']
+INFO:spcon.symExec:SymExecEVM().symExec: SLDR()
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+Max/Min/Avg Fitness(Raw)             [7.67(7.94)/2.62(1.84)/6.40(6.40)]
+Total time elapsed: 4.048 seconds.
+best role number: 2
+Role#0:{'withdraw', 'SLDR'}
+Role#1:{'transfer'}
+Time cost: 4.057521343231201
+Security Policy:
+Policy#0: withdraw SLDR -> owner via functions SLDR
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0xa268e89bd94777c56a2ca740b0f26962e0548ea2&position=0x1&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0xa268e89bd94777c56a2ca740b0f26962e0548ea2&position=0xa&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0xa268e89bd94777c56a2ca740b0f26962e0548ea2&position=0x8&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0xa268e89bd94777c56a2ca740b0f26962e0548ea2&position=0x9&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+2024-10-26 13:45:06,733: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc0\xff\xeeu;B\xbd\xa1\xbc\xfah/)h^/\xd6r\x90\x16\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02' -> 96210682920574057391986652820292699539145097461330655911128433482777954502743
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:Testing time: 11.635805130004883 seconds
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0xa268e89bd94777c56a2ca740b0f26962e0548ea2&position=0xd4b5511882204cd97ee86bd7514ff8730b5e0417422a0b24b0fe9af2609a4857&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+Permission Bug: find an attack sequence ['SLDR']
+total timecost: 33.26762580871582 seconds

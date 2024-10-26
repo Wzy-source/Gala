@@ -1,0 +1,30 @@
+Installing '0.4.24'...
+Version '0.4.24' installed.
+2024-10-26
+{'limit': 1250, 'network': 'ethereum', 'address': '0x50430b6201c9859c91a5590ac71700cc71499a0e', 'date': '2024-10-26'}
+0x50430b6201c9859c91a5590ac71700cc71499a0e GetPaid
+./0x50430b6201c9859c91a5590ac71700cc71499a0e
+loaded abi.
+5  functions ['transfer', 'balanceOf', 'finishDistribution', 'adminClaimAirdrop', 'GPaid']
+1097  users
+Timecost for loading history: 0.10656547546386719
+No.user: 1097; No.func: 5
++--------------------------------------------------------------+
+|      Basic roles statistics (id, len(users), functions)      |
++--------+-------+---------------------------------------------+
+| RoleId | Users |                  Functions                  |
++--------+-------+---------------------------------------------+
+|   0    |  1096 |                 ['transfer']                |
+|   1    |   2   |                  ['GPaid']                  |
+|   2    |  144  |                ['balanceOf']                |
+|   3    |   1   | ['adminClaimAirdrop', 'finishDistribution'] |
++--------+-------+---------------------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [2.44(3.51)/1.94(1.71)/2.03(2.03)]
+Gen. 100 (100.00%): WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Max/Min/Avg Fitness(Raw)             [3.78(3.51)/0.57(1.70)/3.15(3.15)]
+Total time elapsed: 5.593 seconds.
+best role number: 1
+Role#0:{'transfer', 'balanceOf', 'finishDistribution', 'adminClaimAirdrop', 'GPaid'}
+Time cost: 5.788098573684692
+Security Policy:
+total timecost: 30.094182014465332 seconds

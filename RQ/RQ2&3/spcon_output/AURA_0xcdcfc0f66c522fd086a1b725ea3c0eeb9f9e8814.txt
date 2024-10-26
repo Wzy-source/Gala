@@ -1,0 +1,246 @@
+Installing '0.4.19'...
+Version '0.4.19' installed.
+2024-10-26
+{'limit': 20000, 'network': 'ethereum', 'address': '0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814', 'date': '2024-10-26'}
+0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814 AURA
+./0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814
+loaded abi.
+12  functions ['symbol', 'decimals', 'name', 'balanceOf', 'transfer', 'safeAdd', 'lockBalances', 'totalSupply', 'setOwner', 'safeSub', 'approve', 'allowance']
+19090  users
+Timecost for loading history: 1.3483805656433105
+No.user: 19090; No.func: 12
++---------------------------------------------------+
+| Basic roles statistics (id, len(users), functions) |
++------------+----------+---------------------------+
+|   RoleId   |  Users   |         Functions         |
++------------+----------+---------------------------+
+|     0      |    2     |         ['symbol']        |
+|     1      |    5     |        ['decimals']       |
+|     2      |    22    |       ['balanceOf']       |
+|     3      |   2934   |        ['transfer']       |
+|     4      |    3     |      ['lockBalances']     |
+|     5      |    2     |      ['totalSupply']      |
+|     6      |    31    |        ['setOwner']       |
+|     7      |  16733   |        ['approve']        |
+|     8      |    3     |       ['allowance']       |
+|     9      |    2     |        ['safeAdd']        |
+|     10     |    2     |        ['safeSub']        |
+|     11     |    1     |          ['name']         |
++------------+----------+---------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [1.94(2.00)/1.34(1.29)/1.62(1.62)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 3 integrity policies
+WARNING:CryticCompile:Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:6:3: Warning: No visibility specified. Defaulting to "public".
+  function safeMul(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:11:3: Warning: No visibility specified. Defaulting to "public".
+  function safeSub(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:15:3: Warning: No visibility specified. Defaulting to "public".
+  function safeAdd(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:24:3: Warning: No visibility specified. Defaulting to "public".
+  function Owned() {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:27:3: Warning: No visibility specified. Defaulting to "public".
+  function setOwner(address _owner) returns (bool success) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:136:5: Warning: No visibility specified. Defaulting to "public".
+    function unlockToken() onlyOwner {
+    ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:141:5: Warning: No visibility specified. Defaulting to "public".
+    function uploadBalances(address[] recipients, uint256[] balances) onlyOwner {
+    ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:150:5: Warning: No visibility specified. Defaulting to "public".
+    function lockBalances() onlyOwner {
+    ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:6:3: Warning: Function state mutability can be restricted to pure
+  function safeMul(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:11:3: Warning: Function state mutability can be restricted to pure
+  function safeSub(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:15:3: Warning: Function state mutability can be restricted to pure
+  function safeAdd(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+
+Max/Min/Avg Fitness(Raw)             [2.00(2.15)/1.39(1.26)/1.66(1.66)]
+Total time elapsed: 12.146 seconds.
+best role number: 7
+Role#0:{'symbol', 'lockBalances'}
+Role#1:{'transfer', 'decimals'}
+Role#2:{'safeAdd', 'balanceOf', 'safeSub'}
+Role#3:{'totalSupply', 'name'}
+Role#4:{'setOwner'}
+Role#5:{'approve'}
+Role#6:{'allowance'}
+Time cost: 66.47572207450867
+Security Policy:
+Policy#0: setOwner -> owner via functions setOwner
+Policy#1: symbol lockBalances -> balancesUploaded via functions lockBalances
+Policy#2: approve -> allowance via functions approve
+2024-10-26 08:47:36,139: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01' -> 80084422859880547211683076133703299733277748156566366325829078699459944778998
+2024-10-26 08:47:37,861: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02' -> 29102676481673041902632991033461445430619272659676223336789171408008386403022
+2024-10-26 08:47:38,879: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xce\xff\xeeu;B\xbd\xa1\xbc\xfah/)h^/\xd6r\x90\x16\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x05' -> 81622800343735660711169051851755698107388974723545774423944568876312740912053
+INFO:spcon.symExec:Test Sequence: ['setOwner']
+INFO:spcon.symExec:SymExecEVM().symExec: setOwner(address)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: success
+WARNING:CryticCompile:Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:6:3: Warning: No visibility specified. Defaulting to "public".
+  function safeMul(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:11:3: Warning: No visibility specified. Defaulting to "public".
+  function safeSub(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:15:3: Warning: No visibility specified. Defaulting to "public".
+  function safeAdd(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:24:3: Warning: No visibility specified. Defaulting to "public".
+  function Owned() {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:27:3: Warning: No visibility specified. Defaulting to "public".
+  function setOwner(address _owner) returns (bool success) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:136:5: Warning: No visibility specified. Defaulting to "public".
+    function unlockToken() onlyOwner {
+    ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:141:5: Warning: No visibility specified. Defaulting to "public".
+    function uploadBalances(address[] recipients, uint256[] balances) onlyOwner {
+    ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:150:5: Warning: No visibility specified. Defaulting to "public".
+    function lockBalances() onlyOwner {
+    ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:6:3: Warning: Function state mutability can be restricted to pure
+  function safeMul(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:11:3: Warning: Function state mutability can be restricted to pure
+  function safeSub(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:15:3: Warning: Function state mutability can be restricted to pure
+  function safeAdd(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814&position=0x0&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+Permission Bug: find an attack sequence ['setOwner']
+2024-10-26 08:47:45,066: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01' -> 80084422859880547211683076133703299733277748156566366325829078699459944778998
+2024-10-26 08:47:46,788: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02' -> 29102676481673041902632991033461445430619272659676223336789171408008386403022
+2024-10-26 08:47:47,793: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xce\xff\xeeu;B\xbd\xa1\xbc\xfah/)h^/\xd6r\x90\x16\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x05' -> 81622800343735660711169051851755698107388974723545774423944568876312740912053
+INFO:spcon.symExec:Test Sequence: ['lockBalances']
+INFO:spcon.symExec:SymExecEVM().symExec: lockBalances()
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: false
+INFO:spcon.symExec:test sequence is not feasible
+WARNING:CryticCompile:Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:6:3: Warning: No visibility specified. Defaulting to "public".
+  function safeMul(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:11:3: Warning: No visibility specified. Defaulting to "public".
+  function safeSub(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:15:3: Warning: No visibility specified. Defaulting to "public".
+  function safeAdd(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:24:3: Warning: No visibility specified. Defaulting to "public".
+  function Owned() {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:27:3: Warning: No visibility specified. Defaulting to "public".
+  function setOwner(address _owner) returns (bool success) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:136:5: Warning: No visibility specified. Defaulting to "public".
+    function unlockToken() onlyOwner {
+    ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:141:5: Warning: No visibility specified. Defaulting to "public".
+    function uploadBalances(address[] recipients, uint256[] balances) onlyOwner {
+    ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:150:5: Warning: No visibility specified. Defaulting to "public".
+    function lockBalances() onlyOwner {
+    ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:6:3: Warning: Function state mutability can be restricted to pure
+  function safeMul(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:11:3: Warning: Function state mutability can be restricted to pure
+  function safeSub(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+Warning: crytic-export/etherscan-contracts2/0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814-AURA.sol:15:3: Warning: Function state mutability can be restricted to pure
+  function safeAdd(uint256 a, uint256 b) returns (uint256) {
+  ^
+Spanning multiple lines.
+
+
+2024-10-26 08:47:51,571: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01' -> 80084422859880547211683076133703299733277748156566366325829078699459944778998
+2024-10-26 08:47:53,290: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02' -> 29102676481673041902632991033461445430619272659676223336789171408008386403022
+2024-10-26 08:47:54,296: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xce\xff\xeeu;B\xbd\xa1\xbc\xfah/)h^/\xd6r\x90\x16\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x05' -> 81622800343735660711169051851755698107388974723545774423944568876312740912053
+INFO:spcon.symExec:Test Sequence: ['setOwner', 'lockBalances']
+INFO:spcon.symExec:SymExecEVM().symExec: setOwner(address)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:SymExecEVM().symExec: lockBalances()
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:Testing time: 24.021397590637207 seconds
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814&position=0x7&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+Permission Bug: find an attack sequence ['setOwner', 'lockBalances']
+total timecost: 129.26340866088867 seconds

@@ -1,0 +1,28 @@
+Installing '0.4.24'...
+Version '0.4.24' installed.
+2024-10-26
+{'limit': 39, 'network': 'ethereum', 'address': '0x331655585e8893961f8e8e427f5f8dedf6e7f0af', 'date': '2024-10-26'}
+0x331655585e8893961f8e8e427f5f8dedf6e7f0af SDT_token
+./0x331655585e8893961f8e8e427f5f8dedf6e7f0af
+loaded abi.
+2  functions ['transfer', 'SDTToken']
+9  users
+Timecost for loading history: 0.004158496856689453
+No.user: 9; No.func: 2
++-------------------------------------------------+
+| Basic roles statistics (id, len(users), functions) |
++-------------+-----------+-----------------------+
+|    RoleId   |   Users   |       Functions       |
++-------------+-----------+-----------------------+
+|      0      |     9     |      ['transfer']     |
+|      1      |     1     |      ['SDTToken']     |
++-------------+-----------+-----------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [4.40(4.48)/2.84(2.75)/3.67(3.67)]
+Gen. 100 (100.00%): WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Max/Min/Avg Fitness(Raw)             [5.23(4.48)/0.00(2.75)/4.86(4.36)]
+Total time elapsed: 4.193 seconds.
+best role number: 1
+Role#0:{'transfer', 'SDTToken'}
+Time cost: 4.200062274932861
+Security Policy:
+total timecost: 25.158628940582275 seconds

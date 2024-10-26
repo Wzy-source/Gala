@@ -1,0 +1,119 @@
+Installing '0.4.18'...
+Version '0.4.18' installed.
+2024-10-26
+{'limit': 17, 'network': 'ethereum', 'address': '0x3e365d13828c398d1bd1694adce8998fd0139ba3', 'date': '2024-10-26'}
+0x3e365d13828c398d1bd1694adce8998fd0139ba3 SafeDeposit
+./0x3e365d13828c398d1bd1694adce8998fd0139ba3
+loaded abi.
+8  functions ['deposit', 'init', 'withdraw', 'lock', 'setRelease', 'withdrawToken', 'withdrawTokenTo', 'transferOwnership']
+3  users
+Timecost for loading history: 0.0062334537506103516
+No.user: 3; No.func: 8
++--------------------------------------------------------+
+|   Basic roles statistics (id, len(users), functions)   |
++--------+-------+---------------------------------------+
+| RoleId | Users |               Functions               |
++--------+-------+---------------------------------------+
+|   0    |   3   |                ['init']               |
+|   1    |   1   |     ['lock', 'transferOwnership']     |
+|   2    |   2   | ['setRelease', 'withdraw', 'deposit'] |
+|   3    |   1   |  ['withdrawTokenTo', 'withdrawToken'] |
++--------+-------+---------------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [2.08(4.66)/1.71(1.49)/1.74(1.74)]
+Gen. 100 (100.00%): WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Max/Min/Avg Fitness(Raw)             [4.91(4.66)/0.34(1.49)/4.09(4.09)]
+Total time elapsed: 5.611 seconds.
+best role number: 1
+Role#0:{'deposit', 'init', 'withdraw', 'lock', 'setRelease', 'withdrawToken', 'withdrawTokenTo', 'transferOwnership'}
+Time cost: 5.621609926223755
+Security Policy:
+total timecost: 27.810638904571533 seconds
+wzy@v3090ti:~$ sudo docker run -e 'http_proxy=172.19.144.149:7890' -e 'https_proxy=172.1
+9.144.149:7890' --rm spcon_image_y2 python3 -m spcon --eth_address 0x43efc486d1c7c5cb0193e409a73aa33786f5197c
+Installing '0.4.24'...
+Version '0.4.24' installed.
+2024-10-26
+{'limit': 255, 'network': 'ethereum', 'address': '0x43efc486d1c7c5cb0193e409a73aa33786f5197c', 'date': '2024-10-26'}
+0x43efc486d1c7c5cb0193e409a73aa33786f5197c Tubigo
+./0x43efc486d1c7c5cb0193e409a73aa33786f5197c
+loaded abi.
+4  functions ['setParameters', 'Mining24', 'transfer', 'distributeAmounts']
+244  users
+Timecost for loading history: 0.04401540756225586
+No.user: 244; No.func: 4
++---------------------------------------------------------+
+|    Basic roles statistics (id, len(users), functions)   |
++--------+-------+----------------------------------------+
+| RoleId | Users |               Functions                |
++--------+-------+----------------------------------------+
+|   0    |   1   |              ['Mining24']              |
+|   1    |  242  |              ['transfer']              |
+|   2    |   1   | ['setParameters', 'distributeAmounts'] |
++--------+-------+----------------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [255.54(1000.00)/201.59(2.99)/212.95(212.95)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 1 integrity policies
+WARNING:CryticCompile:Warning: crytic-export/etherscan-contracts2/0x43efc486d1c7c5cb0193e409a73aa33786f5197c-Tubigo.sol:47:5: Warning: Functions in interfaces should be declared external.
+    function distr(address _to, uint256 _value) public returns (bool);
+    ^----------------------------------------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x43efc486d1c7c5cb0193e409a73aa33786f5197c-Tubigo.sol:48:5: Warning: Functions in interfaces should be declared external.
+    function totalSupply() constant public returns (uint256 supply);
+    ^--------------------------------------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x43efc486d1c7c5cb0193e409a73aa33786f5197c-Tubigo.sol:49:5: Warning: Functions in interfaces should be declared external.
+    function balanceOf(address _owner) constant public returns (uint256 balance);
+    ^---------------------------------------------------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x43efc486d1c7c5cb0193e409a73aa33786f5197c-Tubigo.sol:130:9: Warning: Invoking events without "emit" prefix is deprecated.
+        DistrFinished();
+        ^-------------^
+
+Warning: crytic-export/etherscan-contracts2/0x43efc486d1c7c5cb0193e409a73aa33786f5197c-Tubigo.sol:138:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Distr(_to, _amount);
+        ^-----------------^
+
+Warning: crytic-export/etherscan-contracts2/0x43efc486d1c7c5cb0193e409a73aa33786f5197c-Tubigo.sol:139:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Transfer(address(0), _to, _amount);
+        ^--------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x43efc486d1c7c5cb0193e409a73aa33786f5197c-Tubigo.sol:235:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Transfer(msg.sender, _to, _amount);
+        ^--------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x43efc486d1c7c5cb0193e409a73aa33786f5197c-Tubigo.sol:248:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Transfer(_from, _to, _amount);
+        ^---------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x43efc486d1c7c5cb0193e409a73aa33786f5197c-Tubigo.sol:256:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Approval(msg.sender, _spender, _value);
+        ^------------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x43efc486d1c7c5cb0193e409a73aa33786f5197c-Tubigo.sol:271:32: Warning: Using contract member "balance" inherited from the address type is deprecated. Convert the contract to "address" type to access the member, for example use "address(contract).balance" instead.
+        uint256 etherBalance = this.balance;
+                               ^----------^
+
+Warning: crytic-export/etherscan-contracts2/0x43efc486d1c7c5cb0193e409a73aa33786f5197c-Tubigo.sol:284:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Burn(burner, _value);
+        ^------------------^
+
+
+INFO:spcon.symExec:Test Sequence: ['Mining24']
+INFO:spcon.symExec:SymExecEVM().symExec: Mining24(uint256,uint256)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+Max/Min/Avg Fitness(Raw)             [446.98(1000.00)/328.62(2.99)/372.48(372.48)]
+Total time elapsed: 4.064 seconds.
+best role number: 3
+Role#0:{'Mining24'}
+Role#1:{'transfer'}
+Role#2:{'setParameters', 'distributeAmounts'}
+Time cost: 4.1346435546875
+Security Policy:
+Policy#0: Mining24 -> balances value owner minReq via functions Mining24
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x43efc486d1c7c5cb0193e409a73aa33786f5197c&position=0x1&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x43efc486d1c7c5cb0193e409a73aa33786f5197c&position=0x8&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+2024-10-26 12:28:44,258: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc0\xff\xeeu;B\xbd\xa1\xbc\xfah/)h^/\xd6r\x90\x16\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02' -> 96210682920574057391986652820292699539145097461330655911128433482777954502743
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:Testing time: 11.362898349761963 seconds
+Permission Bug: find an attack sequence ['Mining24']
+total timecost: 58.134803771972656 seconds

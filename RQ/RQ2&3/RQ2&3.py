@@ -296,6 +296,11 @@ def test_avg_op_num_sm():
 
 
 if __name__ == '__main__':
+    address = '0x08ade307321221677e837c8150bdbd4e891daf09'
+    name = 'Vault'
+
+    test_one_contract(address, name)
+
     # for addr_name in contract_name_addr2:
     #     address = addr_name[0]
     #     name = addr_name[1]
@@ -303,4 +308,4 @@ if __name__ == '__main__':
     # save_compiler_version()
     # test_all_verified_contracts()
     # test_selected_contracts()
-    test_avg_op_num_sm()
+    # test_avg_op_num_sm()

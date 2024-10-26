@@ -1,0 +1,15 @@
+Installing '0.4.24'...
+Version '0.4.24' installed.
+2024-10-26
+{'limit': 4, 'network': 'ethereum', 'address': '0x071a91b97d0500e0547f0289144490ca088847d2', 'date': '2024-10-26'}
+0x071a91b97d0500e0547f0289144490ca088847d2 ClimateChangeCoin
+./0x071a91b97d0500e0547f0289144490ca088847d2
+loaded abi.
+2  functions ['MetaFoxToken', 'withdraw']
+1  users
+Timecost for loading history: 0.004197120666503906
+No.user: 1; No.func: 2
+Time cost: 0.006063938140869141
+Security Policy:
+total timecost: 27.675565719604492 seconds
+WARNING:spcon.symExec:No permission policy is detected. No permission bug.

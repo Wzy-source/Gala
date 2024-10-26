@@ -56,12 +56,12 @@ class ICFGBuilder:
                 sons = cur_node.sons
                 # 如果不存在孩子节点，说明已经到达最后的位置（不一定是return，也可能是revert等）
                 # 将其与exit_point相连接，以便后续的遍历
-                if len(sons) == 0:
+                if len(sons) == 0 and cur_node.type != NodeType.RETURN:
                     exit_point = self.mock_exit_point(icfg, cur_node)
                     self.process_one_node(icfg, exit_point, fn, program_points)
                 # 将子节点添加到work_list中进行下一轮迭代
                 else:
-                    for son in cur_node.sons:
+                    for son in sons:
                         work_list.append(son)
 
         # 添加所有节点的边
@@ -167,17 +167,18 @@ class ICFGBuilder:
 
     @staticmethod
     def mock_exit_point(icfg: ICFG, origin_exit: SlitherNode) -> SlitherNode:
+        # 由于Slither的设计，仅当函数最后有return语句，才有return节点。因此我们需要对没有return语句结尾的函数，添加return语句
+        # 我们对每一个函数执行结束的位置均添加了一个RETURN类型的节点进行标识
         fn = origin_exit.function
         file_scope = origin_exit.file_scope
-        if fn not in icfg.func_exit_point_map.keys():
-            # 由于Slither的设计，仅当函数最后有return语句，才有return节点
-            # 我们对每一个函数执行结束的位置均添加了一个RETURN类型的节点进行标识
-            # 因此可能存在一条路径有两个连续的Return节点=> 因此后续我们不能把Return类型的节点认为是ICFG中函数的结束位置
-            new_exit = SlitherNode(NodeType.RETURN, -2, fn, file_scope)
-            new_exit.set_function(fn)
-            icfg.func_exit_point_map[fn] = new_exit
-        else:
-            new_exit = icfg.func_exit_point_map[fn]
+        new_exit = SlitherNode(NodeType.RETURN, -2, fn, file_scope)
+        new_exit.set_function(fn)
+        # if fn not in icfg.func_exit_point_map.keys():
+        #     new_exit = SlitherNode(NodeType.RETURN, -2, fn, file_scope)
+        #     new_exit.set_function(fn)
+        #     icfg.func_exit_point_map[fn] = new_exit
+        # else:
+        #     new_exit = icfg.func_exit_point_map[fn]
         new_exit.add_father(origin_exit)
         origin_exit.add_son(new_exit)
         return new_exit

@@ -1,0 +1,36 @@
+Installing '0.4.25'...
+Version '0.4.25' installed.
+2024-10-26
+{'limit': 561, 'network': 'ethereum', 'address': '0x6aa27b3a8aab51745b7eaf53e61aba833b0f9400', 'date': '2024-10-26'}
+0x6aa27b3a8aab51745b7eaf53e61aba833b0f9400 PCC
+./0x6aa27b3a8aab51745b7eaf53e61aba833b0f9400
+loaded abi.
+4  functions ['balanceOf', 'transferFrom', 'transfer', 'approve']
+111  users
+Timecost for loading history: 0.017398834228515625
+No.user: 111; No.func: 4
++---------------------------------------------------+
+| Basic roles statistics (id, len(users), functions) |
++------------+----------+---------------------------+
+|   RoleId   |  Users   |         Functions         |
++------------+----------+---------------------------+
+|     0      |    5     |       ['balanceOf']       |
+|     1      |    5     |      ['transferFrom']     |
+|     2      |    99    |        ['transfer']       |
+|     3      |    12    |        ['approve']        |
++------------+----------+---------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [3.42(3.85)/2.43(2.12)/2.85(2.85)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 1 integrity policies
+INFO:spcon.symExec:Testing time: 0.00027179718017578125 seconds
+Max/Min/Avg Fitness(Raw)             [3.73(3.85)/2.28(2.12)/3.11(3.11)]
+Total time elapsed: 4.659 seconds.
+best role number: 4
+Role#0:{'balanceOf'}
+Role#1:{'transferFrom'}
+Role#2:{'transfer'}
+Role#3:{'approve'}
+Time cost: 4.684932708740234
+Security Policy:
+Policy#0: approve -> allowed via functions approve
+total timecost: 24.15955090522766 seconds

@@ -12,7 +12,7 @@ API_KEY = "HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT"
 
 if __name__ == '__main__':
     # 解析设置
-    settings = Settings(setting_path="/Users/mac/code/Gala-2.0/examples/simple_contract.json")
+    settings = Settings(setting_path="/Users/mac/code/Gala-2.0/examples/simple_contract4.json")
     SolcSwitcher.switch(settings.compiler_version)
     addr, name = settings.contract_address, settings.contract_name
     print("path:", settings.setting_path, "name:", settings.contract_name, "address:", settings.contract_address)

@@ -1,0 +1,15 @@
+Installing '0.4.25'...
+Version '0.4.25' installed.
+2024-10-26
+{'limit': 6, 'network': 'ethereum', 'address': '0x09186c6f2b1eb74d4510a3ae062dc2d9963f2697', 'date': '2024-10-26'}
+0x09186c6f2b1eb74d4510a3ae062dc2d9963f2697 Chamacoin
+./0x09186c6f2b1eb74d4510a3ae062dc2d9963f2697
+loaded abi.
+1  functions ['transfer']
+1  users
+Timecost for loading history: 0.0038573741912841797
+No.user: 1; No.func: 1
+Time cost: 0.00574040412902832
+Security Policy:
+total timecost: 36.76390314102173 seconds
+WARNING:spcon.symExec:No permission policy is detected. No permission bug

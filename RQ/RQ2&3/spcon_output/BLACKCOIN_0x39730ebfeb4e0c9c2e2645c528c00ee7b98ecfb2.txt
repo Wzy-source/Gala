@@ -1,0 +1,44 @@
+Installing '0.4.24'...
+Version '0.4.24' installed.
+2024-10-26
+{'limit': 1163, 'network': 'ethereum', 'address': '0x39730ebfeb4e0c9c2e2645c528c00ee7b98ecfb2', 'date': '2024-10-26'}
+0x39730ebfeb4e0c9c2e2645c528c00ee7b98ecfb2 BLACKCOIN
+./0x39730ebfeb4e0c9c2e2645c528c00ee7b98ecfb2
+loaded abi.
+9  functions ['balanceOf', 'getTokens', 'transfer', 'transferFrom', 'BLACKCOIS', 'withdrawForeignTokens', 'withdraw', 'approve', 'transferOwnership']
+840  users
+Timecost for loading history: 0.10361170768737793
+No.user: 840; No.func: 9
++------------------------------------------------------------------------------+
+|              Basic roles statistics (id, len(users), functions)              |
++--------+-------+-------------------------------------------------------------+
+| RoleId | Users |                          Functions                          |
++--------+-------+-------------------------------------------------------------+
+|   0    |  834  |                         ['transfer']                        |
+|   1    |   2   |                       ['transferFrom']                      |
+|   2    |   4   |                         ['approve']                         |
+|   3    |  287  |                        ['balanceOf']                        |
+|   4    |   2   |                  ['withdraw', 'BLACKCOIS']                  |
+|   5    |   1   | ['transferOwnership', 'getTokens', 'withdrawForeignTokens'] |
++--------+-------+-------------------------------------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [2.21(2.23)/1.45(1.43)/1.84(1.84)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 1 integrity policies
+INFO:spcon.symExec:Test Sequence: ['BLACKCOIS']
+INFO:spcon.symExec:SymExecEVM().symExec: BLACKCOIS()
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+Max/Min/Avg Fitness(Raw)             [2.31(4.25)/1.85(1.44)/1.93(1.93)]
+Total time elapsed: 6.464 seconds.
+best role number: 2
+Role#0:{'transferFrom', 'transfer', 'balanceOf'}
+Role#1:{'getTokens', 'BLACKCOIS', 'withdrawForeignTokens', 'withdraw', 'approve', 'transferOwnership'}
+Time cost: 6.628010511398315
+Security Policy:
+Policy#0: withdraw getTokens BLACKCOIS approve transferOwnership withdrawForeignTokens -> balances owner via functions BLACKCOIS
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x39730ebfeb4e0c9c2e2645c528c00ee7b98ecfb2&position=0x1&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x39730ebfeb4e0c9c2e2645c528c00ee7b98ecfb2&position=0x6&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+2024-10-26 12:21:52,448: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc0\xff\xeeu;B\xbd\xa1\xbc\xfah/)h^/\xd6r\x90\x16\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02' -> 96210682920574057391986652820292699539145097461330655911128433482777954502743
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:Testing time: 5.395148038864136 seconds
+Permission Bug: find an attack sequence ['BLACKCOIS']
+total timecost: 35.04734182357788 seconds

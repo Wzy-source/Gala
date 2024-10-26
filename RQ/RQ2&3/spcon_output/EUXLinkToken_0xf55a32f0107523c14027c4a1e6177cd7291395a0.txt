@@ -1,0 +1,42 @@
+Installing '0.4.24'...
+Version '0.4.24' installed.
+2024-10-26
+{'limit': 445, 'network': 'ethereum', 'address': '0xf55a32f0107523c14027c4a1e6177cd7291395a0', 'date': '2024-10-26'}
+0xf55a32f0107523c14027c4a1e6177cd7291395a0 EUXLinkToken
+./0xf55a32f0107523c14027c4a1e6177cd7291395a0
+loaded abi.
+3  functions ['transfer', 'approve', 'Constructor']
+433  users
+Timecost for loading history: 0.0685720443725586
+No.user: 433; No.func: 3
++--------------------------------------------------+
+| Basic roles statistics (id, len(users), functions) |
++------------+----------+--------------------------+
+|   RoleId   |  Users   |        Functions         |
++------------+----------+--------------------------+
+|     0      |   429    |       ['transfer']       |
+|     1      |    1     |       ['approve']        |
+|     2      |    3     |     ['Constructor']      |
++------------+----------+--------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [255.54(1000.00)/201.59(2.99)/212.95(212.95)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 1 integrity policies
+INFO:spcon.symExec:Test Sequence: ['Constructor']
+INFO:spcon.symExec:SymExecEVM().symExec: Constructor()
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+Max/Min/Avg Fitness(Raw)             [446.98(1000.00)/328.62(2.99)/372.48(372.48)]
+Total time elapsed: 4.194 seconds.
+best role number: 3
+Role#0:{'transfer'}
+Role#1:{'approve'}
+Role#2:{'Constructor'}
+Time cost: 4.287288427352905
+Security Policy:
+Policy#0: Constructor -> balances owner via functions Constructor
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0xf55a32f0107523c14027c4a1e6177cd7291395a0&position=0x1&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0xf55a32f0107523c14027c4a1e6177cd7291395a0&position=0x6&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+2024-10-26 08:42:17,388: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc0\xff\xeeu;B\xbd\xa1\xbc\xfah/)h^/\xd6r\x90\x16\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02' -> 96210682920574057391986652820292699539145097461330655911128433482777954502743
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:Testing time: 9.148790121078491 seconds
+Permission Bug: find an attack sequence ['Constructor']
+total timecost: 32.597254037857056 seconds

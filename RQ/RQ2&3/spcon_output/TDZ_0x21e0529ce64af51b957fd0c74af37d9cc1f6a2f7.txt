@@ -1,0 +1,15 @@
+Installing '0.4.22'...
+Version '0.4.22' installed.
+2024-10-26
+{'limit': 3, 'network': 'ethereum', 'address': '0x21e0529ce64af51b957fd0c74af37d9cc1f6a2f7', 'date': '2024-10-26'}
+0x21e0529ce64af51b957fd0c74af37d9cc1f6a2f7 TDZ
+./0x21e0529ce64af51b957fd0c74af37d9cc1f6a2f7
+loaded abi.
+2  functions ['transfer', 'TDz']
+1  users
+Timecost for loading history: 0.0051076412200927734
+No.user: 1; No.func: 2
+Time cost: 0.00781702995300293
+Security Policy:
+total timecost: 20.951863288879395 seconds
+WARNING:spcon.symExec:No permission policy is detected. No permission bug.

@@ -1,0 +1,45 @@
+Installing '0.4.24'...
+Version '0.4.24' installed.
+2024-10-26
+{'limit': 20000, 'network': 'ethereum', 'address': '0xe30a76ec9168639f09061e602924ae601d341066', 'date': '2024-10-26'}
+0xe30a76ec9168639f09061e602924ae601d341066 NewIntelTechMedia
+./0xe30a76ec9168639f09061e602924ae601d341066
+loaded abi.
+7  functions ['', 'transfer', 'burn', 'finishDistribution', 'balanceOf', 'approve', 'NETM']
+19474  users
+Timecost for loading history: 1.351208209991455
+No.user: 19474; No.func: 7
++-------------------------------------------------------+
+|   Basic roles statistics (id, len(users), functions)  |
++---------+--------+------------------------------------+
+|  RoleId | Users  |             Functions              |
++---------+--------+------------------------------------+
+|    0    |  2764  |                ['']                |
+|    1    |  894   |            ['transfer']            |
+|    2    | 16295  |           ['balanceOf']            |
+|    3    |   4    |            ['approve']             |
+|    4    |   5    |              ['NETM']              |
+|    5    |   1    |   ['burn', 'finishDistribution']   |
++---------+--------+------------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [2.10(2.72)/1.60(1.33)/1.75(1.75)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 1 integrity policies
+INFO:spcon.symExec:Test Sequence: ['NETM']
+INFO:spcon.symExec:SymExecEVM().symExec: NETM()
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+Max/Min/Avg Fitness(Raw)             [2.81(4.33)/2.14(1.47)/2.34(2.34)]
+Total time elapsed: 10.400 seconds.
+best role number: 3
+Role#0:{''}
+Role#1:{'transfer', 'balanceOf'}
+Role#2:{'burn', 'approve', 'NETM', 'finishDistribution'}
+Time cost: 68.0793514251709
+Security Policy:
+Policy#0: burn approve NETM finishDistribution -> owner balances via functions NETM
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0xe30a76ec9168639f09061e602924ae601d341066&position=0x1&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0xe30a76ec9168639f09061e602924ae601d341066&position=0x6&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+2024-10-26 13:33:02,313: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc0\xff\xeeu;B\xbd\xa1\xbc\xfah/)h^/\xd6r\x90\x16\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02' -> 96210682920574057391986652820292699539145097461330655911128433482777954502743
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:Testing time: 5.956223726272583 seconds
+Permission Bug: find an attack sequence ['NETM']
+total timecost: 107.8622407913208 seconds

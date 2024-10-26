@@ -1,0 +1,28 @@
+Installing '0.4.25'...
+Version '0.4.25' installed.
+2024-10-26
+{'limit': 7, 'network': 'ethereum', 'address': '0x06eb5444bd13815a77d72e336e8fe7dedb801709', 'date': '2024-10-26'}
+0x06eb5444bd13815a77d72e336e8fe7dedb801709 TwoKrinkles
+./0x06eb5444bd13815a77d72e336e8fe7dedb801709
+loaded abi.
+4  functions ['fin', 'end', 'suicide', 'own']
+2  users
+Timecost for loading history: 0.00414729118347168
+No.user: 2; No.func: 4
++----------------------------------------------------+
+| Basic roles statistics (id, len(users), functions) |
++-----------+----------+-----------------------------+
+|   RoleId  |  Users   |          Functions          |
++-----------+----------+-----------------------------+
+|     0     |    2     |        ['end', 'own']       |
+|     1     |    1     |      ['fin', 'suicide']     |
++-----------+----------+-----------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [6.23(7.94)/4.02(2.10)/5.20(5.20)]
+Gen. 100 (100.00%): WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Max/Min/Avg Fitness(Raw)             [9.03(7.94)/0.00(2.10)/8.40(7.53)]
+Total time elapsed: 4.113 seconds.
+best role number: 1
+Role#0:{'fin', 'end', 'suicide', 'own'}
+Time cost: 4.120083570480347
+Security Policy:
+total timecost: 36.5952844619751 seconds

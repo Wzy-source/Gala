@@ -22,9 +22,9 @@ def test_all_raw_contracts():
     all_raw_contract_ids = db_api.get_all_raw_contract_ids()
     for raw_contract_id in all_raw_contract_ids:
         raw_contract = db_api.get_raw_contract_by_id(raw_contract_id)
-        if raw_contract[8] is not None:
-            continue
-        if not raw_contract[3].startswith('0.4.') and not raw_contract[3].startswith('0.5.'):
+        # if raw_contract[8] is not None:
+        #     continue
+        if not raw_contract[3].startswith('0.4.') and not raw_contract[3].startswith('0.5.') and not raw_contract[3].startswith('0.6.'):
             continue
         raw_name = raw_contract[2]
         raw_address = raw_contract[1]
@@ -41,7 +41,4 @@ def test_all_raw_contracts():
 
 
 if __name__ == '__main__':
-    # name = "VastNetwork"
-    # address = "0x60a1bfc1550c5a7cec65f5bdc99387d1a935de92"
-    # test_one_contract(address, name)
     test_all_raw_contracts()

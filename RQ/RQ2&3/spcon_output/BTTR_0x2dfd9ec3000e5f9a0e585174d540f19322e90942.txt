@@ -1,0 +1,15 @@
+WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Installing '0.4.24'...
+Version '0.4.24' installed.
+2024-10-26
+{'limit': 2, 'network': 'ethereum', 'address': '0x2dfd9ec3000e5f9a0e585174d540f19322e90942', 'date': '2024-10-26'}
+0x2dfd9ec3000e5f9a0e585174d540f19322e90942 BTTR
+./0x2dfd9ec3000e5f9a0e585174d540f19322e90942
+loaded abi.
+1  functions ['approve']
+1  users
+Timecost for loading history: 0.005040884017944336
+No.user: 1; No.func: 1
+Time cost: 0.007483005523681641
+Security Policy:
+total timecost: 25.686792373657227 seconds

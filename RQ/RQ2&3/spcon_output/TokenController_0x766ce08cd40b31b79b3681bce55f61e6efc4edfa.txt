@@ -1,0 +1,15 @@
+WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Installing '0.5.8'...
+Version '0.5.8' installed.
+2024-10-26
+{'limit': 41, 'network': 'ethereum', 'address': '0x766ce08cd40b31b79b3681bce55f61e6efc4edfa', 'date': '2024-10-26'}
+0x766ce08cd40b31b79b3681bce55f61e6efc4edfa TokenController
+./0x766ce08cd40b31b79b3681bce55f61e6efc4edfa
+loaded abi.
+16  functions ['refillRatifiedMintPool', 'refillMultiSigMintPool', 'setMintThresholds', 'upgradeEURONProxyImplTo', 'setRegistry', 'instantMint', 'initialize', 'issueClaimOwnership', 'setMintLimits', 'setFastPause', 'refillInstantMintPool', 'setTokenRegistry', 'transferMintKey', 'transferEURONProxyOwnership', 'setToken', 'claimEURONProxyOwnership']
+1  users
+Timecost for loading history: 0.005597352981567383
+No.user: 1; No.func: 16
+Time cost: 0.007012367248535156
+Security Policy:
+total timecost: 24.54987072944641 seconds

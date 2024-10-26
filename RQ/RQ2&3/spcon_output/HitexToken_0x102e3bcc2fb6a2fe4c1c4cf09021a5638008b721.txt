@@ -1,0 +1,63 @@
+Installing '0.4.24'...
+Version '0.4.24' installed.
+2024-10-26
+{'limit': 38, 'network': 'ethereum', 'address': '0x102e3bcc2fb6a2fe4c1c4cf09021a5638008b721', 'date': '2024-10-26'}
+0x102e3bcc2fb6a2fe4c1c4cf09021a5638008b721 HitexToken
+./0x102e3bcc2fb6a2fe4c1c4cf09021a5638008b721
+loaded abi.
+8  functions ['transfer', 'HTX', 'adminClaimAirdrop', 'withdraw', 'approve', 'burn', 'transferOwnership', 'transferFrom']
+8  users
+Timecost for loading history: 0.007410287857055664
+No.user: 8; No.func: 8
++-------------------------------------------------------------+
+|      Basic roles statistics (id, len(users), functions)     |
++--------+-------+--------------------------------------------+
+| RoleId | Users |                 Functions                  |
++--------+-------+--------------------------------------------+
+|   0    |   3   |                ['transfer']                |
+|   1    |   5   |                  ['HTX']                   |
+|   2    |   3   |                ['withdraw']                |
+|   3    |   1   |              ['transferFrom']              |
+|   4    |   1   |                  ['burn']                  |
+|   5    |   1   |                ['approve']                 |
+|   6    |   1   | ['adminClaimAirdrop', 'transferOwnership'] |
++--------+-------+--------------------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [1.99(2.46)/1.50(1.28)/1.66(1.66)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 1 integrity policies
+INFO:spcon.symExec:Test Sequence: ['adminClaimAirdrop']
+INFO:spcon.symExec:SymExecEVM().symExec: adminClaimAirdrop(address,uint256)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: false
+INFO:spcon.symExec:test sequence is not feasible
+INFO:spcon.symExec:Test Sequence: ['HTX', 'adminClaimAirdrop']
+INFO:spcon.symExec:SymExecEVM().symExec: HTX()
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+Max/Min/Avg Fitness(Raw)             [2.09(2.57)/1.60(1.40)/1.74(1.74)]
+Total time elapsed: 6.876 seconds.
+best role number: 3
+Role#0:{'transfer', 'HTX', 'adminClaimAirdrop', 'withdraw', 'transferOwnership'}
+Role#1:{'burn', 'transferFrom'}
+Role#2:{'approve'}
+Time cost: 6.889389514923096
+Security Policy:
+Policy#0: adminClaimAirdrop withdraw transferOwnership transfer HTX -> owner distributionFinished via functions adminClaimAirdrop HTX
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x102e3bcc2fb6a2fe4c1c4cf09021a5638008b721&position=0x1&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x102e3bcc2fb6a2fe4c1c4cf09021a5638008b721&position=0x7&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x102e3bcc2fb6a2fe4c1c4cf09021a5638008b721&position=0x5&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+2024-10-26 12:04:17,508: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc0\xff\xeeu;B\xbd\xa1\xbc\xfah/)h^/\xd6r\x90\x16\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02' -> 96210682920574057391986652820292699539145097461330655911128433482777954502743
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:SymExecEVM().symExec: adminClaimAirdrop(address,uint256)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: false
+INFO:spcon.symExec:test sequence is not feasible
+INFO:spcon.symExec:Test Sequence: ['HTX']
+INFO:spcon.symExec:SymExecEVM().symExec: HTX()
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x102e3bcc2fb6a2fe4c1c4cf09021a5638008b721&position=0xd4b5511882204cd97ee86bd7514ff8730b5e0417422a0b24b0fe9af2609a4857&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x102e3bcc2fb6a2fe4c1c4cf09021a5638008b721&position=0x4&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+2024-10-26 12:04:31,182: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc0\xff\xeeu;B\xbd\xa1\xbc\xfah/)h^/\xd6r\x90\x16\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02' -> 96210682920574057391986652820292699539145097461330655911128433482777954502743
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:Testing time: 32.46722173690796 seconds
+Permission Bug: find an attack sequence ['HTX']
+total timecost: 75.89746713638306 seconds

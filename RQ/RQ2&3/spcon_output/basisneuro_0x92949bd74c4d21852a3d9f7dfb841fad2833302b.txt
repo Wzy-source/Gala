@@ -1,0 +1,15 @@
+WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Installing '0.4.20'...
+Version '0.4.20' installed.
+2024-10-26
+{'limit': 6, 'network': 'ethereum', 'address': '0x92949bd74c4d21852a3d9f7dfb841fad2833302b', 'date': '2024-10-26'}
+0x92949bd74c4d21852a3d9f7dfb841fad2833302b basisneuro
+./0x92949bd74c4d21852a3d9f7dfb841fad2833302b
+loaded abi.
+2  functions ['JUST', 'transfer']
+1  users
+Timecost for loading history: 0.003181934356689453
+No.user: 1; No.func: 2
+Time cost: 0.004672527313232422
+Security Policy:
+total timecost: 20.665968894958496 seconds

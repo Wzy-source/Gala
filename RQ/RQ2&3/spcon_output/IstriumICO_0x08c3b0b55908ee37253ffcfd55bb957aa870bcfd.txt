@@ -1,0 +1,28 @@
+nstalling '0.4.23'...
+Version '0.4.23' installed.
+2024-10-26
+{'limit': 39, 'network': 'ethereum', 'address': '0x08c3b0b55908ee37253ffcfd55bb957aa870bcfd', 'date': '2024-10-26'}
+0x08c3b0b55908ee37253ffcfd55bb957aa870bcfd IstriumICO
+./0x08c3b0b55908ee37253ffcfd55bb957aa870bcfd
+loaded abi.
+2  functions ['IstriumToken', 'transfer']
+4  users
+Timecost for loading history: 0.005881786346435547
+No.user: 4; No.func: 2
++---------------------------------------------------+
+| Basic roles statistics (id, len(users), functions) |
++------------+----------+---------------------------+
+|   RoleId   |  Users   |         Functions         |
++------------+----------+---------------------------+
+|     0      |    4     |        ['transfer']       |
+|     1      |    1     |      ['IstriumToken']     |
++------------+----------+---------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [4.50(5.31)/2.90(2.00)/3.75(3.75)]
+Gen. 100 (100.00%): WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Max/Min/Avg Fitness(Raw)             [6.09(5.31)/0.00(2.00)/5.66(5.07)]
+Total time elapsed: 4.069 seconds.
+best role number: 1
+Role#0:{'IstriumToken', 'transfer'}
+Time cost: 4.079771280288696
+Security Policy:
+total timecost: 36.43685269355774 seconds

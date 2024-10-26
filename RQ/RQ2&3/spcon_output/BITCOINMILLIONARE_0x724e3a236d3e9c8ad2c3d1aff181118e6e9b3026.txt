@@ -1,0 +1,42 @@
+Installing '0.4.24'...
+Version '0.4.24' installed.
+2024-10-26
+{'limit': 23, 'network': 'ethereum', 'address': '0x724e3a236d3e9c8ad2c3d1aff181118e6e9b3026', 'date': '2024-10-26'}
+0x724e3a236d3e9c8ad2c3d1aff181118e6e9b3026 BITCOINMILLIONARE
+./0x724e3a236d3e9c8ad2c3d1aff181118e6e9b3026
+loaded abi.
+3  functions ['BITCOIMINIG', 'transfer', 'withdraw']
+6  users
+Timecost for loading history: 0.005136251449584961
+No.user: 6; No.func: 3
++------------------------------------------------------+
+|  Basic roles statistics (id, len(users), functions)  |
++----------+--------+----------------------------------+
+|  RoleId  | Users  |            Functions             |
++----------+--------+----------------------------------+
+|    0     |   3    |           ['transfer']           |
+|    1     |   3    |   ['BITCOIMINIG', 'withdraw']    |
++----------+--------+----------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [566.53(1000.00)/388.38(3.98)/472.11(472.11)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 1 integrity policies
+INFO:spcon.symExec:Test Sequence: ['BITCOIMINIG']
+INFO:spcon.symExec:SymExecEVM().symExec: BITCOIMINIG()
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+Max/Min/Avg Fitness(Raw)             [1001.63(1000.00)/0.00(3.98)/711.16(711.16)]
+Total time elapsed: 3.610 seconds.
+best role number: 2
+Role#0:{'transfer'}
+Role#1:{'BITCOIMINIG', 'withdraw'}
+Time cost: 3.6183671951293945
+Security Policy:
+Policy#0: BITCOIMINIG withdraw -> owner via functions BITCOIMINIG
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x724e3a236d3e9c8ad2c3d1aff181118e6e9b3026&position=0x1&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x724e3a236d3e9c8ad2c3d1aff181118e6e9b3026&position=0x5&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x724e3a236d3e9c8ad2c3d1aff181118e6e9b3026&position=0x7&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+2024-10-26 12:55:16,062: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc0\xff\xeeu;B\xbd\xa1\xbc\xfah/)h^/\xd6r\x90\x16\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02' -> 96210682920574057391986652820292699539145097461330655911128433482777954502743
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:Testing time: 10.751099348068237 seconds
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x724e3a236d3e9c8ad2c3d1aff181118e6e9b3026&position=0xd4b5511882204cd97ee86bd7514ff8730b5e0417422a0b24b0fe9af2609a4857&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+Permission Bug: find an attack sequence ['BITCOIMINIG']
+total timecost: 35.2425651550293 seconds

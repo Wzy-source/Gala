@@ -1,0 +1,15 @@
+Installing '0.4.25'...
+Version '0.4.25' installed.
+2024-10-26
+{'limit': 2, 'network': 'ethereum', 'address': '0x8fd448a435f6c7613a043f6d1f7bb861264463fa', 'date': '2024-10-26'}
+0x8fd448a435f6c7613a043f6d1f7bb861264463fa CryptoBonesToken
+./0x8fd448a435f6c7613a043f6d1f7bb861264463fa
+loaded abi.
+1  functions ['approve']
+1  users
+Timecost for loading history: 0.0028367042541503906
+No.user: 1; No.func: 1
+Time cost: 0.004148721694946289
+Security Policy:
+total timecost: 16.657479763031006 seconds
+WARNING:spcon.symExec:No permission policy is detected. No permission bug.

@@ -1,0 +1,33 @@
+Installing '0.4.13'...
+Version '0.4.13' installed.
+Switched global version to 0.4.13
+Installing '0.4.13'...
+Version '0.4.13' installed.
+2024-10-26
+{'limit': 45, 'network': 'ethereum', 'address': '0x8ef59b92f21f9e5f21f5f71510d1a7f87a5420be', 'date': '2024-10-26'}
+0x8ef59b92f21f9e5f21f5f71510d1a7f87a5420be Dexer
+./0x8ef59b92f21f9e5f21f5f71510d1a7f87a5420be
+loaded abi.
+4  functions ['transferFrom', 'SetupToken', 'approve', 'transfer']
+14  users
+Timecost for loading history: 0.005126953125
+No.user: 14; No.func: 4
++---------------------------------------------------+
+| Basic roles statistics (id, len(users), functions) |
++------------+----------+---------------------------+
+|   RoleId   |  Users   |         Functions         |
++------------+----------+---------------------------+
+|     0      |    9     |        ['approve']        |
+|     1      |    8     |        ['transfer']       |
+|     2      |    1     |      ['transferFrom']     |
+|     3      |    1     |       ['SetupToken']      |
++------------+----------+---------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [2.28(4.02)/1.85(1.64)/1.90(1.90)]
+Gen. 100 (100.00%): WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Max/Min/Avg Fitness(Raw)             [4.22(4.02)/0.87(1.64)/3.52(3.52)]
+Total time elapsed: 8.970 seconds.
+best role number: 1
+Role#0:{'approve', 'SetupToken', 'transferFrom', 'transfer'}
+Time cost: 8.978957891464233
+Security Policy:
+total timecost: 34.56146574020386 seconds

@@ -1,0 +1,18 @@
+Installing '0.4.16'...
+Version '0.4.16' installed.
+Switched global version to 0.4.16
+WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Installing '0.4.16'...
+Version '0.4.16' installed.
+2024-10-26
+{'limit': 2, 'network': 'ethereum', 'address': '0x976c1926b162f4cebbd461a39fe5e5a695c132ae', 'date': '2024-10-26'}
+0x976c1926b162f4cebbd461a39fe5e5a695c132ae XiDingCoin
+./0x976c1926b162f4cebbd461a39fe5e5a695c132ae
+loaded abi.
+1  functions ['TokenERC20']
+1  users
+Timecost for loading history: 0.004365444183349609
+No.user: 1; No.func: 1
+Time cost: 0.006022214889526367
+Security Policy:
+total timecost: 23.23047637939453 seconds

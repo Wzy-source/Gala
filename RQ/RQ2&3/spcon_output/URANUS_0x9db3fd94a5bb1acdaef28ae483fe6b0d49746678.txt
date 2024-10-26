@@ -1,0 +1,30 @@
+Installing '0.4.24'...
+Version '0.4.24' installed.
+2024-10-26
+{'limit': 222, 'network': 'ethereum', 'address': '0x9db3fd94a5bb1acdaef28ae483fe6b0d49746678', 'date': '2024-10-26'}
+0x9db3fd94a5bb1acdaef28ae483fe6b0d49746678 URANUS
+./0x9db3fd94a5bb1acdaef28ae483fe6b0d49746678
+loaded abi.
+7  functions ['', 'transfer', 'withdraw', 'transferOwnership', 'getTokens', 'approve', 'SiaCashCoin']
+204  users
+Timecost for loading history: 0.02640843391418457
+No.user: 204; No.func: 7
++----------------------------------------------------------------+
+|       Basic roles statistics (id, len(users), functions)       |
++--------+-------+-----------------------------------------------+
+| RoleId | Users |                   Functions                   |
++--------+-------+-----------------------------------------------+
+|   0    |   1   |                      ['']                     |
+|   1    |  201  |                  ['transfer']                 |
+|   2    |   3   |          ['SiaCashCoin', 'withdraw']          |
+|   3    |   1   | ['approve', 'transferOwnership', 'getTokens'] |
++--------+-------+-----------------------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [1.96(3.35)/1.55(1.21)/1.63(1.63)]
+Gen. 100 (100.00%): WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Max/Min/Avg Fitness(Raw)             [3.61(3.35)/0.22(1.42)/3.01(3.01)]
+Total time elapsed: 5.749 seconds.
+best role number: 1
+Role#0:{'', 'transfer', 'withdraw', 'transferOwnership', 'getTokens', 'approve', 'SiaCashCoin'}
+Time cost: 5.790467023849487
+Security Policy:
+total timecost: 24.802427291870117 seconds

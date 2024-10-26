@@ -1,0 +1,14 @@
+Installing '0.4.22'...
+Version '0.4.22' installed.
+2024-10-26
+{'limit': 2, 'network': 'ethereum', 'address': '0x712c290551ee48f6b3ccc318bd63989c5c37ead4', 'date': '2024-10-26'}
+0x712c290551ee48f6b3ccc318bd63989c5c37ead4 TokenCoinExchanger
+./0x712c290551ee48f6b3ccc318bd63989c5c37ead4
+loaded abi.
+1  functions ['transfer']
+1  users
+Timecost for loading history: 0.0033922195434570312
+No.user: 1; No.func: 1
+Time cost: 0.005263566970825195
+Security Policy:
+total timecost: 40.15408730506897 seconds

@@ -1,0 +1,46 @@
+Installing '0.4.8'...
+Version '0.4.8' installed.
+total timecost: 7.370142459869385 seconds
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/crytic_compile-0.2.2-py3.8.egg/crytic_compile/platform/solc_standard_json.py", line 158, in run_solc_standard_json
+    solc_json_output = json.loads(stdout)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/spcon/spcon/staticAnalyzer.py", line 46, in analyze
+    cc = CryticCompile(target=f"{network}:{address}", export_dir = export_dir, etherscan_export_dir = etherscan_export_dir, compile_remove_metadata=False, \
+  File "/usr/local/lib/python3.8/dist-packages/crytic_compile-0.2.2-py3.8.egg/crytic_compile/crytic_compile.py", line 117, in __init__
+    self._compile(**kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/crytic_compile-0.2.2-py3.8.egg/crytic_compile/crytic_compile.py", line 548, in _compile
+    self._platform.compile(self, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/crytic_compile-0.2.2-py3.8.egg/crytic_compile/platform/etherscan.py", line 331, in compile
+    solc_standard_json.standalone_compile(filenames, compilation_unit, working_dir=working_dir)
+  File "/usr/local/lib/python3.8/dist-packages/crytic_compile-0.2.2-py3.8.egg/crytic_compile/platform/solc_standard_json.py", line 64, in standalone_compile
+    targets_json = run_solc_standard_json(
+  File "/usr/local/lib/python3.8/dist-packages/crytic_compile-0.2.2-py3.8.egg/crytic_compile/platform/solc_standard_json.py", line 188, in run_solc_standard_json
+    raise InvalidCompilation(f"Invalid solc compilation {stderr}")
+crytic_compile.platform.exceptions.InvalidCompilation: Invalid solc compilation unrecognised option '--standard-json'
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/spcon/spcon/__main__.py", line 67, in main
+    execute_command(args)
+  File "/home/spcon/spcon/__main__.py", line 27, in execute_command
+    contractName, contractAbi, reads, reads2, writes =  getRWofContract(address=args.eth_address)
+  File "/home/spcon/spcon/staticAnalyzer.py", line 30, in getRWofContract
+    contractName, contractAbi, reads, reads2,  writes = analyzer.analyze(address=address)
+  File "/home/spcon/spcon/staticAnalyzer.py", line 77, in analyze
+    exit(0)
+  File "/usr/lib/python3.8/_sitebuiltins.py", line 26, in __call__
+    raise SystemExit(code)
+SystemExit: 0

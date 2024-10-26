@@ -4,7 +4,7 @@ from typing import List, Dict, Set, Tuple
 from .utils import is_eoa_callable_func
 from .edge_processor import FlowDirection, EdgeProcessor
 from .icfg import ICFGNode, ICFG, EdgeType, SlitherNode
-from slither.slithir.operations import SolidityCall, Condition
+from slither.slithir.operations import SolidityCall, Condition, Return, Assignment
 from .sliced_graph import SlicedGraph, SlicedPath
 
 
@@ -121,6 +121,24 @@ class ICFGSlicer:
 
                     else:
                         return_site_node, return_func_visited_nodes = call_stack.pop()
+                        # 在这里额外添加一个node，将return_site_node和return value建立赋值关系
+                        # 从而支持路径敏感和上下文敏感的分析,例如，可以分析msgSender()函数的返回值
+                        if isinstance(cur_node, Return):
+                            if len(cur_node.read) == 1 and hasattr(return_site_node, "lvalue"):
+                                lvalue = return_site_node.lvalue
+                                if hasattr(lvalue, "type"):
+                                    assignment_op = Assignment(left_variable=lvalue, right_variable=cur_node.read[0],
+                                                               variable_return_type=lvalue.type)
+                                    slice_nodes.append(assignment_op)
+                                    graph.add_node(assignment_op, **{
+                                        "func_scope": return_site_node.function,
+                                        "is_requirement_node": False,
+                                        "is_state_write_node": False,
+                                        "is_program_point": False,
+                                        "requirement": None,
+                                        "state_write": None
+                                    })
+
                         return_site_next_edges = EdgeProcessor.get_edges_by_types(graph, return_site_node,
                                                                                   control_flow_edge_types,
                                                                                   FlowDirection.FORWARD)

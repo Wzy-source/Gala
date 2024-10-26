@@ -1,0 +1,32 @@
+Installing '0.4.24'...
+Version '0.4.24' installed.
+2024-10-26
+{'limit': 594, 'network': 'ethereum', 'address': '0x8960eb9d4a2d153fd7b175c0f3eef8026eb95dfc', 'date': '2024-10-26'}
+0x8960eb9d4a2d153fd7b175c0f3eef8026eb95dfc LGM
+./0x8960eb9d4a2d153fd7b175c0f3eef8026eb95dfc
+loaded abi.
+6  functions ['withdraw', 'approve', 'balanceOf', 'transferFrom', 'Leg', 'transfer']
+490  users
+Timecost for loading history: 0.05522489547729492
+No.user: 490; No.func: 6
++---------------------------------------------------+
+| Basic roles statistics (id, len(users), functions) |
++------------+----------+---------------------------+
+|   RoleId   |  Users   |         Functions         |
++------------+----------+---------------------------+
+|     0      |    5     |        ['approve']        |
+|     1      |    2     |      ['transferFrom']     |
+|     2      |    4     |          ['Leg']          |
+|     3      |   484    |        ['transfer']       |
+|     4      |    1     |        ['withdraw']       |
+|     5      |    80    |       ['balanceOf']       |
++------------+----------+---------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [2.20(2.46)/1.61(1.44)/1.84(1.84)]
+Gen. 100 (100.00%): WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Max/Min/Avg Fitness(Raw)             [2.28(2.82)/1.71(1.44)/1.90(1.90)]
+Total time elapsed: 6.340 seconds.
+best role number: 1
+Role#0:{'withdraw', 'approve', 'balanceOf', 'transferFrom', 'Leg', 'transfer'}
+Time cost: 6.429195165634155
+Security Policy:
+total timecost: 27.55337691307068 seconds

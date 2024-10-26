@@ -1,0 +1,30 @@
+Installing '0.4.24'...
+Version '0.4.24' installed.
+2024-10-26
+{'limit': 9, 'network': 'ethereum', 'address': '0x0c4f0652d08951982d38f21e8deca798836a1597', 'date': '2024-10-26'}
+0x0c4f0652d08951982d38f21e8deca798836a1597 MEDELIN
+./0x0c4f0652d08951982d38f21e8deca798836a1597
+loaded abi.
+5  functions ['transfer', 'withdraw', 'transferOwnership', 'LEGEND', 'adminClaimAirdrop']
+3  users
+Timecost for loading history: 0.004774808883666992
+No.user: 3; No.func: 5
++-------------------------------------------------------------+
+|      Basic roles statistics (id, len(users), functions)     |
++--------+-------+--------------------------------------------+
+| RoleId | Users |                 Functions                  |
++--------+-------+--------------------------------------------+
+|   0    |   2   |                ['withdraw']                |
+|   1    |   2   |                 ['LEGEND']                 |
+|   2    |   1   |                ['transfer']                |
+|   3    |   1   | ['adminClaimAirdrop', 'transferOwnership'] |
++--------+-------+--------------------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [2.58(3.80)/2.01(1.63)/2.15(2.15)]
+Gen. 100 (100.00%): WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Max/Min/Avg Fitness(Raw)             [4.05(3.80)/0.80(1.77)/3.38(3.38)]
+Total time elapsed: 5.500 seconds.
+best role number: 1
+Role#0:{'transfer', 'withdraw', 'transferOwnership', 'LEGEND', 'adminClaimAirdrop'}
+Time cost: 5.508466720581055
+Security Policy:
+total timecost: 27.337857246398926 seconds

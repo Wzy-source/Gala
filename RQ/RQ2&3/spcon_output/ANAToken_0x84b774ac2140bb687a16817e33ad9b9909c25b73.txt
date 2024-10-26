@@ -1,0 +1,182 @@
+Installing '0.4.24'...
+Version '0.4.24' installed.
+2024-10-26
+{'limit': 49, 'network': 'ethereum', 'address': '0x84b774ac2140bb687a16817e33ad9b9909c25b73', 'date': '2024-10-26'}
+0x84b774ac2140bb687a16817e33ad9b9909c25b73 ANAToken
+./0x84b774ac2140bb687a16817e33ad9b9909c25b73
+loaded abi.
+4  functions ['ANA', 'approve', 'transfer', 'transferFrom']
+5  users
+Timecost for loading history: 0.006128787994384766
+No.user: 5; No.func: 4
++----------------------------------------------------+
+| Basic roles statistics (id, len(users), functions) |
++-----------+----------+-----------------------------+
+|   RoleId  |  Users   |          Functions          |
++-----------+----------+-----------------------------+
+|     0     |    4     |         ['transfer']        |
+|     1     |    1     |       ['transferFrom']      |
+|     2     |    1     |      ['ANA', 'approve']     |
++-----------+----------+-----------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [3.19(3.98)/2.31(1.79)/2.66(2.66)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 1 integrity policies
+WARNING:CryticCompile:Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:33:7: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+      throw;
+      ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:78:25: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+        if (_to == 0x0) throw;                               // Prevent transfer to 0x0 address. Use burn() instead
+                        ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:79:20: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+		if (_value <= 0) throw;
+		                 ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:80:45: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+        if (balanceOf[msg.sender] < _value) throw;           // Check if the sender has enough
+                                            ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:81:55: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+        if (balanceOf[_to] + _value < balanceOf[_to]) throw; // Check for overflows
+                                                      ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:90:20: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+		if (_value <= 0) throw;
+		                 ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:98:25: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+        if (_to == 0x0) throw;                                // Prevent transfer to 0x0 address. Use burn() instead
+                        ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:99:20: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+		if (_value <= 0) throw;
+		                 ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:100:40: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+        if (balanceOf[_from] < _value) throw;                 // Check if the sender has enough
+                                       ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:101:55: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+        if (balanceOf[_to] + _value < balanceOf[_to]) throw;  // Check for overflows
+                                                      ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:102:52: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+        if (_value > allowance[_from][msg.sender]) throw;     // Check allowance
+                                                   ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:111:45: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+        if (balanceOf[msg.sender] < _value) throw;            // Check if the sender has enough
+                                            ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:112:20: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+		if (_value <= 0) throw;
+		                 ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:120:45: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+        if (balanceOf[msg.sender] < _value) throw;            // Check if the sender has enough
+                                            ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:121:20: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+		if (_value <= 0) throw;
+		                 ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:129:44: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+        if (freezeOf[msg.sender] < _value) throw;            // Check if the sender has enough
+                                           ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:130:20: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+		if (_value <= 0) throw;
+		                 ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:139:26: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".
+		if(msg.sender != owner)throw;
+		                       ^---^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:31:3: Warning: This declaration shadows a builtin symbol.
+  function assert(bool assertion) internal {
+  ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:84:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Transfer(msg.sender, _to, _value);                   // Notify anyone listening that this transfer took place
+        ^-------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:106:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Transfer(_from, _to, _value);
+        ^--------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:115:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Burn(msg.sender, _value);
+        ^----------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:124:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Freeze(msg.sender, _value);
+        ^------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:133:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Unfreeze(msg.sender, _value);
+        ^--------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:62:5: Warning: No visibility specified. Defaulting to "public".
+    function ANA(
+    ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:77:5: Warning: No visibility specified. Defaulting to "public".
+    function transfer(address _to, uint256 _value) {
+    ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:88:5: Warning: No visibility specified. Defaulting to "public".
+    function approve(address _spender, uint256 _value)
+    ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:97:5: Warning: No visibility specified. Defaulting to "public".
+    function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
+    ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:110:5: Warning: No visibility specified. Defaulting to "public".
+    function burn(uint256 _value) returns (bool success) {
+    ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:119:2: Warning: No visibility specified. Defaulting to "public".
+	function freeze(uint256 _value) returns (bool success) {
+ ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:128:2: Warning: No visibility specified. Defaulting to "public".
+	function unfreeze(uint256 _value) returns (bool success) {
+ ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:138:2: Warning: No visibility specified. Defaulting to "public".
+	function withdrawEther(uint256 amount) {
+ ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:144:2: Warning: No visibility specified. Defaulting to "public".
+	function() payable {
+ ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning: crytic-export/etherscan-contracts2/0x84b774ac2140bb687a16817e33ad9b9909c25b73-ANAToken.sol:31:3: Warning: Function state mutability can be restricted to pure
+  function assert(bool assertion) internal {
+  ^ (Relevant source part starts here and spans across multiple lines).
+
+
+INFO:spcon.symExec:Test Sequence: ['ANA']
+INFO:spcon.symExec:SymExecEVM().symExec: ANA(uint256,string,uint8,string)
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+Max/Min/Avg Fitness(Raw)             [3.90(3.98)/1.95(1.79)/3.25(3.25)]
+Total time elapsed: 3.929 seconds.
+best role number: 2
+Role#0:{'ANA', 'approve', 'transfer'}
+Role#1:{'transferFrom'}
+Time cost: 3.9389920234680176
+Security Policy:
+Policy#0: ANA approve transfer -> balanceOf allowance symbol totalSupply name owner decimals via functions ANA approve
+2024-10-26 08:52:06,334: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc0\xff\xeeu;B\xbd\xa1\xbc\xfah/)h^/\xd6r\x90\x16\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x05' -> 111182551055337147037559403601443000907308718948865849378128477453318610907224
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x84b774ac2140bb687a16817e33ad9b9909c25b73&position=0x0&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+2024-10-26 08:52:08,638: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00' -> 18569430475105882587588266137607568536673111973893317399460219858819262702947
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x84b774ac2140bb687a16817e33ad9b9909c25b73&position=0x1&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+2024-10-26 08:52:11,085: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01' -> 80084422859880547211683076133703299733277748156566366325829078699459944778998
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:Testing time: 12.770015954971313 seconds
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x84b774ac2140bb687a16817e33ad9b9909c25b73&position=0x2&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x84b774ac2140bb687a16817e33ad9b9909c25b73&position=0x4&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+Permission Bug: find an attack sequence ['ANA']
+total timecost: 34.55397844314575 seconds

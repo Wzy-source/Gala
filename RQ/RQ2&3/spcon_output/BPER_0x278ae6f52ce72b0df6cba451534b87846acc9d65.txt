@@ -1,0 +1,79 @@
+Installing '0.4.25'...
+Version '0.4.25' installed.
+2024-10-26
+{'limit': 978, 'network': 'ethereum', 'address': '0x278ae6f52ce72b0df6cba451534b87846acc9d65', 'date': '2024-10-26'}
+0x278ae6f52ce72b0df6cba451534b87846acc9d65 BPER
+./0x278ae6f52ce72b0df6cba451534b87846acc9d65
+loaded abi.
+6  functions ['balanceOf', 'transferAnyERC20Token', 'transferFrom', 'approve', 'Owned2', 'transfer']
+226  users
+Timecost for loading history: 0.03079390525817871
+No.user: 226; No.func: 6
++------------------------------------------------------+
+|  Basic roles statistics (id, len(users), functions)  |
++--------+-------+-------------------------------------+
+| RoleId | Users |              Functions              |
++--------+-------+-------------------------------------+
+|   0    |   5   |           ['transferFrom']          |
+|   1    |   30  |             ['approve']             |
+|   2    |  210  |             ['transfer']            |
+|   3    |   1   |            ['balanceOf']            |
+|   4    |   1   | ['Owned2', 'transferAnyERC20Token'] |
++--------+-------+-------------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [2.66(3.43)/2.00(1.64)/2.21(2.21)]
+Gen. 100 (100.00%): INFO:spcon.symExec:Totally 0 integrity policies
+INFO:spcon.symExec:Totally 2 integrity policies
+WARNING:CryticCompile:Warning: crytic-export/etherscan-contracts2/0x278ae6f52ce72b0df6cba451534b87846acc9d65-BPER.sol:102:5: Warning: Defining constructors as functions with the same name as the contract is deprecated. Use "constructor(...) { ... }" instead.
+    function BPER() public {
+    ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning: crytic-export/etherscan-contracts2/0x278ae6f52ce72b0df6cba451534b87846acc9d65-BPER.sol:8:1: Warning: Source file does not specify required compiler version!Consider adding "pragma solidity ^0.4.25;"
+contract SafeMath {
+^ (Relevant source part starts here and spans across multiple lines).
+
+Warning: crytic-export/etherscan-contracts2/0x278ae6f52ce72b0df6cba451534b87846acc9d65-BPER.sol:78:9: Warning: Invoking events without "emit" prefix is deprecated.
+        OwnershipTransferred(owner, newOwner);
+        ^-----------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x278ae6f52ce72b0df6cba451534b87846acc9d65-BPER.sol:108:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Transfer(address(0), 0x8fB784413918e0917E50cC42282334C08a21730f, _totalSupply);
+        ^----------------------------------------------------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x278ae6f52ce72b0df6cba451534b87846acc9d65-BPER.sol:136:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Transfer(msg.sender, to, tokens);
+        ^------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x278ae6f52ce72b0df6cba451534b87846acc9d65-BPER.sol:151:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Approval(msg.sender, spender, tokens);
+        ^-----------------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x278ae6f52ce72b0df6cba451534b87846acc9d65-BPER.sol:169:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Transfer(from, to, tokens);
+        ^------------------------^
+
+Warning: crytic-export/etherscan-contracts2/0x278ae6f52ce72b0df6cba451534b87846acc9d65-BPER.sol:190:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Approval(msg.sender, spender, tokens);
+        ^-----------------------------------^
+
+
+Max/Min/Avg Fitness(Raw)             [2.84(3.43)/2.04(1.64)/2.36(2.36)]
+Total time elapsed: 5.382 seconds.
+best role number: 3
+Role#0:{'transferFrom', 'balanceOf'}
+Role#1:{'approve', 'transfer'}
+Role#2:{'Owned2', 'transferAnyERC20Token'}
+Time cost: 5.432857036590576
+Security Policy:
+Policy#0: Owned2 transferAnyERC20Token -> owner via functions Owned2
+Policy#1: approve transfer -> allowed via functions approve
+2024-10-26 12:11:41,152: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02' -> 29102676481673041902632991033461445430619272659676223336789171408008386403022
+2024-10-26 12:11:42,871: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03' -> 87903029871075914254377627908054574944891091886930582284385770809450030037083
+2024-10-26 12:11:43,873: [1] m.e.manticore:INFO: Found a concrete globalsha3 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x8f\xb7\x84A9\x18\xe0\x91~P\xccB(#4\xc0\x8a!s\x0f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x06' -> 35218001974332473956328428183815362145927648679677058373907720786073991155220
+INFO:spcon.symExec:Test Sequence: ['Owned2']
+INFO:spcon.symExec:SymExecEVM().symExec: Owned2()
+INFO:spcon.symExec:attacker: 0xc0ffee753b42bda1bcfa682f29685e2fd6729016
+INFO:spcon.symExec:transaction status: success
+INFO:spcon.symExec:Testing time: 12.624526023864746 seconds
+https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x278ae6f52ce72b0df6cba451534b87846acc9d65&position=0x0&tag=latest&apikey=HPXNN2GP4VFJIBD4USI8QJF6MFI75HRQZT
+Permission Bug: find an attack sequence ['Owned2']
+total timecost: 37.48080658912659 seconds

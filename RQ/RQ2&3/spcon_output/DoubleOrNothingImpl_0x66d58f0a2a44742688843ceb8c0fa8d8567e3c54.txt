@@ -1,0 +1,32 @@
+Installing '0.4.11'...
+Version '0.4.11' installed.
+Switched global version to 0.4.11
+Installing '0.4.11'...
+Version '0.4.11' installed.
+2024-10-26
+{'limit': 109, 'network': 'ethereum', 'address': '0x66d58f0a2a44742688843ceb8c0fa8d8567e3c54', 'date': '2024-10-26'}
+0x66d58f0a2a44742688843ceb8c0fa8d8567e3c54 DoubleOrNothingImpl
+./0x66d58f0a2a44742688843ceb8c0fa8d8567e3c54
+loaded abi.
+3  functions ['payout', 'makeWager', 'setWaitTimeBlocks']
+6  users
+Timecost for loading history: 0.004135608673095703
+No.user: 6; No.func: 3
++-----------------------------------------------------+
+|  Basic roles statistics (id, len(users), functions) |
++-----------+---------+-------------------------------+
+|   RoleId  |  Users  |           Functions           |
++-----------+---------+-------------------------------+
+|     0     |    6    |           ['payout']          |
+|     1     |    5    |         ['makeWager']         |
+|     2     |    1    |     ['setWaitTimeBlocks']     |
++-----------+---------+-------------------------------+
+Gen. 0 (0.00%): Max/Min/Avg Fitness(Raw)             [3.30(6.62)/2.58(1.55)/2.75(2.75)]
+Gen. 100 (100.00%): WARNING:spcon.symExec:No permission policy is detected. No permission bug.
+Max/Min/Avg Fitness(Raw)             [6.76(6.62)/0.99(1.55)/5.63(5.63)]
+Total time elapsed: 4.343 seconds.
+best role number: 1
+Role#0:{'payout', 'makeWager', 'setWaitTimeBlocks'}
+Time cost: 4.349914789199829
+Security Policy:
+total timecost: 35.90485668182373 seconds
